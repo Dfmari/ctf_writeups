@@ -17,9 +17,9 @@ Rather than just posting payloads, these writeups document the complete infiltra
 | Challenge                   | Event           | Category | Vulnerabilities / Techniques                                                                            |
 | :-------------------------- | :-------------- | :------- | :------------------------------------------------------------------------------------------------------ |
 | **MSN Revive**              | srdnlenCTF 2026 | Web      | Node.js/Nginx Parser Differential, Path Normalization, IDOR                                             |
-| **DoubleShop**(WIP)         | srdnlenCTF 2026 | Web      | LFI, Tomcat Matrix Parameters (`..;`), Malicious WAR Deployment                                         |
-| **Trilogy of Death I**(WIP) | srdnlenCTF 2026 | DFIR     | Legacy Systems (1999 Corel Linux), PerfectScript Macro Analysis, Known Plaintext Attack (Repeating XOR) |
-| **Solved Tasks**            | BelkaCTF 2025   | DFIR     | ...                                                                                                     |
+| **DoubleShop** (WIP)        | srdnlenCTF 2026 | Web      | LFI, IP Spoofing via Trusted Header, Apache/Tomcat Path Info Bypass (`..;`)                             |
+| **Trilogy of Death I** (WIP)| srdnlenCTF 2026 | DFIR     | Legacy Systems (1999 Corel Linux), PerfectScript Macro Analysis, Known Plaintext Attack (Repeating XOR) |
+| **Solved Tasks** (WIP)           | BelkaCTF 2025   | DFIR     | ...                                                                                                     |
 
 ---
 
@@ -27,7 +27,7 @@ Rather than just posting payloads, these writeups document the complete infiltra
 
 This repository acts as both the source and the hosting environment for the static site. Writeups are natively authored in Obsidian and deployed via a custom bash pipeline.
 
-```text
+```
 .
 ├── 📁 media/                  # Raw CTF assets, target binaries, and disk images
 │   └── srdnlenCTF2026/        
@@ -36,3 +36,4 @@ This repository acts as both the source and the hosting environment for the stat
 ├── 📄 index.html              # Repository root hub / Table of Contents
 ├── 📄 publish.sh              # Custom deployment script (HTML sanitization)
 └── 📄 README.md               # You are here
+```

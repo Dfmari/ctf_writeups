@@ -1,1 +1,0 @@
-find writeups -name "*.html" -exec sed -i 's|class="internal-link is-unresolved" data-href="\([^"]*\)" href="\.html"|class="external-link" href="\1" onclick="window.location.href=this.href; return false;" download|g' {} +

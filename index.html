@@ -1,25 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CTF Writeups</title>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; background-color: #1e1e1e; color: #cccccc; }
-        a { color: #58a6ff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        h1, h2 { color: #ffffff; }
-    </style>
-</head>
-<body>
-    <h1>TEMPORARY MAIN PAGE</h1>
-    <h1>🚩 CTF Writeups</h1>
-    <p>A collection of my CTF solutions and security research.</p>
 
-    <h2>srdnlenCTF 2026</h2>
-    <ul>
-        <li><a href="./writeups/srdnlenCTF2026/web_msn_revive/solution.html">MSN Revive (Web)</a></li>
-        <!-- You will add DoubleShop and Trilogy here later -->
-    </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>~/ctf_writeups</title>
+  <style>
+    /* Nord Color Palette */
+    :root {
+      --nord-0: #2E3440;
+      --nord-1: #3B4252;
+      --nord-3: #566C99;
+      --nord-4: #D8DEE9;
+      --nord-8: #88C0D0;
+      /* Cyan */
+      --nord-11: #BF616A;
+      /* Red */
+      --nord-14: #A3BE8C;
+      /* Green */
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: var(--nord-0);
+      color: var(--nord-4);
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--nord-8);
+      text-decoration: none;
+      border-bottom: 1px dashed transparent;
+      transition: 0.2s ease-in-out;
+      font-weight: bold;
+    }
+
+    a:hover {
+      color: var(--nord-4);
+      border-bottom: 1px dashed var(--nord-8);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      font-weight: normal;
+    }
+
+    h2 {
+      color: var(--nord-8);
+      font-size: 1.2rem;
+      border-bottom: 1px dashed var(--nord-3);
+      padding-bottom: 10px;
+      margin-top: 2.5rem;
+      font-weight: normal;
+    }
+
+    .prompt {
+      color: var(--nord-14);
+      font-weight: bold;
+    }
+
+    .muted {
+      color: var(--nord-3);
+      font-size: 0.9rem;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: var(--nord-1);
+      border-left: 3px solid var(--nord-8);
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tags {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      background: var(--nord-0);
+      border: 1px solid var(--nord-3);
+      padding: 3px 8px;
+      border-radius: 3px;
+      color: var(--nord-4);
+    }
+
+    .warning {
+      color: var(--nord-11);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      display: inline-block;
+      background: rgba(191, 97, 106, 0.1);
+      padding: 5px 10px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1><span class="prompt">user@dfmari:~$</span> cd ./writeups</h1>
+  <span class="warning">[!] TEMPORARY INDEX PAGE - WORK IN PROGRESS</span>
+  <p>A collection of my CTF solutions, vulnerability research, and technical writeups.</p>
+
+  <h2>> ls -la ./srdnlenCTF_2026/</h2>
+  <ul>
+    <li>
+      <div>
+        <a href="./writeups/srdnlenCTF2026/web_msn_revive/solution.html">MSN Revive</a>
+        <div class="muted">IDOR via Path Bypass enabled by Parser Differential</div>
+      </div>
+      <div class="tags">
+        <span class="tag">Web</span>
+        <span class="tag">Easy</span>
+      </div>
+    </li>
+    <!-- 
+        <li>
+            <div>
+                <a href="#">DoubleShop</a>
+                <div class="muted">Brief description of the vulnerability here...</div>
+            </div>
+            <div class="tags">
+                <span class="tag">Web</span>
+            </div>
+        </li>
+        -->
+  </ul>
 </body>
+
 </html>

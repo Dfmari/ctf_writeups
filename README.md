@@ -17,7 +17,6 @@ Rather than just posting payloads, these writeups document the complete infiltra
 | Challenge                   | Event           | Category | Vulnerabilities / Techniques                                                                            |
 | :-------------------------- | :-------------- | :------- | :------------------------------------------------------------------------------------------------------ |
 | **MSN Revive**              | srdnlenCTF 2026 | Web      | Node.js/Nginx Parser Differential, Path Normalization, IDOR                                             |
-| **DoubleShop** (WIP)        | srdnlenCTF 2026 | Web      | LFI, IP Spoofing via Trusted Header, Apache/Tomcat Path Info Bypass (`..;`)                             |
 | **Trilogy of Death I** (WIP)| srdnlenCTF 2026 | DFIR     | Legacy Systems (1999 Corel Linux), PerfectScript Macro Analysis, Known Plaintext Attack (Repeating XOR) |
 | **Solved Tasks** (WIP)           | BelkaCTF 2025   | DFIR     | ...                                                                                                     |
 

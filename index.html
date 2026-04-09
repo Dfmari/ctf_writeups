@@ -5,118 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>~/ctf_writeups</title>
-  <style>
-    /* --- Custom Fonts --- */
-    @font-face {
-      font-family: 'BigBlueTerm';
-      src: url('../dfmari/fonts/BigBlueTerm.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    /* Nord Color Palette */
-    :root {
-      --nord-0: #2E3440;
-      --nord-1: #3B4252;
-      --nord-3: #566C99;
-      --nord-4: #D8DEE9;
-      --nord-8: #88C0D0;
-      /* Cyan */
-      --nord-11: #BF616A;
-      /* Red */
-      --nord-14: #A3BE8C;
-      /* Green */
-    }
-
-    body {
-      font-family: 'Courier New', Courier, monospace;
-      max-width: 800px;
-      margin: 40px auto;
-      background-color: var(--nord-0);
-      color: var(--nord-4);
-      padding: 0 20px;
-      line-height: 1.6;
-    }
-
-    a {
-      color: var(--nord-8);
-      text-decoration: none;
-      border-bottom: 1px dashed transparent;
-      transition: 0.2s ease-in-out;
-      font-weight: bold;
-    }
-
-    a:hover {
-      color: var(--nord-4);
-      border-bottom: 1px dashed var(--nord-8);
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-      font-weight: normal;
-    }
-
-    h2 {
-      color: var(--nord-8);
-      font-size: 1.2rem;
-      border-bottom: 1px dashed var(--nord-3);
-      padding-bottom: 10px;
-      margin-top: 2.5rem;
-      font-weight: normal;
-    }
-
-    .prompt {
-      color: var(--nord-14);
-      font-weight: bold;
-    }
-
-    .muted {
-      color: var(--nord-3);
-      font-size: 0.9rem;
-    }
-
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    li {
-      margin: 15px 0;
-      padding: 15px;
-      background-color: var(--nord-1);
-      border-left: 3px solid var(--nord-8);
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .tags {
-      display: flex;
-      gap: 10px;
-    }
-
-    .tag {
-      font-size: 0.8rem;
-      background: var(--nord-0);
-      border: 1px solid var(--nord-3);
-      padding: 3px 8px;
-      border-radius: 3px;
-      color: var(--nord-4);
-    }
-
-    .warning {
-      color: var(--nord-11);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-      display: inline-block;
-      background: rgba(191, 97, 106, 0.1);
-      padding: 5px 10px;
-      border-radius: 3px;
-    }
-  </style>
+  <!-- Вот и вся магия. Подключаем внешний файл стилей. -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -136,7 +26,7 @@
         <span class="tag">Easy</span>
       </div>
     </li>
-    <!-- 
+    <!--
         <li>
             <div>
                 <a href="#">DoubleShop</a>

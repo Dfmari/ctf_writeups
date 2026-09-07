@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "BigBlueTerm";
+  src: url("./fonts/BigBlueTerm.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BigBlueTermPlus Nerd Font";
+  src: url("./fonts/BigBlueTerm.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BigBlueTermPlus Nerd Font Mono";
+  src: url("./fonts/BigBlueTerm.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  --font-interface-override: "BigBlueTerm" !important;
+  --font-text-override: "BigBlueTerm" !important;
+  --font-print-override: "BigBlueTerm" !important;
+  --font-monospace-override: "BigBlueTerm" !important;
+}
+
+body,
+.markdown-preview-view,
+.markdown-rendered,
+code,
+pre,
+kbd,
+samp {
+  font-family: "BigBlueTerm", monospace !important;
+}
+
+/* Obsidian Webpage Export presentation overrides */
+body {
+  --file-line-width: min(1100px, calc(100vw - 2rem)) !important;
+  --line-width: min(1100px, calc(100vw - 2rem)) !important;
+  --line-width-adaptive: min(1100px, calc(100vw - 2rem)) !important;
+}
+
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+  max-width: min(1100px, calc(100vw - 2rem)) !important;
+  width: 100% !important;
+}
+
+/* Center normal writeup images without stretching them past their source size. */
+.markdown-rendered img,
+.markdown-preview-view img,
+.markdown-preview-sizer img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

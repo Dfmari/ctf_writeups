@@ -6,15 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="dfmari's CTF writeups, security research, and reproducible technical investigations.">
   <title>~/ctf_writeups</title>
+  <link rel="icon" href="./site-lib/media/favicon.png">
+  <link rel="stylesheet" href="./site.css">
 
   <style>
-    @font-face {
-      font-family: "BigBlueTerm";
-      src: url("./fonts/BigBlueTerm.ttf") format("truetype");
-      font-display: swap;
-    }
-
-    :root {
+:root {
       --nord-0: #2E3440;
       --nord-1: #3B4252;
       --nord-3: #566C99;
@@ -161,14 +157,14 @@
     </p>
   </header>
 
-  <main>
+                <main>
     <section>
       <h2>&gt; ./resources/</h2>
 
       <ul>
         <li>
           <div class="entry">
-            <a href="./writeups/Tool%20Setup.html">Tool Setup</a>
+            <a href="./tool-setup.html">Tool Setup</a>
             <div class="muted">Analysis environment, installation notes, and setup guides for tools used across the writeups.</div>
           </div>
           <div class="tags">
@@ -188,7 +184,7 @@
       <ul>
         <li>
           <div class="entry">
-            <a href="./writeups/BelkaCTF%20%E2%84%967/Main.html">Series index</a>
+            <a href="./belkactf-%E2%84%967/main.html">Series index</a>
             <div class="muted">Challenge list, and series notes.</div>
           </div>
           <div class="tags">
@@ -196,10 +192,9 @@
             <span class="tag">Windows</span>
           </div>
         </li>
-
         <li>
           <div class="entry">
-            <a href="./writeups/BelkaCTF%20%E2%84%967/Whoami/WHOAMI%20-%20Baby.html">Whoami</a>
+            <a href="./belkactf-%E2%84%967/whoami/whoami-baby.html">Whoami</a>
             <div class="muted">Recovering the interactive username and hostname from a RAM dump with MemProcFS.</div>
           </div>
           <div class="tags">
@@ -207,15 +202,23 @@
             <span class="tag">MemProcFS</span>
           </div>
         </li>
-
         <li>
           <div class="entry">
-            <a href="./writeups/BelkaCTF%20%E2%84%967/Locker/Locker%20-%20Warmup.html">Locker</a>
+            <a href="./belkactf-%E2%84%967/locker/locker-warmup.html">Locker</a>
             <div class="muted">Finding and validating a rogue executable in memory using MemProcFS.</div>
           </div>
           <div class="tags">
             <span class="tag">Malware</span>
             <span class="tag">MemProcFS</span>
+          </div>
+        </li>
+        <li>
+          <div class="entry">
+            <a href="./belkactf-%E2%84%967/sample/sample.html">Sample</a>
+            <div class="muted">BelkaCTF №7 writeup.</div>
+          </div>
+          <div class="tags">
+            <span class="tag">DFIR</span>
           </div>
         </li>
       </ul>
@@ -227,13 +230,13 @@
       <ul>
         <li>
           <div class="entry">
-            <a href="./writeups/SrdnlenCTF/MSNRevive/MSNRevive.html">MSN Revive</a>
+            <a href="./srdnlenctf/msnrevive/msnrevive.html">MSN Revive</a>
             <div class="muted">Missing authorization combined with a path canonicalization/parser differential.</div>
           </div>
           <div class="tags">
             <span class="tag">Web</span>
             <span class="tag">API</span>
-	    <span class="tag">Burp Suite</span>
+            <span class="tag">Burp Suite</span>
           </div>
         </li>
       </ul>

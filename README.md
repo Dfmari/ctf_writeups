@@ -1,38 +1,38 @@
-# CTF Writeups & Security Research
+# CTF Writeups
 
-![Web Security](https://img.shields.io/badge/Category-Web_Security-blue)
-![DFIR](https://img.shields.io/badge/Category-DFIR-red)
-![Workflow](https://img.shields.io/badge/Workflow-Obsidian_%E2%86%92_HTML-purple)
+This repository contains my Capture The Flag (CTF) writeups.
 
-This repository contains my Capture The Flag (CTF) writeups, focusing primarily on **Web Application Security** and **Digital Forensics (DFIR)**. 
+I try to document the reasoning process, failed hypotheses, artifacts, and tools used along the way because, in my opinion, those are the best parts of a CTF challenge.
 
-Rather than just posting payloads, these writeups document the complete infiltration and analysis process: including recon, dead ends, logic mapping, and custom tool creation.
-
-### [View the Live Website Here](https://dfmari.github.io/ctf_writeups/)
+### [View the Live Website](https://dfmari.github.io/ctf_writeups/)
 
 ---
 
 ## Current Writeups
 
-| Challenge                   | Event           | Category | Vulnerabilities / Techniques                                                                            |
-| :-------------------------- | :-------------- | :------- | :------------------------------------------------------------------------------------------------------ |
-| **MSN Revive**              | srdnlenCTF 2026 | Web      | Node.js/Nginx Parser Differential, Path Normalization, IDOR                                             |
-| **Trilogy of Death I** (WIP)| srdnlenCTF 2026 | DFIR     | Legacy Systems (1999 Corel Linux), PerfectScript Macro Analysis, Known Plaintext Attack (Repeating XOR) |
-| **Solved Tasks** (WIP)           | BelkaCTF 2025   | DFIR     | ...                                                                                                     |
+| Challenge / Series | Event | Category | Vulnerabilities / Techniques |
+| --- | --- | --- | --- |
+| **MSN Revive** | srdnlenCTF 2026 | Web | Missing authorization, object-level access control, path canonicalization / parser differential |
+| **Whoami** | BelkaCTF #7 | DFIR | Windows memory forensics, MemProcFS, process / environment artifact analysis |
+| **Locker** | BelkaCTF #7 | DFIR / Malware | MemProcFS, `findevil`, suspicious executable memory, process triage |
 
 ---
 
-## Repository Architecture
+## BelkaCTF #7 Series
 
-This repository acts as both the source and the hosting environment for the static site. Writeups are natively authored in Obsidian and deployed via a custom bash pipeline.
+I participated in BelkaCTF #7 live and finished **33rd overall / 10th among students**.
 
-```
-.
-├── 📁 media/                  # Raw CTF assets, target binaries, and disk images
-│   └── srdnlenCTF2026/        
-├── 📁 writeups/               # Exported HTML pages, CSS/JS, and screenshots
-│   └── srdnlenCTF2026/        
-├── 📄 index.html              # Repository root hub / Table of Contents
-├── 📄 publish.sh              # Custom deployment script (HTML sanitization)
-└── 📄 README.md               # You are here
-```
+The DFIR series revisits the challenges from scratch using freely available tools, with an emphasis on reproducibility and understanding the underlying artifacts rather than simply reproducing the flags.
+
+Tools used include:
+
+- MemProcFS
+- Volatility 3
+- standard Linux utilities
+- additional free tools as they become relevant
+
+---
+
+## Repository
+
+The site is authored primarily in Obsidian and exported to static HTML.

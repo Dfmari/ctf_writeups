@@ -4,25 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="dfmari's CTF writeups, security research, and reproducible technical investigations.">
   <title>~/ctf_writeups</title>
+
   <style>
-    /* Nord Color Palette */
+    @font-face {
+      font-family: "BigBlueTerm";
+      src: url("./fonts/BigBlueTerm.ttf") format("truetype");
+      font-display: swap;
+    }
+
     :root {
       --nord-0: #2E3440;
       --nord-1: #3B4252;
       --nord-3: #566C99;
       --nord-4: #D8DEE9;
       --nord-8: #88C0D0;
-      /* Cyan */
-      --nord-11: #BF616A;
-      /* Red */
       --nord-14: #A3BE8C;
-      /* Green */
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Courier New', Courier, monospace;
-      max-width: 800px;
+      font-family: "BigBlueTerm", "Courier New", Courier, monospace;
+      max-width: 860px;
       margin: 40px auto;
       background-color: var(--nord-0);
       color: var(--nord-4);
@@ -34,24 +41,25 @@
       color: var(--nord-8);
       text-decoration: none;
       border-bottom: 1px dashed transparent;
-      transition: 0.2s ease-in-out;
+      transition: 0.15s ease-in-out;
       font-weight: bold;
     }
 
-    a:hover {
+    a:hover,
+    a:focus-visible {
       color: var(--nord-4);
-      border-bottom: 1px dashed var(--nord-8);
+      border-bottom-color: var(--nord-8);
     }
 
     h1 {
       font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.5rem;
       font-weight: normal;
     }
 
     h2 {
       color: var(--nord-8);
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       border-bottom: 1px dashed var(--nord-3);
       padding-bottom: 10px;
       margin-top: 2.5rem;
@@ -63,82 +71,180 @@
       font-weight: bold;
     }
 
+    .intro {
+      margin-bottom: 2rem;
+    }
+
     .muted {
       color: var(--nord-3);
       font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .event-note {
+      color: var(--nord-3);
+      font-size: 0.9rem;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
     }
 
     ul {
-      list-style-type: none;
+      list-style: none;
       padding-left: 0;
+      margin: 0;
     }
 
     li {
-      margin: 15px 0;
+      margin: 14px 0;
       padding: 15px;
       background-color: var(--nord-1);
       border-left: 3px solid var(--nord-8);
       border-radius: 4px;
       display: flex;
       justify-content: space-between;
+      gap: 20px;
       align-items: center;
+    }
+
+    .entry {
+      min-width: 0;
     }
 
     .tags {
       display: flex;
-      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
     .tag {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       background: var(--nord-0);
       border: 1px solid var(--nord-3);
       padding: 3px 8px;
       border-radius: 3px;
       color: var(--nord-4);
+      white-space: nowrap;
     }
 
-    .warning {
-      color: var(--nord-11);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-      display: inline-block;
-      background: rgba(191, 97, 106, 0.1);
-      padding: 5px 10px;
-      border-radius: 3px;
+    footer {
+      border-top: 1px dashed var(--nord-3);
+      margin-top: 3rem;
+      padding-top: 1rem;
+      color: var(--nord-3);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 620px) {
+      body {
+        margin: 24px auto;
+      }
+
+      li {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .tags {
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
 
 <body>
-  <h1><span class="prompt">user@dfmari:~$</span> cd ./writeups</h1>
-  <span class="warning">[!] TEMPORARY INDEX PAGE - WORK IN PROGRESS</span>
-  <p>A collection of my CTF solutions, vulnerability research, and technical writeups.</p>
+  <header>
+    <h1><span class="prompt">dfmari@writeups:~$</span> ls</h1>
+    <p class="intro">
+      An archive of my CTF solutions. I try to make writeups that I would have found useful when I was just starting out.
+    </p>
+  </header>
 
-  <h2>> ls -la ./srdnlenCTF_2026/</h2>
-  <ul>
-    <li>
-      <div>
-        <a href="./writeups/srdnlenCTF2026/web_msn_revive/solution.html">MSN Revive</a>
-        <div class="muted">IDOR via Path Bypass enabled by Parser Differential</div>
-      </div>
-      <div class="tags">
-        <span class="tag">Web</span>
-        <span class="tag">Easy</span>
-      </div>
-    </li>
-    <!-- 
+  <main>
+    <section>
+      <h2>&gt; ./resources/</h2>
+
+      <ul>
         <li>
-            <div>
-                <a href="#">DoubleShop</a>
-                <div class="muted">Brief description of the vulnerability here...</div>
-            </div>
-            <div class="tags">
-                <span class="tag">Web</span>
-            </div>
+          <div class="entry">
+            <a href="./writeups/Tool%20Setup.html">Tool Setup</a>
+            <div class="muted">Analysis environment, installation notes, and setup guides for tools used across the writeups.</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Setup</span>
+            <span class="tag">Tools</span>
+          </div>
         </li>
-        -->
-  </ul>
+      </ul>
+    </section>
+
+    <section>
+      <h2>&gt; ./BelkaCTF №7/</h2>
+      <p class="event-note">
+        DFIR series revisiting the live CTF with freely available tools.
+      </p>
+
+      <ul>
+        <li>
+          <div class="entry">
+            <a href="./writeups/BelkaCTF%20%E2%84%967/Main.html">Series index</a>
+            <div class="muted">Challenge list, and series notes.</div>
+          </div>
+          <div class="tags">
+            <span class="tag">DFIR</span>
+            <span class="tag">Windows</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="entry">
+            <a href="./writeups/BelkaCTF%20%E2%84%967/Whoami/WHOAMI%20-%20Baby.html">Whoami</a>
+            <div class="muted">Recovering the interactive username and hostname from a RAM dump with MemProcFS.</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Memory</span>
+            <span class="tag">MemProcFS</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="entry">
+            <a href="./writeups/BelkaCTF%20%E2%84%967/Locker/Locker%20-%20Warmup.html">Locker</a>
+            <div class="muted">Finding and validating a rogue executable in memory using MemProcFS.</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Malware</span>
+            <span class="tag">MemProcFS</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>&gt; ./SrdnlenCTF/</h2>
+
+      <ul>
+        <li>
+          <div class="entry">
+            <a href="./writeups/SrdnlenCTF/MSNRevive/MSNRevive.html">MSN Revive</a>
+            <div class="muted">Missing authorization combined with a path canonicalization/parser differential.</div>
+          </div>
+          <div class="tags">
+            <span class="tag">Web</span>
+            <span class="tag">API</span>
+	    <span class="tag">Burp Suite</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <span class="prompt">dfmari@writeups:~$</span>
+    <a href="https://github.com/Dfmari/ctf_writeups">source</a>
+    <span> · built by hand, kept simple.</span>
+  </footer>
 </body>
 
 </html>

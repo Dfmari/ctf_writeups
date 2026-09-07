@@ -1,0 +1,8 @@
+BigBlue Terminal
+Copyright / design: VileR
+https://int10h.org/
+
+Licensed under Creative Commons Attribution-ShareAlike 4.0.
+
+Nerd Font patched version produced by the Nerd Fonts project:
+https://www.nerdfonts.com/

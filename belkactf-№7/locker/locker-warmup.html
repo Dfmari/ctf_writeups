@@ -7,8 +7,9 @@
 <meta property="og:description" content="Writeups - Locker - Warmup">
 <meta property="og:type" content="website">
 <meta property="og:url" content="belkactf-№7/locker/locker-warmup.html">
-<meta property="og:image" content="undefined">
-<meta charset="UTF-8"><meta property="og:site_name" content="Writeups"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0"><script async="" id="webpage-script" src="site-lib/scripts/webpage.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><link rel="icon" href="site-lib/media/favicon.png"><link rel="stylesheet" href="site-lib/styles/obsidian.css"><link rel="stylesheet" href="site-lib/styles/theme.css"><link rel="preload" href="site-lib/styles/global-variable-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="site-lib/styles/global-variable-styles.css"></noscript><link rel="preload" href="site-lib/styles/main-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="site-lib/styles/main-styles.css"></noscript><style>body{--line-width:40em;--line-width-adaptive:40em;--file-line-width:40em;--sidebar-width:min(20em, 80vw);--collapse-arrow-size:11px;--tree-vertical-spacing:1.3em;--sidebar-margin:12px}:root{background-color:#202124}.sidebar{height:100%;font-size:14px;z-index:10;min-width:calc(var(--sidebar-width) + var(--divider-width-hover));max-width:calc(var(--sidebar-width) + var(--divider-width-hover));position:relative;overflow:hidden;overflow:clip;transition:min-width ease-in-out,max-width ease-in-out;transition-duration:.2s;contain:size}#left-sidebar{left:0}#right-sidebar{right:0}.sidebar.is-collapsed{min-width:0;max-width:0}.sidebar.floating{position:absolute}.sidebar .leaf-content{height:100%;min-width:calc(var(--sidebar-width) - var(--divider-width-hover));top:0;padding:var(--sidebar-margin);padding-top:4em;line-height:var(--line-height-tight);background-color:var(--background-secondary);transition:background-color,border-right,border-left,box-shadow;transition-duration:var(--color-fade-speed);transition-timing-function:ease-in-out;position:absolute;display:flex;flex-direction:column}.sidebar:not(.is-collapsed) .leaf-content{min-width:calc(max(100%,var(--sidebar-width)) - 3px);max-width:calc(max(100%,var(--sidebar-width)) - 3px)}#left-sidebar-content{left:0;border-top-right-radius:var(--radius-l);border-bottom-right-radius:var(--radius-l)}#right-sidebar-content{right:0;border-top-left-radius:var(--radius-l);border-bottom-left-radius:var(--radius-l)}.sidebar #left-sidebar-content,.sidebar #right-sidebar-content{contain:none!important;container-type:normal!important;animation:none!important}.sidebar:has(.leaf-content:empty):has(.topbar-content:empty){display:none}.sidebar-topbar{height:calc(2.3em + 2 * var(--sidebar-margin));width:var(--sidebar-width);padding:var(--sidebar-margin);z-index:1;position:fixed;display:flex;align-items:center;transition:width ease-in-out;transition-duration:inherit}.sidebar.is-collapsed .sidebar-topbar{width:calc(2.3em + var(--sidebar-margin) * 2)}.sidebar .sidebar-topbar.is-collapsed{width:0}#left-sidebar .sidebar-topbar{left:0;flex-direction:row;border-top-right-radius:var(--radius-l)}#right-sidebar .sidebar-topbar{right:0;flex-direction:row-reverse;border-top-left-radius:var(--radius-l)}#left-sidebar .topbar-content{margin-right:calc(2.3em + var(--sidebar-margin));flex-direction:row}#right-sidebar .topbar-content{margin-left:calc(2.3em + var(--sidebar-margin));flex-direction:row-reverse}.topbar-content{overflow:hidden visible;overflow:clip visible;width:100%;height:100%;display:flex;align-items:center;transition:inherit}.sidebar.is-collapsed .topbar-content{width:0;transition:inherit}.clickable-icon.sidebar-collapse-icon{background-color:transparent;color:var(--icon-color-focused);padding:2px!important;margin:0!important;height:100%!important;width:2.3em!important;margin-inline:0.14em!important;position:absolute}#left-sidebar .clickable-icon.sidebar-collapse-icon{transform:rotateY(180deg);right:var(--sidebar-margin)}#right-sidebar .clickable-icon.sidebar-collapse-icon{transform:rotateY(180deg);left:var(--sidebar-margin)}.clickable-icon.sidebar-collapse-icon svg.svg-icon{width:100%;height:100%}.feature-title{margin-left:1px;text-transform:uppercase;letter-spacing:.06em;margin-top:.75em;margin-bottom:.75em}.feature-header{display:flex;align-items:center;padding-top:0;font-size:1em;padding-left:0}body.floating-sidebars .sidebar{position:absolute}body{transition:background-color var(--color-fade-speed) ease-in-out}#navbar:not(:empty){display:flex;align-items:center;justify-content:space-between;padding:.5em 1em;width:100%}#main{display:flex;flex-direction:column;height:100%;width:100%;align-items:stretch;justify-content:center}#main-horizontal{display:flex;flex-direction:row;flex-grow:1;width:100%;align-items:stretch;justify-content:center}#center-content{flex-basis:100%;max-width:100%;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;transition:opacity .2s ease-in-out;contain:inline-size}.hide{opacity:0!important;transition:opacity .2s ease-in-out;pointer-events:none}#center-content>.obsidian-document{padding-left:2em;padding-right:1em;margin-bottom:0;width:100%;width:-webkit-fill-available;width:-moz-available;width:fill-available;transition:background-color var(--color-fade-speed) ease-in-out;border-top-right-radius:var(--window-radius,var(--radius-m));border-top-left-radius:var(--window-radius,var(--radius-m));overflow-x:hidden!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;contain:inline-size}body #center-content>.obsidian-document>.markdown-preview-sizer{padding-bottom:80vh;width:100%;max-width:var(--line-width);flex-basis:var(--line-width);transition:background-color var(--color-fade-speed) ease-in-out;contain:inline-size}#center-content>.obsidian-document>div{width:100%!important;transition:background-color var(--color-fade-speed) ease-in-out;contain:inline-size}#center-content>.obsidian-document:not([data-type=markdown]).embed{display:flex;padding:1em;height:100%;width:100%;align-items:center;justify-content:center}#center-content>.obsidian-document:not([data-type=markdown]).embed>*{max-width:100%;max-height:100%;object-fit:contain}:not(h1,h2,h3,h4,h5,h6,li):has(> :is(.math,table)){overflow-x:auto!important}#center-content>.obsidian-document:not([data-type=markdown]){overflow-x:auto;contain:content;padding:0;margin:0;height:100%}.obsidian-document[data-type=attachment]{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;width:100%}.obsidian-document[data-type=attachment]>*{outline:0;border:none;box-shadow:none}.obsidian-document[data-type=attachment] :is(img){max-width:90%;max-height:90%;object-fit:contain}.obsidian-document[data-type=attachment]>:is(audio){width:100%;max-width:min(90%,var(--line-width))}.obsidian-document[data-type=attachment]>:is(embed,iframe,video){width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}.canvas-wrapper>:is(.header,.footer){z-index:100;position:absolute;display:flex;justify-content:center;flex-direction:column;width:100%;align-items:center}.scroll-highlight{position:absolute;width:100%;height:100%;pointer-events:none;z-index:1000;background-color:hsla(var(--color-accent-hsl),.25);opacity:0;padding:1em;inset:50%;translate:-50% -50%;border-radius:var(--radius-s)}</style><script defer="">async function loadIncludes(){let e=document.querySelectorAll("link[itemprop='include']");for(const t of e){let e=t.getAttribute("href");try{let o="";if(e.startsWith("https:")||e.startsWith("http:")||"file:"!=window.location.protocol){const n=await fetch(e);if(!n.ok){console.log("Could not include file: "+e),t?.remove();continue}o=await n.text()}else{const t=document.getElementById(btoa(encodeURI(e)));if(t){const e=JSON.parse(decodeURI(atob(t.getAttribute("value")??"")));o=e?.data??""}}let n=document.createRange().createContextualFragment(o);t.before(n),t.remove(),console.log("Included text: "+o),console.log("Included file: "+e)}catch(o){t?.remove(),console.log("Could not include file: "+e,o);continue}}}document.addEventListener("DOMContentLoaded",(()=>{loadIncludes()}));let isFileProtocol="file:"==location.protocol;function waitLoadScripts(e,t){let o=e.map((e=>document.getElementById(e+"-script")));!function e(n){let l=o[n],c=n+1;l?(l&&"true"!=l.getAttribute("loaded")||n<o.length&&e(c),n<o.length&&l.addEventListener("load",(()=>e(c)))):n<o.length?e(c):t()}(0)}</script><link rel="stylesheet" href="site.css"></head><body class="publish css-settings-manager styled-scrollbars show-inline-title show-ribbon is-focused"><script defer="">let theme=localStorage.getItem("theme")||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");"dark"==theme?(document.body.classList.add("theme-dark"),document.body.classList.remove("theme-light")):(document.body.classList.add("theme-light"),document.body.classList.remove("theme-dark")),window.innerWidth<480?document.body.classList.add("is-phone"):window.innerWidth<768?document.body.classList.add("is-tablet"):window.innerWidth<1024?document.body.classList.add("is-small-screen"):document.body.classList.add("is-large-screen")</script><div id="main"><div id="navbar"></div><div id="main-horizontal"><div id="left-content" class="leaf" style="--sidebar-width: var(--sidebar-width-left);"></div><div id="center-content" class="leaf"><div class="obsidian-document markdown-preview-view markdown-rendered node-insert-event is-readable-line-width allow-fold-headings allow-fold-lists show-indentation-guide show-properties" data-type="markdown"><style id="MJX-CHTML-styles"></style><div class="markdown-preview-sizer markdown-preview-section"><div class="header"><h1 class="page-title heading inline-title" id="Locker_-_Warmup_0">Locker - Warmup</h1><div class="data-bar"></div></div><div class="markdown-preview-pusher" style="width: 1px; height: 0.1px; margin-bottom: 0px;"></div><div class="el-p"><p dir="auto"><a class="internal-link" data-href="WHOAMI - Baby" href="belkactf-№7/whoami/whoami-baby.html" target="_self" rel="noopener nofollow">← Previous</a> <a class="internal-link" data-href="Main" href="belkactf-№7/main.html" target="_self" rel="noopener nofollow">BelkaCTF #7 |</a></p></div><div class="el-p"><p dir="auto"><a data-tooltip-position="top" aria-label="https://belkasoft.com/belkactf7/chall/locker" rel="noopener nofollow" class="external-link is-unresolved" href="https://belkasoft.com/belkactf7/chall/locker" target="_self">Challenge</a></p></div><div class="el-hr"><hr></div><div class="el-p"><p dir="auto"></p></div><div class="el-hr"><hr></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="quote" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">Story</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
+<meta property="og:image" content="belkactf-№7/media/locker.png">
+<meta charset="UTF-8"><meta property="og:site_name" content="Writeups"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0"><script async="" id="webpage-script" src="site-lib/scripts/webpage.js" onload="this.onload=null;this.setAttribute(&quot;loaded&quot;, &quot;true&quot;)"></script><link rel="icon" href="site-lib/media/favicon.png"><link rel="stylesheet" href="site-lib/styles/obsidian.css"><link rel="stylesheet" href="site-lib/styles/theme.css"><link rel="preload" href="site-lib/styles/global-variable-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="site-lib/styles/global-variable-styles.css"></noscript><link rel="preload" href="site-lib/styles/main-styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="site-lib/styles/main-styles.css"></noscript><style>body{--line-width:40em;--line-width-adaptive:40em;--file-line-width:40em;--sidebar-width:min(20em, 80vw);--collapse-arrow-size:11px;--tree-vertical-spacing:1.3em;--sidebar-margin:12px}:root{background-color:#202124}.sidebar{height:100%;font-size:14px;z-index:10;min-width:calc(var(--sidebar-width) + var(--divider-width-hover));max-width:calc(var(--sidebar-width) + var(--divider-width-hover));position:relative;overflow:hidden;overflow:clip;transition:min-width ease-in-out,max-width ease-in-out;transition-duration:.2s;contain:size}#left-sidebar{left:0}#right-sidebar{right:0}.sidebar.is-collapsed{min-width:0;max-width:0}.sidebar.floating{position:absolute}.sidebar .leaf-content{height:100%;min-width:calc(var(--sidebar-width) - var(--divider-width-hover));top:0;padding:var(--sidebar-margin);padding-top:4em;line-height:var(--line-height-tight);background-color:var(--background-secondary);transition:background-color,border-right,border-left,box-shadow;transition-duration:var(--color-fade-speed);transition-timing-function:ease-in-out;position:absolute;display:flex;flex-direction:column}.sidebar:not(.is-collapsed) .leaf-content{min-width:calc(max(100%,var(--sidebar-width)) - 3px);max-width:calc(max(100%,var(--sidebar-width)) - 3px)}#left-sidebar-content{left:0;border-top-right-radius:var(--radius-l);border-bottom-right-radius:var(--radius-l)}#right-sidebar-content{right:0;border-top-left-radius:var(--radius-l);border-bottom-left-radius:var(--radius-l)}.sidebar #left-sidebar-content,.sidebar #right-sidebar-content{contain:none!important;container-type:normal!important;animation:none!important}.sidebar:has(.leaf-content:empty):has(.topbar-content:empty){display:none}.sidebar-topbar{height:calc(2.3em + 2 * var(--sidebar-margin));width:var(--sidebar-width);padding:var(--sidebar-margin);z-index:1;position:fixed;display:flex;align-items:center;transition:width ease-in-out;transition-duration:inherit}.sidebar.is-collapsed .sidebar-topbar{width:calc(2.3em + var(--sidebar-margin) * 2)}.sidebar .sidebar-topbar.is-collapsed{width:0}#left-sidebar .sidebar-topbar{left:0;flex-direction:row;border-top-right-radius:var(--radius-l)}#right-sidebar .sidebar-topbar{right:0;flex-direction:row-reverse;border-top-left-radius:var(--radius-l)}#left-sidebar .topbar-content{margin-right:calc(2.3em + var(--sidebar-margin));flex-direction:row}#right-sidebar .topbar-content{margin-left:calc(2.3em + var(--sidebar-margin));flex-direction:row-reverse}.topbar-content{overflow:hidden visible;overflow:clip visible;width:100%;height:100%;display:flex;align-items:center;transition:inherit}.sidebar.is-collapsed .topbar-content{width:0;transition:inherit}.clickable-icon.sidebar-collapse-icon{background-color:transparent;color:var(--icon-color-focused);padding:2px!important;margin:0!important;height:100%!important;width:2.3em!important;margin-inline:0.14em!important;position:absolute}#left-sidebar .clickable-icon.sidebar-collapse-icon{transform:rotateY(180deg);right:var(--sidebar-margin)}#right-sidebar .clickable-icon.sidebar-collapse-icon{transform:rotateY(180deg);left:var(--sidebar-margin)}.clickable-icon.sidebar-collapse-icon svg.svg-icon{width:100%;height:100%}.feature-title{margin-left:1px;text-transform:uppercase;letter-spacing:.06em;margin-top:.75em;margin-bottom:.75em}.feature-header{display:flex;align-items:center;padding-top:0;font-size:1em;padding-left:0}body.floating-sidebars .sidebar{position:absolute}body{transition:background-color var(--color-fade-speed) ease-in-out}#navbar:not(:empty){display:flex;align-items:center;justify-content:space-between;padding:.5em 1em;width:100%}#main{display:flex;flex-direction:column;height:100%;width:100%;align-items:stretch;justify-content:center}#main-horizontal{display:flex;flex-direction:row;flex-grow:1;width:100%;align-items:stretch;justify-content:center}#center-content{flex-basis:100%;max-width:100%;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;transition:opacity .2s ease-in-out;contain:inline-size}.hide{opacity:0!important;transition:opacity .2s ease-in-out;pointer-events:none}#center-content>.obsidian-document{padding-left:2em;padding-right:1em;margin-bottom:0;width:100%;width:-webkit-fill-available;width:-moz-available;width:fill-available;transition:background-color var(--color-fade-speed) ease-in-out;border-top-right-radius:var(--window-radius,var(--radius-m));border-top-left-radius:var(--window-radius,var(--radius-m));overflow-x:hidden!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;contain:inline-size}body #center-content>.obsidian-document>.markdown-preview-sizer{padding-bottom:80vh;width:100%;max-width:var(--line-width);flex-basis:var(--line-width);transition:background-color var(--color-fade-speed) ease-in-out;contain:inline-size}#center-content>.obsidian-document>div{width:100%!important;transition:background-color var(--color-fade-speed) ease-in-out;contain:inline-size}#center-content>.obsidian-document:not([data-type=markdown]).embed{display:flex;padding:1em;height:100%;width:100%;align-items:center;justify-content:center}#center-content>.obsidian-document:not([data-type=markdown]).embed>*{max-width:100%;max-height:100%;object-fit:contain}:not(h1,h2,h3,h4,h5,h6,li):has(> :is(.math,table)){overflow-x:auto!important}#center-content>.obsidian-document:not([data-type=markdown]){overflow-x:auto;contain:content;padding:0;margin:0;height:100%}.obsidian-document[data-type=attachment]{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;width:100%}.obsidian-document[data-type=attachment]>*{outline:0;border:none;box-shadow:none}.obsidian-document[data-type=attachment] :is(img){max-width:90%;max-height:90%;object-fit:contain}.obsidian-document[data-type=attachment]>:is(audio){width:100%;max-width:min(90%,var(--line-width))}.obsidian-document[data-type=attachment]>:is(embed,iframe,video){width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}.canvas-wrapper>:is(.header,.footer){z-index:100;position:absolute;display:flex;justify-content:center;flex-direction:column;width:100%;align-items:center}.scroll-highlight{position:absolute;width:100%;height:100%;pointer-events:none;z-index:1000;background-color:hsla(var(--color-accent-hsl),.25);opacity:0;padding:1em;inset:50%;translate:-50% -50%;border-radius:var(--radius-s)}</style><script defer="">async function loadIncludes(){let e=document.querySelectorAll("link[itemprop='include']");for(const t of e){let e=t.getAttribute("href");try{let o="";if(e.startsWith("https:")||e.startsWith("http:")||"file:"!=window.location.protocol){const n=await fetch(e);if(!n.ok){console.log("Could not include file: "+e),t?.remove();continue}o=await n.text()}else{const t=document.getElementById(btoa(encodeURI(e)));if(t){const e=JSON.parse(decodeURI(atob(t.getAttribute("value")??"")));o=e?.data??""}}let n=document.createRange().createContextualFragment(o);t.before(n),t.remove(),console.log("Included text: "+o),console.log("Included file: "+e)}catch(o){t?.remove(),console.log("Could not include file: "+e,o);continue}}}document.addEventListener("DOMContentLoaded",(()=>{loadIncludes()}));let isFileProtocol="file:"==location.protocol;function waitLoadScripts(e,t){let o=e.map((e=>document.getElementById(e+"-script")));!function e(n){let l=o[n],c=n+1;l?(l&&"true"!=l.getAttribute("loaded")||n<o.length&&e(c),n<o.length&&l.addEventListener("load",(()=>e(c)))):n<o.length?e(c):t()}(0)}</script><link rel="stylesheet" href="site.css"></head><body class="publish css-settings-manager styled-scrollbars show-inline-title show-ribbon is-focused"><script defer="">let theme=localStorage.getItem("theme")||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");"dark"==theme?(document.body.classList.add("theme-dark"),document.body.classList.remove("theme-light")):(document.body.classList.add("theme-light"),document.body.classList.remove("theme-dark")),window.innerWidth<480?document.body.classList.add("is-phone"):window.innerWidth<768?document.body.classList.add("is-tablet"):window.innerWidth<1024?document.body.classList.add("is-small-screen"):document.body.classList.add("is-large-screen")</script><div id="main"><div id="navbar"></div><div id="main-horizontal"><div id="left-content" class="leaf" style="--sidebar-width: var(--sidebar-width-left);"></div><div id="center-content" class="leaf"><div class="obsidian-document markdown-preview-view markdown-rendered node-insert-event is-readable-line-width allow-fold-headings allow-fold-lists show-indentation-guide show-properties" data-type="markdown"><style id="MJX-CHTML-styles"></style><div class="markdown-preview-sizer markdown-preview-section"><div class="header"><h1 class="page-title heading inline-title" id="Locker_-_Warmup_0">Locker - Warmup</h1><div class="data-bar"></div></div><div class="markdown-preview-pusher" style="width: 1px; height: 0.1px; margin-bottom: 0px;"></div><div class="el-p"><p dir="auto"><a href="index.html" target="_self" rel="noopener nofollow">Home</a><br>
+<a class="internal-link" data-href="Whoami - Baby.md" href="belkactf-№7/whoami/whoami-baby.html" target="_self" rel="noopener nofollow">← Previous</a> <a class="internal-link" data-href="Main" href="belkactf-№7/main.html" target="_self" rel="noopener nofollow">| BelkaCTF #7 |</a> <a class="internal-link" data-href="Sample - Tricky.md" href="belkactf-№7/sample/sample-tricky.html" target="_self" rel="noopener nofollow">Next →</a></p></div><div class="el-p"><p dir="auto"><a data-tooltip-position="top" aria-label="https://belkasoft.com/belkactf7/chall/locker" rel="noopener nofollow" class="external-link is-unresolved" href="https://belkasoft.com/belkactf7/chall/locker" target="_self">Challenge</a></p></div><div class="el-hr"><hr></div><div class="el-p"><p dir="auto"><span alt="Locker.png" src="belkactf-№7/media/locker.png" class="internal-embed media-embed image-embed is-loaded" target="_self"><img alt="Locker.png" src="belkactf-№7/media/locker.png" target="_self"></span></p></div><div class="el-hr"><hr></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="quote" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">Story</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
 <p dir="auto">—I felt it again—something off—but my feet just dragged me straight into the Chief’s office. Unlike the first task, though, I genuinely had no clue what the second one was.</p>
 <p dir="auto">The Chief didn’t even bother looking up from the pile of papers on his desk. He just grunted one word:</p>
 <p dir="auto">—Malware.</p>
@@ -16,14 +17,1890 @@
 <p dir="auto">I answered that with a big fat nothing.</p>
 </div></div></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="" data-callout="quote" class="callout"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">Task</div></div><div class="callout-content">
 <p dir="auto">There is something rogue running on this machine.<br>
-What is the malware executable file name?</p>
+<strong>What is the malware executable file name?</strong></p>
 </div></div></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="" data-callout="tip" class="callout"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-flame"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg></div><div class="callout-title-inner">Tools</div></div><div class="callout-content">
 <ul class="has-list-bullet">
 <li data-line="1" dir="auto"><span class="list-bullet"></span><a class="internal-link" data-href="Tool Setup#Volatility3" href="tool-setup.html#Volatility3" target="_self" rel="noopener nofollow">Volatility3</a></li>
 </ul>
 </div></div></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="danger" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg></div><div class="callout-title-inner">TLDR</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
-<p dir="auto"></p>
+<p dir="auto">Scan the dump with findevil, the suspiciously named .exe is the flag.</p>
 <p dir="auto"><strong>Answer:</strong></p>
 <pre><code data-line="4">epxlorer.exe
 </code><button class="copy-code-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-copy"><rect x="8" y="8" width="14" height="14" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button></pre>
-</div></div></div><div class="el-h2"><h2 data-heading="Solution" dir="auto" class="heading" id="Solution_0"><span class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></span>Solution</h2></div><div class="el-h3"><h3 data-heading="Intro" dir="auto" class="heading" id="Intro_0"><span class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></span>Intro</h3></div><div class="el-h3"><h3 data-heading="Investigation" dir="auto" class="heading" id="Investigation_0"><span class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></span>Investigation</h3></div><div class="footer"><div class="data-bar"></div></div></div></div></div><div id="right-content" class="leaf" style="--sidebar-width: var(--sidebar-width-right);"></div></div></div></body></html>
+</div></div></div><div class="el-h2"><h2 data-heading="Solution" dir="auto" class="heading" id="Solution_0"><span class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></span>Solution</h2></div><div class="el-h3"><h3 data-heading="FindEvil" dir="auto" class="heading" id="FindEvil_0"><span class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></span>FindEvil</h3></div><div class="el-p"><p dir="auto">There is an infinite amount of ways to find out what executable is the malware but the simplest way to get some leads is the MemProcFS function <code>findevil</code>. What it effectively does is it checks all the running binaries in the dump for common signs of malware. You can read about what exactly it detects and how it does that, as well as how to use it here <a data-tooltip-position="top" aria-label="https://github.com/ufrisk/MemProcFS/wiki/FS_FindEvil" rel="noopener nofollow" class="external-link is-unresolved" href="https://github.com/ufrisk/MemProcFS/wiki/FS_FindEvil" target="_self">MemProcFS/wiki/FS_FindEvil</a> . So lets see what it dredges up.</p></div><div class="el-p"><p dir="auto">First you need to enable the forensic tools. You can read more about them here <a data-tooltip-position="top" aria-label="https://github.com/ufrisk/MemProcFS/wiki/FS_Forensic" rel="noopener nofollow" class="external-link is-unresolved" href="https://github.com/ufrisk/MemProcFS/wiki/FS_Forensic" target="_self">MemProcFS/wiki/FS_Forensic</a>.</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token builtin class-name">echo</span> <span class="token string">"4"</span> <span class="token operator">&gt;</span> forensic/forensic_enable.txt
+</code><button class="copy-code-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-copy"><rect x="8" y="8" width="14" height="14" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button></pre></div><div class="el-p"><p dir="auto">We have to wait for it to finish and then we can read the output of findevil.</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/findevil/findevil.txt <span class="token operator">|</span> <span class="token function">less</span>
+</code><button class="copy-code-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-copy"><rect x="8" y="8" width="14" height="14" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button></pre></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="example" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-list"><path d="M3 5h.01"></path><path d="M3 12h.01"></path><path d="M3 19h.01"></path><path d="M8 5h13"></path><path d="M8 12h13"></path><path d="M8 19h13"></path></svg></div><div class="callout-title-inner">Full FindEvil output</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>PID</th>
+<th>Process</th>
+<th>Type</th>
+<th>Address</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0000</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>HIGH_ENTROPY</td>
+<td>0000000016620000</td>
+<td>Entropy:[7.83] p-rw--</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>HIGH_ENTROPY</td>
+<td>00000000170e0000</td>
+<td>Entropy:[7.86] p-rw--</td>
+</tr>
+<tr>
+<td>0002</td>
+<td>7984</td>
+<td>msedge.exe</td>
+<td>HIGH_ENTROPY</td>
+<td>00007ffbc3550000</td>
+<td>Entropy:[7.52] Image ---wxc</td>
+</tr>
+<tr>
+<td>0003</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>HIGH_ENTROPY</td>
+<td>0000000000ca0000</td>
+<td>Entropy:[7.99] Image ---wxc</td>
+</tr>
+<tr>
+<td>0004</td>
+<td>4</td>
+<td>System</td>
+<td>DRIVER_PATH</td>
+<td>ffffe68922a1fda0</td>
+<td>Driver:[vmrawdsk] Module:[vmrawdsk.sys]</td>
+</tr>
+<tr>
+<td>0005</td>
+<td>4</td>
+<td>System</td>
+<td>DRIVER_PATH</td>
+<td>ffffe68922bf0e30</td>
+<td>Driver:[DXGKrnl] Module:[dxgkrnl.sys]</td>
+</tr>
+<tr>
+<td>0006</td>
+<td>4</td>
+<td>System</td>
+<td>DRIVER_PATH</td>
+<td>ffffe68924c2cd70</td>
+<td>Driver:[ws2ifsl] Module:[ws2ifsl.sys]</td>
+</tr>
+<tr>
+<td>0007</td>
+<td>4</td>
+<td>System</td>
+<td>DRIVER_PATH</td>
+<td>ffffe68924c33da0</td>
+<td>Driver:[vwififlt] Module:[vwififlt.sys]</td>
+</tr>
+<tr>
+<td>0008</td>
+<td>464</td>
+<td>wlcomm.exe</td>
+<td>THREAD</td>
+<td>0000000000a11d10</td>
+<td>TID:2564 PRIVATE_MEMORY</td>
+</tr>
+<tr>
+<td>0009</td>
+<td>5116</td>
+<td>explorer.exe</td>
+<td>THREAD</td>
+<td>00007ffbdcabd110</td>
+<td>TID:7340 SYSTEM_IMPERSONATION</td>
+</tr>
+<tr>
+<td>000a</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>THREAD</td>
+<td>0000000000b919bb</td>
+<td>TID:7272 PRIVATE_MEMORY</td>
+</tr>
+<tr>
+<td>000b</td>
+<td>464</td>
+<td>wlcomm.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006eea1000</td>
+<td>00013c4fe000 060000013c4fe005 A r-x ffffe68929947d60 00005dd9d000 000000005dd9d860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>000c</td>
+<td>464</td>
+<td>wlcomm.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000070e51000</td>
+<td>00013c4f6000 060000013c4f6005 A r-x ffffe6892995a640 000061fcb000 0000000061fcb860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>000d</td>
+<td>464</td>
+<td>wlcomm.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000720a1000</td>
+<td>000067012000 0500000067012005 A r-x ffffe6892a204560 000062a46000 0000000062a46860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>000e</td>
+<td>464</td>
+<td>wlcomm.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000074231000</td>
+<td>00013c4a0000 060000013c4a0005 A r-x ffffe6892a202620 000060003000 0000000060003860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>000f</td>
+<td>464</td>
+<td>wlcomm.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000771ed000</td>
+<td>00013c43e000 060000013c43e005 A r-x ffffe6892a567980 00012e186000 000000012e186860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>4640</td>
+<td>MicrosoftEdgeU</td>
+<td>PE_PATCHED</td>
+<td>00000000771ed000</td>
+<td>000132b57000 0100000132b57005 A r-x ffffe689245dfed0 00012e186000 000000012e186860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0011</td>
+<td>5800</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>000022264000 0100000022264025 A r-x ffffe68929d0e920 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0012</td>
+<td>6904</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>0000af345000 01000000af345025 A r-x ffffe68927a10930 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0013</td>
+<td>6904</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0f000</td>
+<td>0000aab46000 04000000aab46005 A r-x ffffe68927a10930 00000f41f000 0a0000000f41f121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0014</td>
+<td>7288</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>00000adff000 010000000adff025 A r-x ffffe68929d07760 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0015</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000000b91000</td>
+<td>00005f0f3000 010000005f0f3025 A r-x ffffe6892a8bc420 00005dfb5000 000000005dfb5860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0016</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006a0d1000</td>
+<td>00011cb78000 010000011cb78025 A r-x ffffe68929d187e0 0000660c8000 00000000660c8860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0017</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006a181000</td>
+<td>000067b5b000 0100000067b5b025 A r-x ffffe68929938ea0 00006742f000 000000006742f860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0018</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006b755000</td>
+<td>000067a1b000 0100000067a1b867 A rwx ffffe6892a56b4e0 000067b19000 0000000067b198e0 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0019</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006b757000</td>
+<td>00006981d000 010000006981d805 A r-x ffffe6892a56b4e0 000067b17000 0000000067b178e0 T Image ---wxc</td>
+</tr>
+<tr>
+<td>001a</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006b769000</td>
+<td>00006466a000 010000006466a805 A r-x ffffe6892a56b4e0 000063960000 00000000639608e0 T Image ---wxc</td>
+</tr>
+<tr>
+<td>001b</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006c0eb000</td>
+<td>0000649ab000 01000000649ab867 A rwx ffffe68929d26340 0000648a3000 00000000648a38e0 T Image ---wxc</td>
+</tr>
+<tr>
+<td>001c</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006cb51000</td>
+<td>0000685c9000 01000000685c9025 A r-x ffffe68929d24040 00005dfc1000 000000005dfc1860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>001d</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006cb52000</td>
+<td>00006053a000 010000006053a867 A rwx ffffe68929d24040 00005dfc8000 000000005dfc8860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>001e</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006cb53000</td>
+<td>00006401f000 010000006401f867 A rwx ffffe68929d24040 0000685c7000 00000000685c7860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>001f</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006dcd1000</td>
+<td>000041be1000 0500000041be1005 A r-x ffffe6892a56c340 0000b28d9000 00000000b28d9860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0020</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>000000006eea1000</td>
+<td>00013c4fe000 060000013c4fe005 A r-x ffffe6892723f170 00005dd9d000 000000005dd9d860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0021</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000070db1000</td>
+<td>0000b8c36000 01000000b8c36025 A r-x ffffe6892a8ca160 000061ed0000 0000000061ed0860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0022</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000070e51000</td>
+<td>00013c4f6000 060000013c4f6005 A r-x ffffe6892a563420 000061fcb000 0000000061fcb860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0023</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000071aa1000</td>
+<td>000050e79000 0100000050e79005 A r-x ffffe6892a8c7a00 000060645000 0000000060645860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0024</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000072071000</td>
+<td>00005dc2d000 010000005dc2d025 A r-x ffffe6892a8c7460 00005e308000 000000005e308860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0025</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000720a1000</td>
+<td>00005dd16000 060000005dd16005 A r-x ffffe6892a8c7780 000062a46000 0000000062a46860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0026</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000723f1000</td>
+<td>00005f600000 010000005f600005 A r-x ffffe6892a8c6920 00005bb75000 000000005bb75860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0027</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000072591000</td>
+<td>000061fe7000 0100000061fe7025 A r-x ffffe6892a8c6560 00005e23b000 000000005e23b860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0028</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000738a1000</td>
+<td>000061fde000 0100000061fde005 A r-x ffffe6892a8c4da0 000017e56000 0000000017e56860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0029</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073b51000</td>
+<td>0000ad600000 01000000ad600025 A r-x ffffe6892a8c5340 00005d24f000 000000005d24f860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>002a</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073dd1000</td>
+<td>000102fdb000 0100000102fdb025 A r-x ffffe6892a8c4d00 000060c9d000 0000000060c9d860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>002b</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073df1000</td>
+<td>0000317d9000 01000000317d9025 A r-x ffffe6892a8c5020 00005fe18000 000000005fe18860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>002c</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073e91000</td>
+<td>00005f0f6000 010000005f0f6025 A r-x ffffe6892a8c4a80 00005feb1000 000000005feb1860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>002d</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073ed1000</td>
+<td>000061ff5000 0100000061ff5025 A r-x ffffe6892a8c4c60 0000321df000 00000000321df860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>002e</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073f91000</td>
+<td>00005a6cc000 010000005a6cc025 A r-x ffffe6892a8c4bc0 00005e3f7000 000000005e3f7860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>002f</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000073f92000</td>
+<td>00005a6cd000 010000005a6cd025 A r-x ffffe6892a8c4bc0 00005e3f6000 000000005e3f6860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0030</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000074231000</td>
+<td>00013c4a0000 010000013c4a0025 A r-x ffffe6892a8c4940 000060003000 0000000060003860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0031</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000074241000</td>
+<td>000094e57000 0100000094e57025 A r-x ffffe6892a8c3900 00005fe9e000 000000005fe9e860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0032</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000074261000</td>
+<td>00011634a000 010000011634a025 A r-x ffffe6892a8c3360 00005d74d000 000000005d74d860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0033</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000771ed000</td>
+<td>00013c43e000 020000013c43e005 A r-x ffffe6892a8c3ae0 00012e186000 000000012e186860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0034</td>
+<td>7984</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbb49ac000</td>
+<td>00000623a000 010000000623a025 A r-x ffffe68927e47120 000006239000 0000000006239820 T Image ---wxc</td>
+</tr>
+<tr>
+<td>0035</td>
+<td>7984</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>0000b123b000 01000000b123b025 A r-x ffffe68929286920 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0036</td>
+<td>8284</td>
+<td>ATC_RADAR.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>0000402b4000 06000000402b4025 A r-x ffffe6892994dd00 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0037</td>
+<td>8284</td>
+<td>ATC_RADAR.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0f000</td>
+<td>000017db3000 0600000017db3025 A r-x ffffe6892994dd00 00000f41f000 0a0000000f41f121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0038</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>000035293000 0100000035293025 A r-x ffffe6892a20e740 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>0039</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0f000</td>
+<td>000099794000 0200000099794005 A r-x ffffe6892a20e740 00000f41f000 0a0000000f41f121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>003a</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PE_PATCHED</td>
+<td>0000000068d60000</td>
+<td>000019c28000 0100000019c28867 A rwx ffffe6892c228780 000071552000 0000000071552860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>003b</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PE_PATCHED</td>
+<td>00000000771ed000</td>
+<td>00013c43e000 010000013c43e005 A r-x ffffe6892c2281e0 00012e186000 000000012e186860 T Image ---wxc</td>
+</tr>
+<tr>
+<td>003c</td>
+<td>11124</td>
+<td>msedge.exe</td>
+<td>PE_PATCHED</td>
+<td>00007ffbdcb0d000</td>
+<td>000085e5d000 0100000085e5d025 A r-x ffffe6892a8df880 00000f419000 0a0000000f419121 A Image ---wxc</td>
+</tr>
+<tr>
+<td>003d</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba1c4000</td>
+<td>00011d116000 000000011d116867 A rwx ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>003e</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba1c5000</td>
+<td>00004ca89000 000000004ca89867 A rwx ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>003f</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba1c6000</td>
+<td>00005ebf8000 000000005ebf8867 A rwx ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0040</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba1c7000</td>
+<td>00006fa08000 000000006fa08867 A rwx ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0041</td>
+<td>6892</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba244000</td>
+<td>00012807d000 000000012807d867 A rwx ffffe6892ad7b2d0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0042</td>
+<td>6892</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba245000</td>
+<td>000120580000 0000000120580867 A rwx ffffe6892ad7b2d0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0043</td>
+<td>6892</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba246000</td>
+<td>00004d289000 000000004d289867 A rwx ffffe6892ad7b2d0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0044</td>
+<td>6892</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ff7ba247000</td>
+<td>00005a48c000 000000005a48c867 A rwx ffffe6892ad7b2d0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0045</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000001090000</td>
+<td>0000608b5000 00000000608b58c0 T --- ffffe68927319e30 000000000000 0000000000000000 - p-rwx-</td>
+</tr>
+<tr>
+<td>0046</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000011142000</td>
+<td>0000648c1000 01000000648c1867 A rwx ffffe6892ad70790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0047</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000011161000</td>
+<td>000069f33000 0000000069f338c0 T --- ffffe6892ad708d0 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>0048</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000011162000</td>
+<td>00006b60a000 000000006b60a8c0 T --- ffffe6892ad708d0 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>0049</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000011163000</td>
+<td>00006b60d000 000000006b60d8c0 T --- ffffe6892ad708d0 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>004a</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000011164000</td>
+<td>00006b60f000 000000006b60f8c0 T --- ffffe6892ad708d0 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>004b</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000015d60000</td>
+<td>00006b621000 000000006b6218c0 T --- ffffe6892ad73580 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtLfh]</td>
+</tr>
+<tr>
+<td>004c</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000015d70000</td>
+<td>00006b622000 000000006b6228c0 T --- ffffe6892ad73530 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>004d</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000015d71000</td>
+<td>00006b624000 000000006b6248c0 T --- ffffe6892ad73530 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>004e</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000015d72000</td>
+<td>00006b623000 000000006b6238c0 T --- ffffe6892ad73530 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>004f</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000015d73000</td>
+<td>00006b687000 000000006b6878c0 T --- ffffe6892ad73530 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>0050</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000007f6d0000</td>
+<td>0000687ad000 00000000687ad8c0 T --- ffffe6892ad729f0 000000000000 0000000000000000 - p-rwx-</td>
+</tr>
+<tr>
+<td>0051</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000007f6e0000</td>
+<td>0000687ac000 00000000687ac8c0 T --- ffffe6892ad723b0 000000000000 0000000000000000 - p-rwx-</td>
+</tr>
+<tr>
+<td>0052</td>
+<td>7888</td>
+<td>smartscreen.ex</td>
+<td>PRIVATE_RWX</td>
+<td>000001f035020000</td>
+<td>0000927cf000 00000000927cf860 T --- ffffe68929c3d9b0 000000000000 0000000000000000 - p-rwx-</td>
+</tr>
+<tr>
+<td>0053</td>
+<td>7888</td>
+<td>smartscreen.ex</td>
+<td>PRIVATE_RWX</td>
+<td>000001f035470000</td>
+<td>00004fef2000 000000004fef2860 T --- ffffe68927494830 000000000000 0000000000000000 - p-rwx-</td>
+</tr>
+<tr>
+<td>0054</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ffbe0040000</td>
+<td>000041be9000 0100000041be9867 A rwx ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0055</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ffbe0041000</td>
+<td>00005286c000 010000005286c847 A rwx ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0056</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ffbe0042000</td>
+<td>00005286f000 010000005286f847 A rwx ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0057</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00007ffbe0043000</td>
+<td>000052883000 0100000052883847 A rwx ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0058</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000015d0000</td>
+<td>00012879b000 000000012879b867 A rwx ffffe689274932a0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0059</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016a3000</td>
+<td>00009f704000 010000009f704867 A rwx ffffe6892b0984b0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>005a</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016ad000</td>
+<td>000059af2000 0100000059af2867 A rwx ffffe6892b0984b0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>005b</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016bd000</td>
+<td>00007c26d000 010000007c26d867 A rwx ffffe6892b098230 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>005c</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016be000</td>
+<td>00002d677000 010000002d677867 A rwx ffffe6892b098230 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>005d</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016c6000</td>
+<td>000077b42000 0000000077b42867 A rwx ffffe6892b098500 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>005e</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016c7000</td>
+<td>0000747ef000 01000000747ef867 A rwx ffffe6892b098500 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>005f</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016ca000</td>
+<td>0000b4aee000 01000000b4aee867 A rwx ffffe6892b098500 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0060</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016cb000</td>
+<td>0000ae248000 01000000ae248867 A rwx ffffe6892b098500 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0061</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016d7000</td>
+<td>00007ec1c000 010000007ec1c867 A rwx ffffe6892b098640 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0062</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000016db000</td>
+<td>00009c418000 010000009c418867 A rwx ffffe6892b098640 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0063</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000031e0000</td>
+<td>00012b621000 010000012b621867 A rwx ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0064</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000031e4000</td>
+<td>00008a176000 010000008a176867 A rwx ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0065</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000031e9000</td>
+<td>0000add94000 01000000add94867 A rwx ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0066</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>00000000031ef000</td>
+<td>0000a43bd000 01000000a43bd867 A rwx ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0067</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000003200000</td>
+<td>0000775f6000 00000000775f68c0 T --- ffffe6892b098730 000000000000 0000000000000000 - Heap p-rwx- HEAP-04 [NtSegment]</td>
+</tr>
+<tr>
+<td>0068</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005690000</td>
+<td>000059786000 0100000059786867 A rwx ffffe6892b098be0 000000000000 0000000000000000 - Heap p-rwx- HEAP-06 [NtSegment]</td>
+</tr>
+<tr>
+<td>0069</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005691000</td>
+<td>00007deca000 000000007deca8c0 T --- ffffe6892b098be0 000000000000 0000000000000000 - Heap p-rwx- HEAP-06 [NtSegment]</td>
+</tr>
+<tr>
+<td>006a</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005692000</td>
+<td>00007dec9000 000000007dec98c0 T --- ffffe6892b098be0 000000000000 0000000000000000 - Heap p-rwx- HEAP-06 [NtSegment]</td>
+</tr>
+<tr>
+<td>006b</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005693000</td>
+<td>00007decc000 000000007decc8c0 T --- ffffe6892b098be0 000000000000 0000000000000000 - Heap p-rwx- HEAP-06 [NtSegment]</td>
+</tr>
+<tr>
+<td>006c</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005751000</td>
+<td>0000a8584000 01000000a8584867 A rwx ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>006d</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005753000</td>
+<td>000077a9f000 0100000077a9f867 A rwx ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>006e</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000575d000</td>
+<td>00007c222000 000000007c222867 A rwx ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>006f</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005950000</td>
+<td>00007c286000 010000007c286867 A rwx ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0070</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005952000</td>
+<td>0001301f8000 00000001301f8867 A rwx ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0071</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005955000</td>
+<td>000077a3b000 0000000077a3b867 A rwx ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0072</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000005958000</td>
+<td>00007fcdf000 000000007fcdf867 A rwx ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0073</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000008860000</td>
+<td>00007e232000 010000007e232867 A rwx ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0074</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000008864000</td>
+<td>000027a8c000 0000000027a8c867 A rwx ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0075</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000008865000</td>
+<td>000055cb0000 0000000055cb0867 A rwx ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0076</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000008867000</td>
+<td>00007c2e4000 000000007c2e4867 A rwx ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0077</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>0000000009b20000</td>
+<td>00007decd000 000000007decd8c0 T --- ffffe6892ad820d0 000000000000 0000000000000000 - Heap p-rwx- HEAP-06 [NtLfh]</td>
+</tr>
+<tr>
+<td>0078</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000aac0000</td>
+<td>000027ac8000 0100000027ac8867 A rwx ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0079</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000aac1000</td>
+<td>0000516ca000 01000000516ca867 A rwx ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>007a</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000aac2000</td>
+<td>00004e6a5000 010000004e6a5867 A rwx ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>007b</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000aac3000</td>
+<td>0000541d1000 01000000541d1867 A rwx ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>007c</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b6e0000</td>
+<td>0000a63ef000 06000000a63ef867 A rwx ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>007d</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b6e2000</td>
+<td>000032e13000 0100000032e13867 A rwx ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>007e</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b6e6000</td>
+<td>000080980000 0100000080980867 A rwx ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>007f</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b6e8000</td>
+<td>000091559000 0100000091559867 A rwx ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0080</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b710000</td>
+<td>000003c87000 0100000003c87867 A rwx ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0081</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b714000</td>
+<td>0000a9ef6000 01000000a9ef6867 A rwx ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0082</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b715000</td>
+<td>000070eff000 0100000070eff867 A rwx ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0083</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b716000</td>
+<td>00007e01a000 010000007e01a867 A rwx ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0084</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b760000</td>
+<td>000138729000 0100000138729867 A rwx ffffe6892b07e6a0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0085</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b780000</td>
+<td>00005d65f000 010000005d65f867 A rwx ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0086</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b787000</td>
+<td>00007de0a000 010000007de0a867 A rwx ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0087</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b788000</td>
+<td>000031724000 0100000031724867 A rwx ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0088</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b789000</td>
+<td>0000ade6e000 01000000ade6e867 A rwx ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0089</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b7d3000</td>
+<td>0000b3f8e000 00000000b3f8e867 A rwx ffffe6892ad7f290 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>008a</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b7dd000</td>
+<td>000124cdf000 0000000124cdf867 A rwx ffffe6892ad7f290 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>008b</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b83b000</td>
+<td>000136abc000 0100000136abc867 A rwx ffffe6892b099f90 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>008c</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b83c000</td>
+<td>000138721000 0100000138721867 A rwx ffffe6892b099f90 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>008d</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b8e0000</td>
+<td>000104209000 0000000104209867 A rwx ffffe6892ad85fa0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>008e</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b8e1000</td>
+<td>00003164b000 010000003164b867 A rwx ffffe6892ad85fa0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>008f</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b8e4000</td>
+<td>0000a7807000 01000000a7807867 A rwx ffffe6892ad85fa0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0090</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RWX</td>
+<td>000000000b8e5000</td>
+<td>0000a31fa000 00000000a31fa867 A rwx ffffe6892ad85fa0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0091</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ff7ba180000</td>
+<td>000121f18000 0000000121f18025 A r-x ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0092</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ff7ba1d8000</td>
+<td>0000288f6000 01000000288f6805 A r-x ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0093</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ff7ba1d9000</td>
+<td>0001225f7000 01000001225f7805 A r-x ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0094</td>
+<td>2996</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ff7ba1da000</td>
+<td>00012b9f8000 010000012b9f8805 A r-x ffffe6892c2b2270 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0095</td>
+<td>5800</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>000001e1ffedc000</td>
+<td>000022263000 0200000022263005 A r-x ffffe68929c45fc0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0096</td>
+<td>6892</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ff7ba180000</td>
+<td>000044c42000 0000000044c42025 A r-x ffffe6892ad7b2d0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0097</td>
+<td>6904</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>000001560c1b2000</td>
+<td>000052c44000 0500000052c44005 A r-x ffffe6892ad76f00 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>0098</td>
+<td>6904</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbdc740000</td>
+<td>000129377000 0200000129377005 A r-x ffffe6892ad83930 000000000000 0000000000000000 - p-rw--</td>
+</tr>
+<tr>
+<td>0099</td>
+<td>6904</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbe0000000</td>
+<td>000057378000 0400000057378005 A r-x ffffe6892ad851e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>009a</td>
+<td>7288</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>000002289954e000</td>
+<td>000023dfe000 0100000023dfe005 A r-x ffffe68929c434a0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>009b</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011132000</td>
+<td>000066116000 0100000066116805 A r-x ffffe6892ad706f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>009c</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011133000</td>
+<td>000068830000 00000000688308c0 T --- ffffe6892ad706f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>009d</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000001113a000</td>
+<td>000066115000 00000000661158c0 T --- ffffe6892ad706f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>009e</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000001113b000</td>
+<td>000064712000 00000000647128c0 T --- ffffe6892ad706f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>009f</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011140000</td>
+<td>00006602d000 000000006602d880 T --- ffffe6892ad70790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a0</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011143000</td>
+<td>00006912e000 000000006912e8c0 T --- ffffe6892ad70790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a1</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011144000</td>
+<td>00006913f000 000000006913f8c0 T --- ffffe6892ad70790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a2</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011145000</td>
+<td>000069045000 00000000690458c0 T --- ffffe6892ad70790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a3</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000011160000</td>
+<td>0000660ba000 01000000660ba805 A r-x ffffe6892ad708d0 000000000000 0000000000000000 - Heap p-rwx- HEAP-10 [NtSegment]</td>
+</tr>
+<tr>
+<td>00a4</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000114d0000</td>
+<td>000067543000 00000000675438c0 T --- ffffe6892ad71c30 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a5</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000114d1000</td>
+<td>000067544000 00000000675448c0 T --- ffffe6892ad71c30 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a6</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000114d2000</td>
+<td>0000623a2000 00000000623a28c0 T --- ffffe6892ad71c30 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a7</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000114d3000</td>
+<td>0000264b8000 00000000264b88c0 T --- ffffe6892ad71c30 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a8</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000014ac0000</td>
+<td>000068923000 00000000689238c0 T --- ffffe6892ad72900 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00a9</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000014ac1000</td>
+<td>00006b271000 000000006b2718c0 T --- ffffe6892ad72900 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00aa</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000014ac2000</td>
+<td>00006ba4d000 000000006ba4d8c0 T --- ffffe6892ad72900 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ab</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000014ac3000</td>
+<td>00006ab52000 000000006ab528c0 T --- ffffe6892ad72900 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ac</td>
+<td>7840</td>
+<td>wlmail.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000007f730000</td>
+<td>0000677ee000 01000000677ee005 A r-x ffffe6892ad6f4d0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ad</td>
+<td>8284</td>
+<td>ATC_RADAR.exe</td>
+<td>PRIVATE_RX</td>
+<td>000002084b316000</td>
+<td>00009a9b2000 010000009a9b2025 A r-x ffffe6892c2a9580 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ae</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000024d5f934000</td>
+<td>000038892000 0100000038892025 A r-x ffffe6892a1ab850 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00af</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbdc740000</td>
+<td>000038dc8000 0200000038dc8005 A r-x ffffe6892a1a97d0 000000000000 0000000000000000 - p-rw--</td>
+</tr>
+<tr>
+<td>00b0</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbe0000000</td>
+<td>00003a262000 000000003a262860 T --- ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b1</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbe0080000</td>
+<td>000048c67000 0200000048c67805 A r-x ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b2</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbe0081000</td>
+<td>000125b80000 0200000125b80805 A r-x ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b3</td>
+<td>9064</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbe0082000</td>
+<td>00004ee26000 020000004ee26805 A r-x ffffe6892a1ac250 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b4</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000016b7000</td>
+<td>0001243da000 00000001243da880 T --- ffffe6892b098230 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b5</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000016b8000</td>
+<td>0000a08f1000 00000000a08f1880 T --- ffffe6892b098230 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b6</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000016b9000</td>
+<td>0001339f7000 00000001339f7880 T --- ffffe6892b098230 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b7</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000016d5000</td>
+<td>000007f16000 0100000007f16805 A r-x ffffe6892b098640 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b8</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000031e1000</td>
+<td>000013c14000 0000000013c14825 A r-x ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00b9</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000031e2000</td>
+<td>0000b16b5000 00000000b16b5825 A r-x ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ba</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000031e3000</td>
+<td>0000b4062000 00000000b4062825 A r-x ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00bb</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000000031e5000</td>
+<td>000043da0000 0000000043da0825 A r-x ffffe6892b099180 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00bc</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005750000</td>
+<td>0000764fc000 01000000764fc825 A r-x ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00bd</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005752000</td>
+<td>00007c26f000 000000007c26f825 A r-x ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00be</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005754000</td>
+<td>00007c3ef000 010000007c3ef825 A r-x ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00bf</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005755000</td>
+<td>00007e8fa000 000000007e8fa825 A r-x ffffe68927a66650 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c0</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005951000</td>
+<td>00007c2ce000 000000007c2ce825 A r-x ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c1</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005953000</td>
+<td>00007c20c000 000000007c20c825 A r-x ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c2</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005954000</td>
+<td>00007c228000 000000007c228825 A r-x ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c3</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000005956000</td>
+<td>000128d66000 0000000128d668c0 T --- ffffe68927499740 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c4</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000008861000</td>
+<td>00007e2af000 000000007e2af825 A r-x ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c5</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000008862000</td>
+<td>00004a5f7000 000000004a5f7825 A r-x ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c6</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000008863000</td>
+<td>00007e759000 000000007e759825 A r-x ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c7</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>0000000008866000</td>
+<td>00007c3d1000 000000007c3d1825 A r-x ffffe6892ad7f790 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c8</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000aaca000</td>
+<td>000075de8000 0000000075de88c0 T --- ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00c9</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000aacb000</td>
+<td>000127af0000 0000000127af0825 A r-x ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ca</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000aacc000</td>
+<td>000031124000 00000000311248c0 T --- ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00cb</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000aacd000</td>
+<td>000138746000 00000001387468c0 T --- ffffe6892b099950 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00cc</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b6e1000</td>
+<td>00007bd07000 000000007bd078c0 T --- ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00cd</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b6e3000</td>
+<td>00003b931000 000000003b9318c0 T --- ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00ce</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b6e4000</td>
+<td>00006bd59000 000000006bd59825 A r-x ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00cf</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b6e5000</td>
+<td>000085b68000 0000000085b68825 A r-x ffffe6892ad829e0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d0</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b711000</td>
+<td>0001386a9000 00000001386a98c0 T --- ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d1</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b712000</td>
+<td>0000ad5bb000 00000000ad5bb8c0 T --- ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d2</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b713000</td>
+<td>00007b7db000 000000007b7db8c0 T --- ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d3</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b71c000</td>
+<td>00006ef34000 000000006ef34825 A r-x ffffe6892ad84830 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d4</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b781000</td>
+<td>0000a8b95000 00000000a8b958c0 T --- ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d5</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b782000</td>
+<td>0000aed9d000 00000000aed9d8c0 T --- ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d6</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b783000</td>
+<td>000018faa000 0000000018faa825 A r-x ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d7</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b784000</td>
+<td>00005dec3000 000000005dec3825 A r-x ffffe6892ad850f0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d8</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b7d0000</td>
+<td>000063a17000 0000000063a17825 A r-x ffffe6892ad7f290 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00d9</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b7d1000</td>
+<td>000070c37000 0000000070c378c0 T --- ffffe6892ad7f290 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00da</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b7d2000</td>
+<td>000006d6e000 0000000006d6e8c0 T --- ffffe6892ad7f290 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00db</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b7d4000</td>
+<td>00008d7a9000 000000008d7a9825 A r-x ffffe6892ad7f290 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00dc</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b830000</td>
+<td>0000a7f6c000 00000000a7f6c825 A r-x ffffe6892b099f90 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00dd</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b831000</td>
+<td>0000673ad000 00000000673ad8c0 T --- ffffe6892b099f90 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00de</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b832000</td>
+<td>0000b2dd5000 00000000b2dd58c0 T --- ffffe6892b099f90 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00df</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b833000</td>
+<td>0000b8df6000 00000000b8df68c0 T --- ffffe6892b099f90 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e0</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b840000</td>
+<td>00005268b000 000000005268b880 T --- ffffe6892b099cc0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e1</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b841000</td>
+<td>000128c92000 0000000128c92880 T --- ffffe6892b099cc0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e2</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b842000</td>
+<td>0000288a1000 00000000288a1880 T --- ffffe6892b099cc0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e3</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b843000</td>
+<td>0000730b5000 00000000730b5880 T --- ffffe6892b099cc0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e4</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b8e2000</td>
+<td>000071c62000 0000000071c62825 A r-x ffffe6892ad85fa0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e5</td>
+<td>9920</td>
+<td>epxlorer.exe</td>
+<td>PRIVATE_RX</td>
+<td>000000000b8e3000</td>
+<td>00006aac9000 000000006aac9825 A r-x ffffe6892ad85fa0 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e6</td>
+<td>11124</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00000232ac01e000</td>
+<td>00005605c000 010000005605c005 A r-x ffffe6892b07b900 000000000000 0000000000000000 - p-----</td>
+</tr>
+<tr>
+<td>00e7</td>
+<td>11124</td>
+<td>msedge.exe</td>
+<td>PRIVATE_RX</td>
+<td>00007ffbdc740000</td>
+<td>000125193000 0100000125193025 A r-x ffffe6892b07b220 000000000000 0000000000000000 - p-rw--</td>
+</tr>
+</tbody>
+</table>
+</div></div></div><div class="el-p"><p dir="auto">It is small enough that we can look through it manually and there are obviously some false positives. However <code>epxlorer.exe</code> definitely seems like the most suspicious. The name itself is a common malware trick, naming the binary something close to a program that is safe, in this example <code>explorer.exe</code>.</p></div><div class="el-p"><p dir="auto">Effectively that is enough to solve the task because this is a CTF after all and we have infinite attempts to guess the answer. And <code>epxlorer.exe</code> is the flag. I will however dig further into it to prove as well as I can that this is malware</p></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="" data-callout="note" class="callout"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></div><div class="callout-title-inner">Answer</div></div><div class="callout-content">
+<pre><code data-line="1">epxlorer.exe
+</code><button class="copy-code-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-copy"><rect x="8" y="8" width="14" height="14" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg></button></pre>
+</div></div></div><div class="el-h3"><h3 data-heading="Proof" dir="auto" class="heading" id="Proof_0"><span class="heading-collapse-indicator collapse-indicator collapse-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon right-triangle"><path d="M3 8L12 17L21 8"></path></svg></span>Proof</h3></div><div class="footer"><div class="data-bar"></div></div></div></div></div><div id="right-content" class="leaf" style="--sidebar-width: var(--sidebar-width-right);"></div></div></div></body></html>

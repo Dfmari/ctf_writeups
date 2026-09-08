@@ -310,6 +310,103 @@ def deintercept_attachment_links(text: str) -> str:
     return anchor_re.sub(fix_anchor, text)
 
 
+
+def normalize_home_links(text: str) -> str:
+    """
+    Obsidian may resolve [Home](index.html) to the real repository file inside
+    the vault, exporting it as git/ctf_writeups/index.html. That Git directory
+    is intentionally excluded from the published site.
+
+    Rewrite those anchors to the publish-root index.html and remove Obsidian's
+    internal-link routing so webpage.js cannot reject the handwritten landing
+    page for being absent from exporter metadata.
+    """
+    anchor_re = re.compile(
+        r'<a\b(?P<attrs>[^>]*)>(?P<body>.*?)</a>',
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
+    def fix_anchor(match: re.Match) -> str:
+        attrs = match.group("attrs")
+        body = match.group("body")
+
+        # Important: do not accidentally match data-href here.
+        href_match = re.search(
+            r'(?<!data-)\bhref=["\'](?P<href>[^"\']+)["\']',
+            attrs,
+            flags=re.IGNORECASE,
+        )
+        if not href_match:
+            return match.group(0)
+
+        href = urllib.parse.unquote(href_match.group("href")).replace("\\", "/")
+        href_clean = href.split("#", 1)[0].split("?", 1)[0].lstrip("./").lower()
+
+        if href_clean not in {
+            "index.html",
+            "git/ctf_writeups/index.html",
+        }:
+            return match.group(0)
+
+        attrs = re.sub(
+            r'(?<!data-)\bhref=["\'][^"\']+["\']',
+            'href="index.html"',
+            attrs,
+            count=1,
+            flags=re.IGNORECASE,
+        )
+
+        attrs = re.sub(
+            r'\s+data-href=["\'][^"\']*["\']',
+            "",
+            attrs,
+            flags=re.IGNORECASE,
+        )
+
+        class_match = re.search(
+            r'\s+class=["\'](?P<classes>[^"\']*)["\']',
+            attrs,
+            flags=re.IGNORECASE,
+        )
+        if class_match:
+            classes = [
+                c for c in class_match.group("classes").split()
+                if c.lower() != "internal-link"
+            ]
+            replacement = f' class="{" ".join(classes)}"' if classes else ""
+            attrs = (
+                attrs[:class_match.start()]
+                + replacement
+                + attrs[class_match.end():]
+            )
+
+        return f"<a{attrs}>{body}</a>"
+
+    return anchor_re.sub(fix_anchor, text)
+
+
+def remove_missing_attachment_placeholders(text: str) -> str:
+    """
+    Remove Obsidian's generated placeholder for missing embeds. A missing image
+    can otherwise become src=".html", which fails publish validation.
+    """
+    text = re.sub(
+        r'<span\b(?=[^>]*\bmod-empty-attachment\b)[^>]*>.*?</span>',
+        "",
+        text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
+    text = re.sub(
+        r'<span\b(?=[^>]*\bsrc=["\']\.html["\'])[^>]*>.*?</span>',
+        "",
+        text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+
+    return text
+
+
 def clean_exported_html(repo: Path) -> None:
     for page in repo.rglob("*.html"):
         if page == repo / "index.html":
@@ -347,13 +444,11 @@ def clean_exported_html(repo: Path) -> None:
             flags=re.IGNORECASE,
         )
 
-        # Remove missing-attachment placeholders such as src=".html".
-        text = re.sub(
-            r'<span\b[^>]*class=["\'][^"\']*\bmod-empty-attachment\b[^"\']*["\'][^>]*>.*?</span>',
-            "",
-            text,
-            flags=re.IGNORECASE | re.DOTALL,
-        )
+        # Normalize Home links that Obsidian resolved into the excluded Git folder.
+        text = normalize_home_links(text)
+
+        # Remove missing-attachment placeholders such as Locker.png -> src=".html".
+        text = remove_missing_attachment_placeholders(text)
 
         # Raw archive attachments must bypass Obsidian's internal-page router.
         text = deintercept_attachment_links(text)
@@ -737,6 +832,7 @@ def main() -> None:
             f"[+] Archive attachments preserved: {len(preserved_archives)} "
             f"checked, {restored_archives} restored."
         )
+    print("[+] Home links normalized to publish-root index.html: OK")
     print("[+] Archive download links bypass Obsidian routing: OK")
     print("[+] Local href/src validation: OK")
     print("[+] No git commit or push was performed.")

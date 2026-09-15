@@ -1,60 +1,140 @@
 @font-face {
   font-family: "BigBlueTerm";
   src: url("./fonts/BigBlueTerm.ttf") format("truetype");
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "BigBlueTermPlus Nerd Font";
-  src: url("./fonts/BigBlueTerm.ttf") format("truetype");
-  font-weight: normal;
+  font-family: "Space Grotesk";
+  src: url("./fonts/space-grotesk.regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gridtile";
+  src: url("./fonts/Gridtile-web.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "BigBlueTermPlus Nerd Font Mono";
-  src: url("./fonts/BigBlueTerm.ttf") format("truetype");
-  font-weight: normal;
+  src: url("./fonts/BigBlueTermPlusNerdFontMono-Regular.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
-body {
-  --font-interface-override: "BigBlueTerm" !important;
-  --font-text-override: "BigBlueTerm" !important;
-  --font-print-override: "BigBlueTerm" !important;
-  --font-monospace-override: "BigBlueTerm" !important;
-}
+/*
+ * Obsidian Webpage Export typography.
+ *
+ * Set Obsidian's own resolved font variables directly. This avoids its
+ * heading variables prepending a generic `sans-serif` before Gridtile,
+ * which prevents the custom font from ever being selected.
+ */
+body.publish {
+  --font-text: "Space Grotesk", sans-serif !important;
+  --font-interface: "Space Grotesk", sans-serif !important;
+  --font-print: "Space Grotesk", sans-serif !important;
+  --font-monospace: "BigBlueTermPlus Nerd Font Mono", monospace !important;
 
-body,
-.markdown-preview-view,
-.markdown-rendered,
-code,
-pre,
-kbd,
-samp {
-  font-family: "BigBlueTerm", monospace !important;
-}
+  --font-text-override: "Space Grotesk" !important;
+  --font-interface-override: "Space Grotesk" !important;
+  --font-print-override: "Space Grotesk" !important;
+  --font-monospace-override: "BigBlueTermPlus Nerd Font Mono" !important;
 
-/* Obsidian Webpage Export presentation overrides */
-body {
+  --h1-font: "Gridtile" !important;
+  --h2-font: "Gridtile" !important;
+  --h3-font: "Gridtile" !important;
+  --inline-title-font: "Gridtile" !important;
+
+  font-family: "Space Grotesk", sans-serif !important;
+
+  /* Wide writeups for screenshots, tables, and terminal output. */
   --file-line-width: min(1100px, calc(100vw - 2rem)) !important;
   --line-width: min(1100px, calc(100vw - 2rem)) !important;
   --line-width-adaptive: min(1100px, calc(100vw - 2rem)) !important;
 }
 
-.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+/* Body / UI text */
+body.publish .markdown-preview-view,
+body.publish .markdown-rendered,
+body.publish .markdown-preview-sizer,
+body.publish p,
+body.publish li,
+body.publish table,
+body.publish .callout {
+  font-family: "Space Grotesk", sans-serif !important;
+}
+
+/* Display headings */
+body.publish .page-title,
+body.publish .inline-title,
+body.publish h1,
+body.publish h2,
+body.publish h3,
+body.publish .markdown-rendered h1,
+body.publish .markdown-rendered h2,
+body.publish .markdown-rendered h3,
+body.publish .markdown-preview-view h1,
+body.publish .markdown-preview-view h2,
+body.publish .markdown-preview-view h3 {
+  font-family: "Gridtile", sans-serif !important;
+  font-weight: 400 !important;
+  font-synthesis: none !important;
+}
+
+/* Keep the display headings clearly larger than the body copy. */
+body.publish .page-title,
+body.publish .inline-title,
+body.publish h1 {
+  font-size: 2.75rem !important;
+  line-height: 1.2 !important;
+}
+
+body.publish h2,
+body:not(.publish) h2 {
+  font-size: 2.25rem !important;
+  line-height: 1.25 !important;
+}
+
+body.publish h3 {
+  font-size: 1.875rem !important;
+  line-height: 1.3 !important;
+}
+
+/* Code */
+body.publish code,
+body.publish pre,
+body.publish kbd,
+body.publish samp,
+body.publish pre code,
+body.publish code[class*="language-"],
+body.publish pre[class*="language-"] {
+  font-family: "BigBlueTermPlus Nerd Font Mono", monospace !important;
+  font-weight: 400 !important;
+}
+
+body.publish pre *,
+body.publish code * {
+  font-family: inherit !important;
+}
+
+/* Obsidian Webpage Export presentation overrides */
+body.publish .markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
   max-width: min(1100px, calc(100vw - 2rem)) !important;
   width: 100% !important;
 }
 
-/* Center normal writeup images without stretching them past their source size. */
-.markdown-rendered img,
-.markdown-preview-view img,
-.markdown-preview-sizer img {
+/* Center images without stretching them past their source size. */
+body.publish .markdown-rendered img,
+body.publish .markdown-preview-view img,
+body.publish .markdown-preview-sizer img {
   display: block;
   max-width: 100%;
   height: auto;

@@ -1,0 +1,487 @@
+2026-10-15 02:11:53,096 INFO    ============================================================
+2026-10-15 02:11:53,105 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 02:11:53,116 INFO    listening on http://192.168.95.83:55309/ (bound 0.0.0.0:55309, wsl_ip=192.168.95.83)
+2026-10-15 02:12:05,895 INFO    GET /
+2026-10-15 02:12:06,050 INFO    GET /api/ping
+2026-10-15 02:12:06,053 INFO    browser JS is alive (ping received)
+2026-10-15 02:12:06,054 INFO    GET /api/state
+2026-10-15 02:12:06,189 INFO    GET /favicon.ico
+2026-10-15 02:12:13,106 INFO    POST /api/build
+2026-10-15 02:12:13,108 INFO    build 'check' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-15 02:12:13,109 INFO    build 'check' started
+2026-10-15 02:12:13,731 INFO    GET /api/status
+2026-10-15 02:12:14,333 INFO    GET /api/status
+2026-10-15 02:12:14,973 INFO    GET /api/status
+2026-10-15 02:12:15,558 INFO    GET /api/status
+2026-10-15 02:12:16,129 INFO    GET /api/status
+2026-10-15 02:12:16,364 INFO    build result: 6 page(s), changed=nothing
+2026-10-15 02:12:16,365 INFO    build 'check' finished as done after 3.3s (0 error(s))
+2026-10-15 02:12:16,730 INFO    GET /api/status
+2026-10-15 02:12:16,747 INFO    GET /api/state
+2026-10-15 02:12:37,588 INFO    POST /api/config
+2026-10-15 02:12:37,601 INFO    config saved: 2 event(s), 6 override(s)
+2026-10-15 02:12:37,619 INFO    GET /api/state
+2026-10-15 02:13:00,225 INFO    POST /api/git
+2026-10-15 02:13:00,228 INFO    git commit+push requested with message 'Publish site update 2026-10-14 23:12 Placeholder for Sample'
+2026-10-15 02:13:16,046 INFO    git commit+push succeeded
+2026-10-15 02:13:45,113 INFO    GET /
+2026-10-15 02:13:45,226 INFO    GET /api/state
+2026-10-15 02:13:45,227 INFO    GET /api/ping
+2026-10-15 02:13:45,230 INFO    browser JS is alive (ping received)
+2026-10-15 02:14:03,716 INFO    POST /api/build
+2026-10-15 02:14:03,720 INFO    build 'publish' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=False
+2026-10-15 02:14:03,721 INFO    build 'publish' started
+2026-10-15 02:14:04,342 INFO    GET /api/status
+2026-10-15 02:14:04,942 INFO    GET /api/status
+2026-10-15 02:14:05,543 INFO    GET /api/status
+2026-10-15 02:14:06,142 INFO    GET /api/status
+2026-10-15 02:14:06,754 INFO    GET /api/status
+2026-10-15 02:14:07,342 INFO    GET /api/status
+2026-10-15 02:14:07,943 INFO    GET /api/status
+2026-10-15 02:14:08,212 INFO    build result: 6 page(s), changed=['belkactf-№7', 'site-lib', 'srdnlenctf', 'tool-setup.html', 'index.html']
+2026-10-15 02:14:08,219 INFO    build 'publish' finished as done after 4.5s (0 error(s))
+2026-10-15 02:14:08,545 INFO    GET /api/status
+2026-10-15 02:14:08,610 INFO    GET /api/state
+2026-10-15 02:14:39,457 INFO    POST /api/git
+2026-10-15 02:14:39,459 INFO    git commit+push requested with message 'Publish site update 2026-10-14 23:13 '
+2026-10-15 02:14:53,233 INFO    git commit+push succeeded
+2026-10-15 02:14:53,255 INFO    GET /api/state
+2026-10-15 02:29:46,162 INFO    GUI session end
+2026-10-15 21:23:31,812 INFO    ============================================================
+2026-10-15 21:23:31,841 INFO    GUI session start | python 3.13.12 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 21:23:31,861 INFO    listening on http://192.168.95.83:56717/ (bound 0.0.0.0:56717, wsl_ip=192.168.95.83)
+2026-10-15 21:23:37,648 INFO    GET /
+2026-10-15 21:23:39,328 INFO    GET /api/state
+2026-10-15 21:23:39,332 INFO    GET /api/ping
+2026-10-15 21:23:39,336 INFO    browser JS is alive (ping received)
+2026-10-15 21:23:39,364 INFO    GET /favicon.ico
+2026-10-15 21:23:48,319 INFO    POST /api/export
+2026-10-15 21:23:48,333 INFO    export probe ok: '/mnt/c/Users/dfmari/Documents/Writeups/Export' -> /mnt/c/Users/dfmari/Documents/Writeups/Export
+2026-10-15 21:23:48,414 INFO    GET /api/state
+2026-10-15 21:23:51,804 INFO    POST /api/build
+2026-10-15 21:23:51,807 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-15 21:23:51,809 INFO    build 'preview' started
+2026-10-15 21:23:52,448 INFO    GET /api/status
+2026-10-15 21:23:54,090 INFO    GET /api/status
+2026-10-15 21:23:54,639 INFO    GET /api/status
+2026-10-15 21:23:55,280 INFO    GET /api/status
+2026-10-15 21:23:55,826 INFO    GET /api/status
+2026-10-15 21:23:56,273 INFO    build result: 6 page(s), changed=nothing
+2026-10-15 21:23:56,275 INFO    build 'preview' finished as done after 4.5s (0 error(s))
+2026-10-15 21:23:56,437 INFO    GET /api/status
+2026-10-15 21:23:56,496 INFO    GET /api/state
+2026-10-15 21:24:49,742 INFO    GUI session end
+2026-10-15 21:25:33,640 INFO    ============================================================
+2026-10-15 21:25:33,657 INFO    GUI session start | python 3.13.12 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 21:25:33,674 INFO    listening on http://192.168.95.83:48269/ (bound 0.0.0.0:48269, wsl_ip=192.168.95.83)
+2026-10-15 21:25:36,081 INFO    GET /
+2026-10-15 21:25:36,287 INFO    GET /api/ping
+2026-10-15 21:25:36,290 INFO    GET /api/state
+2026-10-15 21:25:36,291 INFO    browser JS is alive (ping received)
+2026-10-15 21:25:36,489 INFO    GET /favicon.ico
+2026-10-15 21:25:39,680 INFO    POST /api/build
+2026-10-15 21:25:39,683 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-15 21:25:39,685 INFO    build 'preview' started
+2026-10-15 21:25:40,316 INFO    GET /api/status
+2026-10-15 21:25:41,895 INFO    GET /api/status
+2026-10-15 21:25:42,245 INFO    GET /api/status
+2026-10-15 21:25:42,865 INFO    GET /api/status
+2026-10-15 21:25:43,476 INFO    GET /api/status
+2026-10-15 21:25:43,779 INFO    build result: 6 page(s), changed=nothing
+2026-10-15 21:25:43,781 INFO    build 'preview' finished as done after 4.1s (0 error(s))
+2026-10-15 21:25:44,063 INFO    GET /api/status
+2026-10-15 21:25:44,100 INFO    GET /api/state
+2026-10-15 21:28:31,852 INFO    POST /api/config
+2026-10-15 21:28:31,871 INFO    config saved: 2 event(s), 6 override(s)
+2026-10-15 21:28:31,956 INFO    GET /api/state
+2026-10-15 21:28:57,469 INFO    POST /api/git
+2026-10-15 21:28:57,472 INFO    git commit+push requested with message 'Publish site update 2026-10-15 18:25 "Locker Clarification"'
+2026-10-15 21:28:58,768 INFO    git commit+push FAILED
+2026-10-15 21:28:58,796 INFO    GET /api/state
+2026-10-15 21:58:07,176 INFO    POST /api/git
+2026-10-15 21:58:07,214 INFO    git commit+push requested with message 'Publish site update 2026-10-15 18:25 "Locker Clarification"'
+2026-10-15 21:58:07,940 INFO    git commit+push FAILED
+2026-10-15 21:58:08,027 INFO    GET /api/state
+2026-10-15 21:58:26,172 INFO    GUI session end
+2026-10-15 21:58:29,103 INFO    ============================================================
+2026-10-15 21:58:29,118 INFO    GUI session start | python 3.13.12 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 21:58:29,128 INFO    listening on http://192.168.95.83:50841/ (bound 0.0.0.0:50841, wsl_ip=192.168.95.83)
+2026-10-15 21:58:31,152 INFO    GET /
+2026-10-15 21:58:31,526 INFO    GET /api/ping
+2026-10-15 21:58:31,528 INFO    GET /api/state
+2026-10-15 21:58:31,529 INFO    browser JS is alive (ping received)
+2026-10-15 21:58:31,672 INFO    GET /favicon.ico
+2026-10-15 21:58:40,260 INFO    POST /api/build
+2026-10-15 21:58:40,262 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-15 21:58:40,265 INFO    build 'preview' started
+2026-10-15 21:58:40,896 INFO    GET /api/status
+2026-10-15 21:58:41,680 INFO    GET /api/status
+2026-10-15 21:58:42,863 INFO    GET /api/status
+2026-10-15 21:58:43,136 INFO    GET /api/status
+2026-10-15 21:58:43,741 INFO    GET /api/status
+2026-10-15 21:58:44,339 INFO    GET /api/status
+2026-10-15 21:58:44,671 INFO    build result: 6 page(s), changed=nothing
+2026-10-15 21:58:44,673 INFO    build 'preview' finished as done after 4.4s (0 error(s))
+2026-10-15 21:58:44,942 INFO    GET /api/status
+2026-10-15 21:58:44,995 INFO    GET /api/state
+2026-10-15 21:59:49,084 INFO    POST /api/git
+2026-10-15 21:59:49,087 INFO    git commit+push requested with message 'Publish site update 2026-10-15 18:58 "Locker Clarification"'
+2026-10-15 21:59:50,192 INFO    git commit+push FAILED
+2026-10-15 21:59:50,261 INFO    GET /api/state
+2026-10-15 22:00:11,856 INFO    GUI session end
+2026-10-15 22:00:35,444 INFO    ============================================================
+2026-10-15 22:00:35,459 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 22:00:35,475 INFO    listening on http://192.168.95.83:52461/ (bound 0.0.0.0:52461, wsl_ip=192.168.95.83)
+2026-10-15 22:00:38,486 INFO    GET /
+2026-10-15 22:00:38,816 INFO    GET /api/ping
+2026-10-15 22:00:38,819 INFO    browser JS is alive (ping received)
+2026-10-15 22:00:38,819 INFO    GET /api/state
+2026-10-15 22:00:39,045 INFO    GET /favicon.ico
+2026-10-15 22:00:53,729 INFO    POST /api/git
+2026-10-15 22:00:53,731 INFO    git commit+push requested with message 'Publish site update 2026-10-15 19:00 "Locker Clarification"'
+2026-10-15 22:00:58,558 INFO    git commit+push succeeded
+2026-10-15 22:00:58,607 INFO    GET /api/state
+2026-10-15 22:03:42,143 INFO    GUI session end
+2026-10-15 22:29:57,141 INFO    ============================================================
+2026-10-15 22:29:57,152 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 22:29:57,167 INFO    listening on http://192.168.95.83:47541/ (bound 0.0.0.0:47541, wsl_ip=192.168.95.83)
+2026-10-15 22:29:59,030 INFO    GET /
+2026-10-15 22:29:59,237 INFO    GET /api/state
+2026-10-15 22:29:59,239 INFO    GET /api/ping
+2026-10-15 22:29:59,240 INFO    browser JS is alive (ping received)
+2026-10-15 22:29:59,411 INFO    GET /favicon.ico
+2026-10-15 22:30:04,268 INFO    POST /api/build
+2026-10-15 22:30:04,270 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-15 22:30:04,271 INFO    build 'preview' started
+2026-10-15 22:30:04,903 INFO    GET /api/status
+2026-10-15 22:30:06,258 INFO    build result: 6 page(s), changed=nothing
+2026-10-15 22:30:06,259 INFO    build 'preview' finished as done after 2.0s (0 error(s))
+2026-10-15 22:30:06,601 INFO    GET /api/status
+2026-10-15 22:30:06,625 INFO    GET /api/state
+2026-10-15 22:30:23,722 INFO    POST /api/build
+2026-10-15 22:30:23,724 INFO    build 'publish' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=False
+2026-10-15 22:30:23,725 INFO    build 'publish' started
+2026-10-15 22:30:24,349 INFO    GET /api/status
+2026-10-15 22:30:25,006 INFO    GET /api/status
+2026-10-15 22:30:25,559 INFO    GET /api/status
+2026-10-15 22:30:26,219 INFO    GET /api/status
+2026-10-15 22:30:26,688 INFO    build result: 6 page(s), changed=['belkactf-№7', 'site-lib', 'srdnlenctf', 'tool-setup.html', 'index.html']
+2026-10-15 22:30:26,694 INFO    build 'publish' finished as done after 3.0s (0 error(s))
+2026-10-15 22:30:26,749 INFO    GET /api/status
+2026-10-15 22:30:26,775 INFO    GET /api/state
+2026-10-15 22:30:30,992 INFO    POST /api/git
+2026-10-15 22:30:30,993 INFO    git commit+push requested with message 'Publish site update 2026-10-15 19:29'
+2026-10-15 22:30:34,951 INFO    git commit+push succeeded
+2026-10-15 22:30:34,973 INFO    GET /api/state
+2026-10-15 22:30:56,202 INFO    GUI session end
+2026-10-15 22:32:01,063 INFO    ============================================================
+2026-10-15 22:32:01,069 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-15 22:32:01,077 INFO    listening on http://192.168.95.83:43123/ (bound 0.0.0.0:43123, wsl_ip=192.168.95.83)
+2026-10-15 22:32:02,706 INFO    GET /
+2026-10-15 22:32:02,898 INFO    GET /api/ping
+2026-10-15 22:32:02,900 INFO    browser JS is alive (ping received)
+2026-10-15 22:32:02,900 INFO    GET /api/state
+2026-10-15 22:32:03,022 INFO    GET /favicon.ico
+2026-10-15 22:32:08,572 INFO    POST /api/build
+2026-10-15 22:32:08,573 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-15 22:32:08,574 INFO    build 'preview' started
+2026-10-15 22:32:09,198 INFO    GET /api/status
+2026-10-15 22:32:10,397 INFO    build result: 6 page(s), changed=nothing
+2026-10-15 22:32:10,398 INFO    build 'preview' finished as done after 1.8s (0 error(s))
+2026-10-15 22:32:10,787 INFO    GET /api/status
+2026-10-15 22:32:10,907 INFO    GET /api/state
+2026-10-15 22:33:27,961 INFO    GUI session end
+2026-10-17 13:13:19,401 INFO    ============================================================
+2026-10-17 13:13:19,408 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 13:13:19,421 INFO    listening on http://192.168.95.83:49627/ (bound 0.0.0.0:49627, wsl_ip=192.168.95.83)
+2026-10-17 13:13:41,491 INFO    GET /
+2026-10-17 13:13:42,137 INFO    GET /api/ping
+2026-10-17 13:13:42,139 INFO    browser JS is alive (ping received)
+2026-10-17 13:13:42,139 INFO    GET /api/state
+2026-10-17 13:13:42,274 INFO    GET /favicon.ico
+2026-10-17 13:14:05,341 INFO    POST /api/config
+2026-10-17 13:14:05,348 INFO    config saved: 2 event(s), 6 override(s)
+2026-10-17 13:14:05,378 INFO    GET /api/state
+2026-10-17 13:18:08,749 INFO    POST /api/build
+2026-10-17 13:18:08,750 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:18:08,751 INFO    build 'preview' started
+2026-10-17 13:18:09,426 INFO    GET /api/status
+2026-10-17 13:18:10,133 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:18:10,134 INFO    build 'preview' finished as failed after 1.4s (1 error(s))
+2026-10-17 13:18:10,800 INFO    GET /api/status
+2026-10-17 13:18:10,829 INFO    GET /api/state
+2026-10-17 13:18:14,875 INFO    POST /api/build
+2026-10-17 13:18:14,876 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:18:14,877 INFO    build 'preview' started
+2026-10-17 13:18:15,496 INFO    GET /api/status
+2026-10-17 13:18:16,129 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:18:16,130 INFO    build 'preview' finished as failed after 1.3s (1 error(s))
+2026-10-17 13:18:17,048 INFO    GET /api/status
+2026-10-17 13:18:17,067 INFO    GET /api/state
+2026-10-17 13:18:27,723 INFO    POST /api/build
+2026-10-17 13:18:27,724 INFO    build 'check' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:18:27,724 INFO    build 'check' started
+2026-10-17 13:18:28,344 INFO    GET /api/status
+2026-10-17 13:18:28,955 INFO    GET /api/status
+2026-10-17 13:18:28,964 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:18:28,964 INFO    build 'check' finished as failed after 1.2s (1 error(s))
+2026-10-17 13:18:29,546 INFO    GET /api/status
+2026-10-17 13:18:29,567 INFO    GET /api/state
+2026-10-17 13:18:32,715 INFO    GUI session end
+2026-10-17 13:19:30,579 INFO    ============================================================
+2026-10-17 13:19:30,583 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 13:19:30,591 INFO    listening on http://192.168.95.83:39345/ (bound 0.0.0.0:39345, wsl_ip=192.168.95.83)
+2026-10-17 13:19:31,771 INFO    GET /
+2026-10-17 13:19:31,865 INFO    GET /api/ping
+2026-10-17 13:19:31,867 INFO    browser JS is alive (ping received)
+2026-10-17 13:19:31,866 INFO    GET /api/state
+2026-10-17 13:19:31,992 INFO    GET /favicon.ico
+2026-10-17 13:19:53,783 INFO    GUI session end
+2026-10-17 13:20:15,994 INFO    ============================================================
+2026-10-17 13:20:15,998 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 13:20:16,005 INFO    listening on http://192.168.95.83:49647/ (bound 0.0.0.0:49647, wsl_ip=192.168.95.83)
+2026-10-17 13:20:17,194 INFO    GET /
+2026-10-17 13:20:17,274 INFO    GET /api/ping
+2026-10-17 13:20:17,275 INFO    browser JS is alive (ping received)
+2026-10-17 13:20:17,286 INFO    GET /api/state
+2026-10-17 13:20:17,449 INFO    GET /favicon.ico
+2026-10-17 13:20:30,191 INFO    POST /api/build
+2026-10-17 13:20:30,192 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:20:30,193 INFO    build 'preview' started
+2026-10-17 13:20:30,815 INFO    GET /api/status
+2026-10-17 13:20:31,483 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:20:31,484 INFO    build 'preview' finished as failed after 1.3s (1 error(s))
+2026-10-17 13:20:32,359 INFO    GET /api/status
+2026-10-17 13:20:32,378 INFO    GET /api/state
+2026-10-17 13:20:38,044 INFO    GET /
+2026-10-17 13:20:38,127 INFO    GET /api/state
+2026-10-17 13:20:38,128 INFO    GET /api/ping
+2026-10-17 13:20:38,129 INFO    browser JS is alive (ping received)
+2026-10-17 13:20:38,255 INFO    GET /favicon.ico
+2026-10-17 13:20:39,806 INFO    POST /api/build
+2026-10-17 13:20:39,807 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:20:39,808 INFO    build 'preview' started
+2026-10-17 13:20:40,431 INFO    GET /api/status
+2026-10-17 13:20:41,061 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:20:41,062 INFO    build 'preview' finished as failed after 1.3s (1 error(s))
+2026-10-17 13:20:42,009 INFO    GET /api/status
+2026-10-17 13:20:42,074 INFO    GET /api/state
+2026-10-17 13:20:43,425 INFO    POST /api/build
+2026-10-17 13:20:43,426 INFO    build 'check' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:20:43,427 INFO    build 'check' started
+2026-10-17 13:20:44,046 INFO    GET /api/status
+2026-10-17 13:20:44,631 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:20:44,633 INFO    build 'check' finished as failed after 1.2s (1 error(s))
+2026-10-17 13:20:44,718 INFO    GET /api/status
+2026-10-17 13:20:44,741 INFO    GET /api/state
+2026-10-17 13:20:47,791 INFO    POST /api/export
+2026-10-17 13:20:47,795 INFO    export probe ok: '/mnt/c/Users/dfmari/Documents/Writeups/Export' -> /mnt/c/Users/dfmari/Documents/Writeups/Export
+2026-10-17 13:20:47,815 INFO    GET /api/state
+2026-10-17 13:20:50,607 INFO    POST /api/build
+2026-10-17 13:20:50,608 INFO    build 'check' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:20:50,609 INFO    build 'check' started
+2026-10-17 13:20:51,231 INFO    GET /api/status
+2026-10-17 13:20:51,834 INFO    GET /api/status
+2026-10-17 13:20:51,836 WARNING validation failed with 1 error(s): belkactf-№7/sample/sample-tricky.html: '.html' -> missing '.html'
+2026-10-17 13:20:51,837 INFO    build 'check' finished as failed after 1.2s (1 error(s))
+2026-10-17 13:20:52,478 INFO    GET /api/status
+2026-10-17 13:20:52,497 INFO    GET /api/state
+2026-10-17 13:25:24,181 INFO    GUI session end
+2026-10-17 13:25:27,669 INFO    ============================================================
+2026-10-17 13:25:27,672 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 13:25:27,678 INFO    listening on http://192.168.95.83:55431/ (bound 0.0.0.0:55431, wsl_ip=192.168.95.83)
+2026-10-17 13:25:34,349 INFO    GET /
+2026-10-17 13:25:34,606 INFO    GET /api/ping
+2026-10-17 13:25:34,608 INFO    browser JS is alive (ping received)
+2026-10-17 13:25:34,607 INFO    GET /api/state
+2026-10-17 13:25:34,789 INFO    GET /favicon.ico
+2026-10-17 13:25:40,640 INFO    POST /api/build
+2026-10-17 13:25:40,642 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:25:40,642 INFO    build 'preview' started
+2026-10-17 13:25:41,264 INFO    GET /api/status
+2026-10-17 13:25:42,016 INFO    build result: 6 page(s), changed=nothing
+2026-10-17 13:25:42,017 INFO    build 'preview' finished as done after 1.4s (0 error(s))
+2026-10-17 13:25:42,249 INFO    GET /api/status
+2026-10-17 13:25:42,272 INFO    GET /api/state
+2026-10-17 13:27:25,236 INFO    GUI session end
+2026-10-17 13:44:10,533 INFO    ============================================================
+2026-10-17 13:44:10,537 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 13:44:10,543 INFO    listening on http://192.168.95.83:33417/ (bound 0.0.0.0:33417, wsl_ip=192.168.95.83)
+2026-10-17 13:44:14,394 INFO    GET /
+2026-10-17 13:44:14,678 INFO    GET /api/ping
+2026-10-17 13:44:14,680 INFO    browser JS is alive (ping received)
+2026-10-17 13:44:14,679 INFO    GET /api/state
+2026-10-17 13:44:14,802 INFO    GET /favicon.ico
+2026-10-17 13:44:22,761 INFO    POST /api/build
+2026-10-17 13:44:22,762 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:44:22,763 INFO    build 'preview' started
+2026-10-17 13:44:23,382 INFO    GET /api/status
+2026-10-17 13:44:24,193 INFO    build result: 6 page(s), changed=nothing
+2026-10-17 13:44:24,194 INFO    build 'preview' finished as done after 1.4s (0 error(s))
+2026-10-17 13:44:25,034 INFO    GET /api/status
+2026-10-17 13:44:25,053 INFO    GET /api/state
+2026-10-17 13:44:52,879 INFO    POST /api/git
+2026-10-17 13:44:52,880 INFO    git commit+push requested for dev with message 'Publish site update 2026-10-17 10:44'
+2026-10-17 13:44:55,718 INFO    git commit+push FAILED
+2026-10-17 13:44:55,741 INFO    GET /api/state
+2026-10-17 13:45:40,158 INFO    GUI session end
+2026-10-17 13:46:30,069 INFO    ============================================================
+2026-10-17 13:46:30,075 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 13:46:30,081 INFO    listening on http://192.168.95.83:46733/ (bound 0.0.0.0:46733, wsl_ip=192.168.95.83)
+2026-10-17 13:46:31,318 INFO    GET /
+2026-10-17 13:46:31,365 INFO    GET /api/ping
+2026-10-17 13:46:31,366 INFO    browser JS is alive (ping received)
+2026-10-17 13:46:31,411 INFO    GET /api/state
+2026-10-17 13:46:31,512 INFO    GET /favicon.ico
+2026-10-17 13:46:33,460 INFO    POST /api/build
+2026-10-17 13:46:33,461 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 13:46:33,461 INFO    build 'preview' started
+2026-10-17 13:46:34,081 INFO    GET /api/status
+2026-10-17 13:46:34,907 INFO    build result: 6 page(s), changed=nothing
+2026-10-17 13:46:34,908 INFO    build 'preview' finished as done after 1.4s (0 error(s))
+2026-10-17 13:46:35,706 INFO    GET /api/status
+2026-10-17 13:46:35,775 INFO    GET /api/state
+2026-10-17 13:46:47,213 INFO    POST /api/build
+2026-10-17 13:46:47,215 INFO    build 'publish' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=False
+2026-10-17 13:46:47,216 INFO    build 'publish' started
+2026-10-17 13:46:47,836 INFO    GET /api/status
+2026-10-17 13:46:48,435 INFO    GET /api/status
+2026-10-17 13:46:49,037 INFO    GET /api/status
+2026-10-17 13:46:49,468 INFO    build result: 6 page(s), changed=['belkactf-№7', 'git', 'site-lib', 'srdnlenctf', 'tool-setup.html', 'index.html']
+2026-10-17 13:46:49,475 INFO    build 'publish' finished as done after 2.3s (0 error(s))
+2026-10-17 13:46:49,641 INFO    GET /api/status
+2026-10-17 13:46:49,741 INFO    GET /api/state
+2026-10-17 13:46:55,892 INFO    POST /api/git
+2026-10-17 13:46:55,894 INFO    git commit+push requested for dev with message 'Publish site update 2026-10-17 10:46'
+2026-10-17 13:46:57,882 INFO    git commit+push FAILED
+2026-10-17 13:46:57,900 INFO    GET /api/state
+2026-10-17 13:47:10,821 INFO    GUI session end
+2026-10-17 14:10:13,279 INFO    ============================================================
+2026-10-17 14:10:13,284 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 14:10:13,290 INFO    listening on http://192.168.95.83:43557/ (bound 0.0.0.0:43557, wsl_ip=192.168.95.83)
+2026-10-17 14:10:14,639 INFO    GET /
+2026-10-17 14:10:14,747 INFO    GET /api/ping
+2026-10-17 14:10:14,749 INFO    browser JS is alive (ping received)
+2026-10-17 14:10:14,749 INFO    GET /api/state
+2026-10-17 14:10:14,871 INFO    GET /favicon.ico
+2026-10-17 14:10:17,225 INFO    POST /api/build
+2026-10-17 14:10:17,227 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 14:10:17,228 INFO    build 'preview' started
+2026-10-17 14:10:17,851 INFO    GET /api/status
+2026-10-17 14:10:18,569 INFO    build result: 6 page(s), changed=nothing
+2026-10-17 14:10:18,570 INFO    build 'preview' finished as done after 1.3s (0 error(s))
+2026-10-17 14:10:19,777 INFO    GET /api/status
+2026-10-17 14:10:19,798 INFO    GET /api/state
+2026-10-17 14:10:34,248 INFO    POST /api/git
+2026-10-17 14:10:34,249 INFO    git commit+push requested for dev with message 'Publish site update 2026-10-17 11:10'
+2026-10-17 14:10:36,031 INFO    git commit+push FAILED
+2026-10-17 14:10:36,052 INFO    GET /api/state
+2026-10-17 14:10:46,849 INFO    POST /api/build
+2026-10-17 14:10:46,850 INFO    build 'publish' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=False
+2026-10-17 14:10:46,851 INFO    build 'publish' started
+2026-10-17 14:10:47,470 INFO    GET /api/status
+2026-10-17 14:10:48,079 INFO    GET /api/status
+2026-10-17 14:10:48,673 INFO    GET /api/status
+2026-10-17 14:10:48,828 INFO    build result: 6 page(s), changed=['belkactf-№7', 'site-lib', 'srdnlenctf', 'tool-setup.html']
+2026-10-17 14:10:48,833 INFO    build 'publish' finished as done after 2.0s (0 error(s))
+2026-10-17 14:10:49,272 INFO    GET /api/status
+2026-10-17 14:10:49,295 INFO    GET /api/state
+2026-10-17 14:10:53,067 INFO    POST /api/git
+2026-10-17 14:10:53,068 INFO    git commit+push requested for dev with message 'Publish site update 2026-10-17 11:10'
+2026-10-17 14:10:54,800 INFO    git commit+push FAILED
+2026-10-17 14:10:54,825 INFO    GET /api/state
+2026-10-17 14:11:34,095 INFO    GUI session end
+2026-10-17 14:17:16,195 INFO    ============================================================
+2026-10-17 14:17:16,199 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-17 14:17:16,204 INFO    listening on http://192.168.95.83:42543/ (bound 0.0.0.0:42543, wsl_ip=192.168.95.83)
+2026-10-17 14:17:17,467 INFO    GET /
+2026-10-17 14:17:17,577 INFO    GET /api/ping
+2026-10-17 14:17:17,579 INFO    browser JS is alive (ping received)
+2026-10-17 14:17:17,578 INFO    GET /api/state
+2026-10-17 14:17:17,705 INFO    GET /favicon.ico
+2026-10-17 14:17:19,811 INFO    POST /api/build
+2026-10-17 14:17:19,813 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-17 14:17:19,814 INFO    build 'preview' started
+2026-10-17 14:17:20,441 INFO    GET /api/status
+2026-10-17 14:17:21,166 INFO    build result: 6 page(s), changed=nothing
+2026-10-17 14:17:21,167 INFO    build 'preview' finished as done after 1.4s (0 error(s))
+2026-10-17 14:17:22,037 INFO    GET /api/status
+2026-10-17 14:17:22,070 INFO    GET /api/state
+2026-10-17 14:17:32,402 INFO    POST /api/build
+2026-10-17 14:17:32,404 INFO    build 'publish' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=False
+2026-10-17 14:17:32,404 INFO    build 'publish' started
+2026-10-17 14:17:33,026 INFO    GET /api/status
+2026-10-17 14:17:33,628 INFO    GET /api/status
+2026-10-17 14:17:34,225 INFO    GET /api/status
+2026-10-17 14:17:34,380 INFO    build result: 6 page(s), changed=['belkactf-№7', 'site-lib', 'srdnlenctf', 'tool-setup.html']
+2026-10-17 14:17:34,386 INFO    build 'publish' finished as done after 2.0s (0 error(s))
+2026-10-17 14:17:34,827 INFO    GET /api/status
+2026-10-17 14:17:34,942 INFO    GET /api/state
+2026-10-17 14:17:42,056 INFO    POST /api/export
+2026-10-17 14:17:42,060 INFO    export probe ok: '/mnt/c/Users/dfmari/Documents/Writeups/Export' -> /mnt/c/Users/dfmari/Documents/Writeups/Export
+2026-10-17 14:17:42,079 INFO    GET /api/state
+2026-10-17 14:59:16,332 INFO    GUI session end
+2026-10-27 23:23:16,710 INFO    ============================================================
+2026-10-27 23:23:16,721 INFO    GUI session start | python 3.13.12 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-27 23:23:16,737 INFO    listening on http://192.168.95.83:60633/ (bound 0.0.0.0:60633, wsl_ip=192.168.95.83)
+2026-10-27 23:23:18,427 INFO    GET /
+2026-10-27 23:23:18,651 INFO    GET /api/ping
+2026-10-27 23:23:18,652 INFO    GET /api/state
+2026-10-27 23:23:18,653 INFO    browser JS is alive (ping received)
+2026-10-27 23:23:18,821 INFO    GET /favicon.ico
+2026-10-27 23:23:40,765 INFO    POST /api/config
+2026-10-27 23:23:40,778 INFO    config saved: 2 event(s), 6 override(s)
+2026-10-27 23:23:40,805 INFO    GET /api/state
+2026-10-27 23:23:45,571 INFO    POST /api/build
+2026-10-27 23:23:45,572 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-27 23:23:45,573 INFO    build 'preview' started
+2026-10-27 23:23:46,195 INFO    GET /api/status
+2026-10-27 23:23:47,071 INFO    build result: 6 page(s), changed=nothing
+2026-10-27 23:23:47,072 INFO    build 'preview' finished as done after 1.5s (0 error(s))
+2026-10-27 23:23:47,754 INFO    GET /api/status
+2026-10-27 23:23:47,782 INFO    GET /api/state
+2026-10-27 23:27:02,618 INFO    GUI session end
+2026-10-27 23:31:13,442 INFO    ============================================================
+2026-10-27 23:31:13,450 INFO    GUI session start | python 3.13.12 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-27 23:31:13,461 INFO    listening on http://192.168.95.83:57515/ (bound 0.0.0.0:57515, wsl_ip=192.168.95.83)
+2026-10-27 23:31:14,887 INFO    GET /
+2026-10-27 23:31:15,049 INFO    GET /api/state
+2026-10-27 23:31:15,051 INFO    GET /api/ping
+2026-10-27 23:31:15,053 INFO    browser JS is alive (ping received)
+2026-10-27 23:31:15,175 INFO    GET /favicon.ico
+2026-10-27 23:31:17,496 INFO    POST /api/build
+2026-10-27 23:31:17,498 INFO    build 'preview' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=True
+2026-10-27 23:31:17,498 INFO    build 'preview' started
+2026-10-27 23:31:18,121 INFO    GET /api/status
+2026-10-27 23:31:19,048 INFO    build result: 6 page(s), changed=nothing
+2026-10-27 23:31:19,049 INFO    build 'preview' finished as done after 1.6s (0 error(s))
+2026-10-27 23:31:19,661 INFO    GET /api/status
+2026-10-27 23:31:19,681 INFO    GET /api/state
+2026-10-27 23:32:50,410 INFO    POST /api/build
+2026-10-27 23:32:50,413 INFO    build 'publish' requested | export=/mnt/c/Users/dfmari/Documents/Writeups/Export | keep_staging=False
+2026-10-27 23:32:50,414 INFO    build 'publish' started
+2026-10-27 23:32:51,048 INFO    GET /api/status
+2026-10-27 23:32:51,661 INFO    GET /api/status
+2026-10-27 23:32:52,250 INFO    GET /api/status
+2026-10-27 23:32:52,592 INFO    build result: 6 page(s), changed=['belkactf-№7', 'site-lib', 'srdnlenctf', 'tool-setup.html', 'index.html']
+2026-10-27 23:32:52,598 INFO    build 'publish' finished as done after 2.2s (0 error(s))
+2026-10-27 23:32:52,842 INFO    GET /api/status
+2026-10-27 23:32:52,873 INFO    GET /api/state
+2026-10-27 23:33:00,668 INFO    POST /api/git
+2026-10-27 23:33:00,669 INFO    git commit+push requested for dev with message 'Publish site update 2026-10-27 20:31'
+2026-10-27 23:33:01,220 INFO    git commit+push FAILED
+2026-10-27 23:33:01,293 INFO    GET /api/state
+2026-10-27 23:33:18,007 INFO    GUI session end
+2026-10-27 23:34:08,351 INFO    ============================================================
+2026-10-27 23:34:08,357 INFO    GUI session start | python 3.14.8 | flask 3.1.3 | repo /mnt/c/Users/dfmari/Documents/Writeups/Git/ctf_writeups
+2026-10-27 23:34:08,363 INFO    listening on http://192.168.95.83:48323/ (bound 0.0.0.0:48323, wsl_ip=192.168.95.83)
+2026-10-27 23:34:09,767 INFO    GET /
+2026-10-27 23:34:09,984 INFO    GET /api/ping
+2026-10-27 23:34:09,986 INFO    browser JS is alive (ping received)
+2026-10-27 23:34:09,986 INFO    GET /api/state
+2026-10-27 23:34:10,158 INFO    GET /favicon.ico
+2026-10-27 23:34:16,828 INFO    POST /api/git
+2026-10-27 23:34:16,830 INFO    git commit+push requested for dev with message 'Publish site update 2026-10-27 20:34'
+2026-10-27 23:34:19,720 INFO    git commit+push FAILED
+2026-10-27 23:34:19,756 INFO    GET /api/state
+2026-10-27 23:34:56,544 INFO    GUI session end

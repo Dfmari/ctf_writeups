@@ -694,14 +694,23 @@ body {
 
 
 
-def verify_font(repo: Path) -> None:
-    font = repo / "fonts" / "BigBlueTerm.ttf"
-    if not font.exists():
-        die("fonts/BigBlueTerm.ttf is missing.")
+def verify_fonts(repo: Path) -> None:
+    required_fonts = (
+        "BigBlueTerm.ttf",
+        "space-grotesk.regular.ttf",
+        "Gridtile-web.ttf",
+        "BigBlueTermPlusNerdFontMono-Regular.ttf",
+    )
 
-    header = font.read_bytes()[:4]
-    if header not in (b"\x00\x01\x00\x00", b"OTTO", b"ttcf"):
-        die("fonts/BigBlueTerm.ttf does not look like a real TTF/OTF font.")
+    for name in required_fonts:
+        font = repo / "fonts" / name
+        if not font.exists():
+            die(f"fonts/{name} is missing.")
+
+        header = font.read_bytes()[:4]
+        signatures = (b"wOF2",) if font.suffix == ".woff2" else (b"\x00\x01\x00\x00", b"OTTO", b"ttcf")
+        if header not in signatures:
+            die(f"fonts/{name} has an invalid {font.suffix} font signature.")
 
 
 class RefCollector(HTMLParser):
@@ -805,7 +814,7 @@ def main() -> None:
     update_index(repo, metadata)
     ensure_wide_writeups(repo)
 
-    verify_font(repo)
+    verify_fonts(repo)
 
     errors = validate_site(repo)
     if errors:

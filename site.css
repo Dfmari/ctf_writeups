@@ -7,18 +7,50 @@
 }
 
 @font-face {
-  font-family: "Space Grotesk";
-  src: url("./fonts/space-grotesk.regular.ttf") format("truetype");
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("./fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Gridtile";
-  src: url("./fonts/Gridtile-web.ttf") format("truetype");
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("./fonts/AtkinsonHyperlegibleNext-Italic.woff2") format("woff2");
   font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("./fonts/AtkinsonHyperlegibleNext-SemiBold.woff2") format("woff2");
+  font-weight: 600;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("./fonts/AtkinsonHyperlegibleNext-SemiBoldItalic.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("./fonts/AtkinsonHyperlegibleNext-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("./fonts/AtkinsonHyperlegibleNext-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -34,26 +66,26 @@
  * Obsidian Webpage Export typography.
  *
  * Set Obsidian's own resolved font variables directly. This avoids its
- * heading variables prepending a generic `sans-serif` before Gridtile,
+ * heading variables prepending a generic `sans-serif` before BigBlueTermPlus Nerd Font Mono,
  * which prevents the custom font from ever being selected.
  */
 body.publish {
-  --font-text: "Space Grotesk", sans-serif !important;
-  --font-interface: "Space Grotesk", sans-serif !important;
-  --font-print: "Space Grotesk", sans-serif !important;
+  --font-text: "Atkinson Hyperlegible Next", sans-serif !important;
+  --font-interface: "Atkinson Hyperlegible Next", sans-serif !important;
+  --font-print: "Atkinson Hyperlegible Next", sans-serif !important;
   --font-monospace: "BigBlueTermPlus Nerd Font Mono", monospace !important;
 
-  --font-text-override: "Space Grotesk" !important;
-  --font-interface-override: "Space Grotesk" !important;
-  --font-print-override: "Space Grotesk" !important;
+  --font-text-override: "Atkinson Hyperlegible Next" !important;
+  --font-interface-override: "Atkinson Hyperlegible Next" !important;
+  --font-print-override: "Atkinson Hyperlegible Next" !important;
   --font-monospace-override: "BigBlueTermPlus Nerd Font Mono" !important;
 
-  --h1-font: "Gridtile" !important;
-  --h2-font: "Gridtile" !important;
-  --h3-font: "Gridtile" !important;
-  --inline-title-font: "Gridtile" !important;
+  --h1-font: "BigBlueTermPlus Nerd Font Mono" !important;
+  --h2-font: "BigBlueTermPlus Nerd Font Mono" !important;
+  --h3-font: "BigBlueTermPlus Nerd Font Mono" !important;
+  --inline-title-font: "BigBlueTermPlus Nerd Font Mono" !important;
 
-  font-family: "Space Grotesk", sans-serif !important;
+  font-family: "Atkinson Hyperlegible Next", sans-serif !important;
 
   /* Wide writeups for screenshots, tables, and terminal output. */
   --file-line-width: min(1100px, calc(100vw - 2rem)) !important;
@@ -69,7 +101,7 @@ body.publish p,
 body.publish li,
 body.publish table,
 body.publish .callout {
-  font-family: "Space Grotesk", sans-serif !important;
+  font-family: "Atkinson Hyperlegible Next", sans-serif !important;
 }
 
 /* Display headings */
@@ -84,7 +116,7 @@ body.publish .markdown-rendered h3,
 body.publish .markdown-preview-view h1,
 body.publish .markdown-preview-view h2,
 body.publish .markdown-preview-view h3 {
-  font-family: "Gridtile", sans-serif !important;
+  font-family: "BigBlueTermPlus Nerd Font Mono", monospace !important;
   font-weight: 400 !important;
   font-synthesis: none !important;
 }

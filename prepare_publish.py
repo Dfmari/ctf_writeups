@@ -9,6 +9,7 @@ Run from the repository root:
     python prepare_publish.py
     python prepare_publish.py ../../Export
     python prepare_publish.py ~/Downloads/Export.zip
+    python prepare_publish.py --check
 
 With no argument, it defaults to ../../Export, which matches:
 
@@ -17,7 +18,8 @@ With no argument, it defaults to ../../Export, which matches:
     └── Git/
         └── ctf_writeups/   <- run it here
 
-This script does NOT commit or push.
+The merged site is checked in a temporary directory before replacing output.
+--check validates without changing the repository. This script does NOT commit or push.
 """
 
 from __future__ import annotations
@@ -45,7 +47,15 @@ PERSISTENT_TOP_LEVEL = {
     "site.css",
     "fonts",
     "prepare_publish.py",
+    "tests",
 }
+
+PERSISTENT_GENERATED_FILES = ("site-lib/media/favicon.png",)
+ARCHIVE_SUFFIXES = {".zip", ".7z", ".rar", ".tar", ".tgz", ".gz", ".bz2", ".xz"}
+
+
+def is_persistent(name: str) -> bool:
+    return name.casefold() in {entry.casefold() for entry in PERSISTENT_TOP_LEVEL}
 
 EVENT_INFO = {
     "belkactf-№7": {
@@ -97,6 +107,7 @@ def find_export_root(path: Path, temp_dir: Path) -> Path:
     if path.is_dir():
         candidate = path.resolve()
     elif path.is_file() and path.suffix.lower() == ".zip":
+        temp_dir.mkdir(parents=True, exist_ok=True)
         with zipfile.ZipFile(path) as zf:
             zf.extractall(temp_dir)
         children = [p for p in temp_dir.iterdir() if p.name != "__MACOSX"]
@@ -154,7 +165,7 @@ def old_generated_roots(repo: Path) -> set[str]:
             path = rec.get("exportPath", "")
             if "/" in path:
                 roots.add(path.split("/", 1)[0])
-            elif path and path not in PERSISTENT_TOP_LEVEL:
+            elif path and not is_persistent(path):
                 roots.add(path)
     except Exception:
         pass
@@ -174,7 +185,9 @@ def stash_manual_archives(repo: Path, temp_root: Path) -> tuple[Path, list[Path]
     stash_root = temp_root / "preserved-archives"
     preserved: list[Path] = []
 
-    for archive in repo.rglob("*.zip"):
+    for archive in repo.rglob("*"):
+        if not archive.is_file() or archive.suffix.lower() not in ARCHIVE_SUFFIXES:
+            continue
         try:
             rel = archive.relative_to(repo)
         except ValueError:
@@ -214,18 +227,40 @@ def restore_manual_archives(
     return restored
 
 
-def clear_generated_export(repo: Path, export_root: Path) -> None:
+def generated_roots(repo: Path, export_root: Path) -> set[str]:
     roots = old_generated_roots(repo)
 
     for child in export_root.iterdir():
-        if child.name not in PERSISTENT_TOP_LEVEL:
+        if not is_persistent(child.name):
             roots.add(child.name)
 
+    return {name for name in roots if not is_persistent(name)}
+
+
+def checked_generated_targets(repo: Path, roots: set[str]) -> list[Path]:
+    repo = repo.resolve()
+    targets = []
     for name in sorted(roots):
-        if name in PERSISTENT_TOP_LEVEL:
-            continue
         target = repo / name
-        if target.is_dir():
+        resolved = target.resolve()
+        if (
+            name in {"", ".", ".."}
+            or "/" in name or "\\" in name or ":" in name
+            or resolved == repo or not resolved.is_relative_to(repo)
+        ):
+            die(f"Generated path escapes the repository: {name!r}")
+        targets.append(target)
+    return targets
+
+
+def clear_generated_export(repo: Path, export_root: Path) -> None:
+    # Resolve and check every target before deleting any generated output.
+    targets = checked_generated_targets(repo, generated_roots(repo, export_root))
+
+    for target in targets:
+        if target.is_symlink():
+            target.unlink()
+        elif target.is_dir():
             shutil.rmtree(target)
         elif target.exists():
             target.unlink()
@@ -233,6 +268,8 @@ def clear_generated_export(repo: Path, export_root: Path) -> None:
 
 def overlay_export(export_root: Path, repo: Path) -> None:
     for child in export_root.iterdir():
+        if is_persistent(child.name):
+            continue
         dest = repo / child.name
         if child.is_dir():
             shutil.copytree(child, dest, dirs_exist_ok=True)
@@ -251,7 +288,7 @@ def deintercept_attachment_links(text: str) -> str:
     For downloadable archive attachments, remove the Obsidian interception
     markers and let the browser follow the real href directly.
     """
-    archive_exts = r"(?:zip|7z|rar|tar|tgz|gz|bz2|xz)"
+    archive_exts = "(?:" + "|".join(re.escape(ext[1:]) for ext in sorted(ARCHIVE_SUFFIXES)) + ")"
 
     anchor_re = re.compile(
         rf'<a\b(?P<attrs>[^>]*\bhref=["\'][^"\']+\.{archive_exts}'
@@ -618,7 +655,8 @@ def update_index(repo: Path, metadata: dict) -> None:
             1,
         )
 
-    new_main = build_landing_main(metadata)
+    # The replacement starts at <main>; its existing leading indentation stays.
+    new_main = build_landing_main(metadata).lstrip()
 
     if not re.search(r"<main\b[^>]*>.*?</main>", text, flags=re.DOTALL | re.IGNORECASE):
         die("Could not find <main>...</main> in index.html.")
@@ -695,26 +733,35 @@ body {
 
 
 def verify_fonts(repo: Path) -> None:
-    required_fonts = (
-        "BigBlueTerm.ttf",
-        "AtkinsonHyperlegibleNext-Regular.woff2",
-        "AtkinsonHyperlegibleNext-Italic.woff2",
-        "AtkinsonHyperlegibleNext-SemiBold.woff2",
-        "AtkinsonHyperlegibleNext-SemiBoldItalic.woff2",
-        "AtkinsonHyperlegibleNext-Bold.woff2",
-        "AtkinsonHyperlegibleNext-BoldItalic.woff2",
-        "BigBlueTermPlusNerdFontMono-Regular.ttf",
-    )
-
-    for name in required_fonts:
-        font = repo / "fonts" / name
-        if not font.exists():
-            die(f"fonts/{name} is missing.")
-
-        header = font.read_bytes()[:4]
-        signatures = (b"wOF2",) if font.suffix == ".woff2" else (b"\x00\x01\x00\x00", b"OTTO", b"ttcf")
-        if header not in signatures:
-            die(f"fonts/{name} has an invalid {font.suffix} font signature.")
+    """Validate the self-hosted fonts actually referenced by the shared CSS."""
+    css = (repo / "site.css").read_text(encoding="utf-8")
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.DOTALL)
+    font_faces = re.findall(r"@font-face\s*\{(.*?)\}", css, flags=re.DOTALL | re.IGNORECASE)
+    signatures = {
+        ".woff2": (b"wOF2",),
+        ".woff": (b"wOFF",),
+        ".ttf": (b"\x00\x01\x00\x00", b"OTTO", b"ttcf"),
+        ".otf": (b"\x00\x01\x00\x00", b"OTTO", b"ttcf"),
+    }
+    checked = set()
+    for face in font_faces:
+        for match in re.finditer(r"url\(\s*(?:\"([^\"]+)\"|'([^']+)'|([^\s)]+))\s*\)", face, re.IGNORECASE):
+            ref = next(group for group in match.groups() if group is not None)
+            url = urllib.parse.urlsplit(ref)
+            if url.scheme or url.netloc:
+                continue
+            font = (repo / urllib.parse.unquote(url.path)).resolve()
+            if not font.is_relative_to(repo.resolve()):
+                die(f"Font URL leaves the publish directory: {ref}")
+            if font in checked:
+                continue
+            checked.add(font)
+            if not font.is_file():
+                die(f"Font referenced in site.css is missing: {ref}")
+            with font.open("rb") as handle:
+                header = handle.read(4)
+            if header not in signatures.get(font.suffix.lower(), ()):
+                die(f"Font referenced in site.css has an invalid font signature: {ref}")
 
 
 class RefCollector(HTMLParser):
@@ -727,6 +774,7 @@ class RefCollector(HTMLParser):
         attrs = dict(attrs)
         if tag == "base" and attrs.get("href"):
             self.base = attrs["href"]
+            return
 
         for attr in ("href", "src"):
             value = attrs.get(attr)
@@ -774,19 +822,20 @@ def main() -> None:
         "export",
         nargs="?",
         type=Path,
-        default=DEFAULT_EXPORT,
-        help=f"export directory or .zip (default: {DEFAULT_EXPORT})",
+        default=None,
+        help=f"export directory or .zip (default: {DEFAULT_EXPORT} relative to the repo)",
     )
     parser.add_argument(
         "--repo",
         type=Path,
-        default=Path.cwd(),
-        help="repo root to update (default: current directory)",
+        default=Path(__file__).resolve().parent,
+        help="repo root to update (default: this script's directory)",
     )
+    parser.add_argument("--check", action="store_true", help="validate the merged export without changing repository files")
     args = parser.parse_args()
 
-    repo = args.repo.resolve()
-    export_arg = args.export.expanduser().resolve()
+    repo = args.repo.expanduser().resolve()
+    export_arg = (args.export.expanduser() if args.export else repo / DEFAULT_EXPORT).resolve()
 
     if not (repo / "index.html").exists():
         die(f"{repo} is not the repo root: index.html is missing.")
@@ -794,40 +843,71 @@ def main() -> None:
         die(f"{repo}/site.css is missing.")
 
     with tempfile.TemporaryDirectory(prefix="ctf-export-") as temp:
-        export_root = find_export_root(export_arg, Path(temp))
+        temp_root = Path(temp)
+        export_root = find_export_root(export_arg, temp_root / "export")
+        if export_root.is_relative_to(repo) or repo.is_relative_to(export_root):
+            die("Export and repository directories must be separate and must not contain one another.")
         print(f"[*] Export root: {export_root}")
 
         metadata = read_metadata(export_root)
+        roots = generated_roots(repo, export_root)
+        checked_generated_targets(repo, roots)
+        verify_fonts(repo)
 
-        archive_stash, preserved_archives = stash_manual_archives(repo, Path(temp))
+        # Build and validate a complete candidate before changing the live files.
+        staged = temp_root / "site"
+        shutil.copytree(repo, staged, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+        custom_assets = {
+            name: (staged / name).read_bytes()
+            for name in PERSISTENT_GENERATED_FILES if (staged / name).is_file()
+        }
+        archive_stash, preserved_archives = stash_manual_archives(staged, temp_root)
 
-        clear_generated_export(repo, export_root)
-        overlay_export(export_root, repo)
+        clear_generated_export(staged, export_root)
+        overlay_export(export_root, staged)
 
         restored_archives = restore_manual_archives(
-            repo,
+            staged,
             archive_stash,
             preserved_archives,
         )
+        for name, data in custom_assets.items():
+            asset = staged / name
+            asset.parent.mkdir(parents=True, exist_ok=True)
+            asset.write_bytes(data)
 
-    clean_exported_html(repo)
+        clean_exported_html(staged)
 
-    # Re-read the copied metadata so the landing page is generated from exactly
-    # what is now in the publish tree.
-    metadata = read_metadata(repo)
-    update_index(repo, metadata)
-    ensure_wide_writeups(repo)
+        metadata = read_metadata(staged)
+        update_index(staged, metadata)
+        ensure_wide_writeups(staged)
 
-    verify_fonts(repo)
+        verify_fonts(staged)
 
-    errors = validate_site(repo)
-    if errors:
-        print("[!] Validation failed:")
-        for error in errors[:50]:
-            print(f"    {error}")
-        if len(errors) > 50:
-            print(f"    ... and {len(errors) - 50} more")
-        raise SystemExit(1)
+        errors = validate_site(staged)
+        if errors:
+            print("[!] Validation failed; repository files were not changed:")
+            for error in errors[:50]:
+                print(f"    {error}")
+            if len(errors) > 50:
+                print(f"    ... and {len(errors) - 50} more")
+            raise SystemExit(1)
+
+        if args.check:
+            print("[+] Check passed; repository files were not changed.")
+            return
+
+        # Only generated output and the refreshed landing page/style get written.
+        clear_generated_export(repo, export_root)
+        for name in sorted(roots):
+            source, dest = staged / name, repo / name
+            if source.is_dir():
+                shutil.copytree(source, dest)
+            elif source.is_file():
+                shutil.copy2(source, dest)
+        for name in ("index.html", "site.css"):
+            if (repo / name).read_bytes() != (staged / name).read_bytes():
+                shutil.copy2(staged / name, repo / name)
 
     discovered = [
         rec["exportPath"]
@@ -839,6 +919,7 @@ def main() -> None:
     print("[+] Landing page regenerated from export metadata.")
     print("[+] Broken custom-head include removed; fallback file installed.")
     print("[+] site.css injected into exported pages.")
+    print("[+] Homepage styling, self-hosted fonts, and custom favicon preserved.")
     print("[+] Wide writeup layout + centered images: OK")
     if preserved_archives:
         print(

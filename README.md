@@ -36,3 +36,19 @@ Tools used include:
 ## Repository
 
 The site is authored primarily in Obsidian and exported to static HTML.
+
+## Refresh the published site
+
+Export the notes with Obsidian Webpage HTML Export into `Writeups/Export`, then run from this repository:
+
+```bash
+python prepare_publish.py --check
+python prepare_publish.py
+```
+
+The default export is `../../Export` relative to the repository. You can also pass another export directory or a ZIP file:
+
+```bash
+python prepare_publish.py ~/Downloads/Export.zip
+```
+

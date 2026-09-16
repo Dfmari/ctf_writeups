@@ -697,8 +697,12 @@ body {
 def verify_fonts(repo: Path) -> None:
     required_fonts = (
         "BigBlueTerm.ttf",
-        "space-grotesk.regular.ttf",
-        "Gridtile-web.ttf",
+        "AtkinsonHyperlegibleNext-Regular.woff2",
+        "AtkinsonHyperlegibleNext-Italic.woff2",
+        "AtkinsonHyperlegibleNext-SemiBold.woff2",
+        "AtkinsonHyperlegibleNext-SemiBoldItalic.woff2",
+        "AtkinsonHyperlegibleNext-Bold.woff2",
+        "AtkinsonHyperlegibleNext-BoldItalic.woff2",
         "BigBlueTermPlusNerdFontMono-Regular.ttf",
     )
 

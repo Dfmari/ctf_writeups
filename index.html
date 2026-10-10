@@ -8,160 +8,16 @@
   <title>~/ctf_writeups</title>
   <link rel="icon" href="./site-lib/media/favicon.png">
   <link rel="stylesheet" href="./site.css">
-
-  <style>
-:root {
-      --nord-0: #2E3440;
-      --nord-1: #3B4252;
-      --nord-3: #566C99;
-      --nord-4: #D8DEE9;
-      --nord-8: #88C0D0;
-      --nord-14: #A3BE8C;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Atkinson Hyperlegible Next", system-ui, sans-serif;
-      max-width: 860px;
-      margin: 40px auto;
-      background-color: var(--nord-0);
-      color: var(--nord-4);
-      padding: 0 20px;
-      line-height: 1.6;
-    }
-
-    a {
-      color: var(--nord-8);
-      text-decoration: none;
-      border-bottom: 1px dashed transparent;
-      transition: 0.15s ease-in-out;
-      font-weight: bold;
-    }
-
-    a:hover,
-    a:focus-visible {
-      color: var(--nord-4);
-      border-bottom-color: var(--nord-8);
-    }
-
-    h1 {
-      font-family: "BigBlueTerm", monospace;
-      font-size: 1.8rem;
-      margin: 0 0 0.5rem;
-      font-weight: normal;
-    }
-
-    h2 {
-      font-family: "BigBlueTermPlus Nerd Font Mono", monospace;
-      color: var(--nord-8);
-      font-size: 1.35rem;
-      border-bottom: 1px dashed var(--nord-3);
-      padding-bottom: 10px;
-      margin-top: 2.5rem;
-      font-weight: normal;
-    }
-
-    .prompt {
-      font-family: "BigBlueTerm", monospace;
-      color: var(--nord-14);
-      font-weight: bold;
-    }
-
-    .intro {
-      margin-bottom: 2rem;
-    }
-
-    .muted {
-      color: var(--nord-3);
-      font-size: 0.9rem;
-      margin-top: 0.25rem;
-    }
-
-    .event-note {
-      color: var(--nord-3);
-      font-size: 0.9rem;
-      margin-top: -0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    ul {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-    }
-
-    li {
-      margin: 14px 0;
-      padding: 15px;
-      background-color: var(--nord-1);
-      border-left: 3px solid var(--nord-8);
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .entry {
-      min-width: 0;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .tag {
-      font-family: "BigBlueTerm", monospace;
-      font-size: 0.78rem;
-      background: var(--nord-0);
-      border: 1px solid var(--nord-3);
-      padding: 3px 8px;
-      border-radius: 3px;
-      color: var(--nord-4);
-      white-space: nowrap;
-    }
-
-    footer {
-      border-top: 1px dashed var(--nord-3);
-      margin-top: 3rem;
-      padding-top: 1rem;
-      color: var(--nord-3);
-      font-size: 0.85rem;
-    }
-
-    @media (max-width: 620px) {
-      body {
-        margin: 24px auto;
-      }
-
-      li {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .tags {
-        justify-content: flex-start;
-      }
-    }
-  </style>
 </head>
 
-<body>
-  <header>
-    <h1><span class="prompt">dfmari@writeups:~$</span> ls</h1>
-    <p class="intro">
-      An archive of my CTF solutions. I try to make writeups that I would have found useful when I was just starting out.
-    </p>
+<body class="home">
+  <header class="cover">
+    <p class="kicker">Case file // dfmari // CTF division</p>
+    <h1>Writeup Archive</h1>
+    <p class="intro">An archive of my CTF solutions. I try to make writeups that I would have found useful when I was just starting out.</p>
+    <span class="stamp" aria-hidden="true">CASE CLOSED</span>
   </header>
-
-                                <main>
+  <main>
     <section>
       <h2>&gt; ./resources/</h2>
 
@@ -247,11 +103,7 @@
     </section>
   </main>
 
-  <footer>
-    <span class="prompt">dfmari@writeups:~$</span>
-    <a href="https://github.com/Dfmari/ctf_writeups">source</a>
-    <span> · built by hand, kept simple.</span>
-  </footer>
+  <footer><span>Filed by dfmari</span> <a href="https://github.com/Dfmari/ctf_writeups">Evidence locker</a></footer>
 </body>
 
 </html>

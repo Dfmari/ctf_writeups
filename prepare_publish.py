@@ -370,11 +370,6 @@ _MISSING_ATTACHMENT_RES = (
     re.compile(r'<span\b(?=[^>]*\bmod-empty-attachment\b)[^>]*>.*?</span>', re.IGNORECASE | re.DOTALL),
     re.compile(r'<span\b(?=[^>]*\bsrc=["\']\.html["\'])[^>]*>.*?</span>', re.IGNORECASE | re.DOTALL),
 )
-_CUSTOM_HEAD_LINK_RE = re.compile(
-    r'<link\b[^>]*\bitemprop=["\']include["\'][^>]*'
-    r'\bhref=["\']site-lib/html/custom-head-content-content\.html["\'][^>]*>',
-    re.IGNORECASE,
-)
 _EMPTY_PARSED_FEATURE_RE = re.compile(
     r'<div\b[^>]*class=["\'][^"\']*\bparsed-feature-container\b[^"\']*["\'][^>]*>\s*</div>',
     re.IGNORECASE,
@@ -392,17 +387,142 @@ def remove_missing_attachment_placeholders(text: str) -> str:
     return text
 
 
-def clean_page(text: str) -> str:
-    # Remove the exporter's missing custom-head include regardless of wrapper/layout.
-    text = _CUSTOM_HEAD_LINK_RE.sub("", text)
+# Exporter chrome that only makes sense with Obsidian's own CSS and webpage.js.
+_CHROME_RES = (
+    re.compile(r'<script\b.*?</script>', re.IGNORECASE | re.DOTALL),
+    re.compile(r'<style\b[^>]*\bid=["\']MJX-CHTML-styles["\'][^>]*>.*?</style>', re.IGNORECASE | re.DOTALL),
+    re.compile(r'<button\b[^>]*\bclass=["\'][^"\']*\bcopy-code-button\b[^"\']*["\'][^>]*>.*?</button>', re.IGNORECASE | re.DOTALL),
+    re.compile(r'<span\b[^>]*\bclass=["\'][^"\']*\b(?:collapse-indicator|list-bullet)\b[^"\']*["\'][^>]*>.*?</span>', re.IGNORECASE | re.DOTALL),
+    re.compile(r'<div\b[^>]*\bclass=["\']data-bar["\'][^>]*>\s*</div>', re.IGNORECASE),
+    re.compile(r'<div\b[^>]*\bclass=["\']footer["\'][^>]*>\s*</div>', re.IGNORECASE),
+)
+_HEAD_TAG_RE = re.compile(r'<(title)\b[^>]*>(.*?)</title>|<(base|meta|link)\b([^>]*)>', re.IGNORECASE | re.DOTALL)
+_DIV_TOKEN_RE = re.compile(r'<div\b[^>]*>|</div\s*>', re.IGNORECASE)
+
+# webpage.js is gone, so folding callouts needs this much script and no more.
+_CALLOUT_SCRIPT = """<script>
+for (const title of document.querySelectorAll(".callout.is-collapsible > .callout-title")) {
+  title.addEventListener("click", () => {
+    const callout = title.parentElement;
+    const collapsed = callout.classList.toggle("is-collapsed");
+    const body = callout.querySelector(":scope > .callout-content");
+    if (body) body.style.display = collapsed ? "none" : "";
+    const fold = title.querySelector(".callout-fold");
+    if (fold) fold.classList.toggle("is-collapsed", collapsed);
+  });
+}
+</script>"""
+
+
+def _attr(attrs: str, name: str) -> str | None:
+    match = re.search(rf'\b{re.escape(name)}=["\']([^"\']*)["\']', attrs, re.IGNORECASE)
+    return html.unescape(match.group(1)) if match else None
+
+
+def _element_inner(text: str, open_tag: re.Match) -> str | None:
+    """Return the inner HTML of the <div> opened by `open_tag`, matching nested divs."""
+    depth = 1
+    for token in _DIV_TOKEN_RE.finditer(text, open_tag.end()):
+        depth += -1 if token.group(0).startswith("</") else 1
+        if depth == 0:
+            return text[open_tag.end():token.start()]
+    return None
+
+
+def _article(text: str) -> str:
+    """The page's own content: the preview sizer, else the document, else the body."""
+    for cls in ("markdown-preview-sizer", "obsidian-document"):
+        open_tag = re.search(rf'<div\b[^>]*\bclass=["\'][^"\']*\b{cls}\b[^"\']*["\'][^>]*>', text, re.IGNORECASE)
+        if open_tag:
+            inner = _element_inner(text, open_tag)
+            if inner is not None:
+                return inner
+    body = re.search(r'<body\b[^>]*>(.*?)</body>', text, re.IGNORECASE | re.DOTALL)
+    return body.group(1) if body else text
+
+
+def blank_slate_page(text: str) -> str:
+    """
+    Rebuild an exported page as plain HTML that depends on site.css alone.
+
+    Obsidian Webpage Export wraps every note in its app shell: 250 KB of
+    Obsidian CSS, webpage.js, sidebars and a navbar. None of that is needed to
+    read a page, and all of it fights with the site stylesheet. Keep the
+    document's own markup (headings, callouts, code, embeds, with their
+    classes) so site.css has stable hooks, and drop everything else.
+    """
+    title = description = base = ""
+    icon = "site-lib/media/favicon.png"
+    head = re.search(r'<head\b[^>]*>(.*?)</head>', text, re.IGNORECASE | re.DOTALL)
+    for match in _HEAD_TAG_RE.finditer(head.group(1) if head else ""):
+        if match.group(1):
+            title = html.unescape(re.sub(r"<[^>]+>", "", match.group(2))).strip()
+            continue
+        tag, attrs = match.group(3).lower(), match.group(4)
+        if tag == "base" and _attr(attrs, "href"):
+            base = _attr(attrs, "href")
+        elif tag == "meta" and (_attr(attrs, "name") or "").lower() == "description":
+            description = _attr(attrs, "content") or ""
+        elif tag == "link" and (_attr(attrs, "rel") or "").lower() == "icon" and _attr(attrs, "href"):
+            icon = _attr(attrs, "href")
+
+    article = _article(text)
+    for pattern in _CHROME_RES:
+        article = pattern.sub("", article)
+    article = re.sub(
+        r'(<div\b[^>]*\bclass=["\']callout-fold[^"\']*["\'][^>]*>\s*<svg\b[^>]*?)\bwidth="24"\s+height="24"',
+        r'\1width="1em" height="1em"',
+        article,
+        flags=re.IGNORECASE,
+    )
+    article = article.strip()
+
+    lines = [
+        "<!DOCTYPE html>",
+        '<html lang="en">',
+        "<head>",
+        '<meta charset="utf-8">',
+        '<meta name="viewport" content="width=device-width, initial-scale=1">',
+        f"<title>{html.escape(title)}</title>",
+    ]
+    if description:
+        lines.append(f'<meta name="description" content="{html.escape(description, quote=True)}">')
+    if base:
+        lines.append(f'<base href="{html.escape(base, quote=True)}">')
+    lines += [
+        f'<link rel="icon" href="{html.escape(icon, quote=True)}">',
+        '<link rel="stylesheet" href="site.css">',
+        "</head>",
+        '<body class="publish">',
+        '<main class="markdown-preview-view markdown-rendered is-readable-line-width">',
+        '<div class="markdown-preview-sizer">',
+        article,
+        "</div>",
+        "</main>",
+        _CALLOUT_SCRIPT if "is-collapsible" in article else "",
+        "</body>",
+        "</html>",
+        "",
+    ]
+    return "\n".join(line for line in lines if line != "")
+
+
+# With <base> set to the site root, a bare "#id" link resolves against the
+# root rather than this page (Obsidian's webpage.js used to intercept these).
+# Prefix same-page fragment links with the page's own root-relative path.
+_FRAGMENT_ANCHOR_RE = re.compile(r'(<a\b[^>]*\bhref=["\'])#', re.IGNORECASE)
+
+
+def fix_fragment_links(text: str, page_path: str) -> str:
+    return _FRAGMENT_ANCHOR_RE.sub(lambda m: m.group(1) + page_path + "#", text)
+
+
+def clean_page(text: str, page_path: str) -> str:
+    # Strip the exporter's app shell; what remains is content plus site.css.
+    text = blank_slate_page(text)
 
     # Remove now-empty parsed-feature wrappers.
     text = _EMPTY_PARSED_FEATURE_RE.sub("", text)
-
-    # Inject our stable font/site override. <base href=...> makes this resolve
-    # from the export root at any directory depth.
-    if 'href="site.css"' not in text and "href='site.css'" not in text:
-        text = text.replace("</head>", '<link rel="stylesheet" href="site.css"></head>', 1)
 
     # Do not publish forgotten Templater cursor markers.
     text = _TEMPLATER_CURSOR_RE.sub("", text)
@@ -414,7 +534,10 @@ def clean_page(text: str) -> str:
     text = remove_missing_attachment_placeholders(text)
 
     # Raw archive attachments must bypass Obsidian's internal-page router.
-    return deintercept_attachment_links(text)
+    text = deintercept_attachment_links(text)
+
+    # Same-page anchors must survive the <base> tag.
+    return fix_fragment_links(text, page_path)
 
 
 def clean_exported_html(repo: Path) -> None:
@@ -423,15 +546,14 @@ def clean_exported_html(repo: Path) -> None:
             continue
 
         original = page.read_text(encoding="utf-8", errors="replace")
-        text = clean_page(original)
+        text = clean_page(original, page.relative_to(repo).as_posix())
         if text != original:
             page.write_text(text, encoding="utf-8")
 
-    # Safety net for already-open/cached exported pages that still request this
-    # old exporter include. It costs essentially nothing and turns that 404 into 200.
-    custom_head = repo / "site-lib" / "html" / "custom-head-content-content.html"
-    custom_head.parent.mkdir(parents=True, exist_ok=True)
-    custom_head.write_text("<!-- intentionally empty; prepare_publish.py fallback -->\n", encoding="utf-8")
+    # Nothing references the exporter's runtime any more; only metadata.json
+    # (read to build the landing page) and media/ (favicon, icons) stay.
+    for name in ("styles", "scripts", "fonts", "html"):
+        shutil.rmtree(repo / "site-lib" / name, ignore_errors=True)
 
 
 def quote_path(path: str) -> str:
@@ -860,8 +982,8 @@ def main() -> None:
 
     print(f"[+] Export merged: {len(discovered)} markdown pages discovered.")
     print("[+] Landing page regenerated from export metadata.")
-    print("[+] Broken custom-head include removed; fallback file installed.")
-    print("[+] site.css injected into exported pages.")
+    print("[+] Pages rebuilt as plain HTML; Obsidian CSS/JS shell removed.")
+    print("[+] site.css is the only stylesheet on every page.")
     print("[+] Homepage styling, self-hosted fonts, and custom favicon preserved.")
     print("[+] Wide writeup layout + centered images: OK")
     if preserved_archives:

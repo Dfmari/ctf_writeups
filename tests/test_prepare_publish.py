@@ -182,6 +182,21 @@ class PublishRegressionTests(unittest.TestCase):
                 self.assertNotIn("data-href", attrs)
                 self.assertIn("download", attrs)
 
+    def test_same_page_fragment_links_are_prefixed_with_page_path(self) -> None:
+        # With <base> at the site root, a bare "#id" link would resolve to the
+        # root; the published page must point it back at this page.
+        write(
+            self.export / "event" / "writeup.html",
+            page('<a href="#section">Jump</a><h2 id="section">Section</h2>'),
+        )
+
+        self.assert_success(self.run_publish(self.export))
+
+        collector = AnchorCollector()
+        collector.feed((self.repo / "event" / "writeup.html").read_text(encoding="utf-8"))
+        self.assertIn("event/writeup.html#section", collector.anchors)
+        self.assertNotIn("#section", collector.anchors)
+
     def test_invalid_export_link_fails_without_changing_repo(self) -> None:
         write(self.export / "event" / "writeup.html", page('<img src="event/media/missing.png">'))
         before = snapshot(self.repo)

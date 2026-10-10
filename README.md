@@ -37,6 +37,8 @@ Tools used include:
 
 The site is authored primarily in Obsidian and exported to static HTML.
 
+The publish script rebuilds each exported page as plain HTML: the Obsidian CSS/JS shell is stripped and `site.css` is the only stylesheet, so restyling the whole site means editing that one file.
+
 ## Refresh the published site
 
 Export the notes with Obsidian Webpage HTML Export into `Writeups/Export`, then run from this repository:

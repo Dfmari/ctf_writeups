@@ -1,175 +1,219 @@
-@font-face {
-  font-family: "BigBlueTerm";
-  src: url("./fonts/BigBlueTerm.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson Hyperlegible Next";
-  src: url("./fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson Hyperlegible Next";
-  src: url("./fonts/AtkinsonHyperlegibleNext-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson Hyperlegible Next";
-  src: url("./fonts/AtkinsonHyperlegibleNext-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson Hyperlegible Next";
-  src: url("./fonts/AtkinsonHyperlegibleNext-SemiBoldItalic.woff2") format("woff2");
-  font-weight: 600;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson Hyperlegible Next";
-  src: url("./fonts/AtkinsonHyperlegibleNext-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Atkinson Hyperlegible Next";
-  src: url("./fonts/AtkinsonHyperlegibleNext-BoldItalic.woff2") format("woff2");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "BigBlueTermPlus Nerd Font Mono";
-  src: url("./fonts/BigBlueTermPlusNerdFontMono-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /*
- * Obsidian Webpage Export typography.
- *
- * Set Obsidian's own resolved font variables directly. This avoids its
- * heading variables prepending a generic `sans-serif` before BigBlueTermPlus Nerd Font Mono,
- * which prevents the custom font from ever being selected.
+ * Direction X — "Case file": hardcopy refined. Manila + Archivo Black + typewriter stamp kept; code, body, hierarchy and shadows fixed.
+ * One stylesheet for the landing page (body.home) and the exported
+ * Obsidian pages (body.publish).
  */
-body.publish {
-  --font-text: "Atkinson Hyperlegible Next", sans-serif !important;
-  --font-interface: "Atkinson Hyperlegible Next", sans-serif !important;
-  --font-print: "Atkinson Hyperlegible Next", sans-serif !important;
-  --font-monospace: "BigBlueTermPlus Nerd Font Mono", monospace !important;
 
-  --font-text-override: "Atkinson Hyperlegible Next" !important;
-  --font-interface-override: "Atkinson Hyperlegible Next" !important;
-  --font-print-override: "Atkinson Hyperlegible Next" !important;
-  --font-monospace-override: "BigBlueTermPlus Nerd Font Mono" !important;
+@font-face { font-family: "Archivo Black"; src: url("./fonts/ArchivoBlack.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Special Elite"; src: url("./fonts/SpecialElite.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("./fonts/IBMPlexSans.woff2") format("woff2"); font-weight: 100 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("./fonts/IBMPlexMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("./fonts/IBMPlexMono-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
 
-  --h1-font: "BigBlueTermPlus Nerd Font Mono" !important;
-  --h2-font: "BigBlueTermPlus Nerd Font Mono" !important;
-  --h3-font: "BigBlueTermPlus Nerd Font Mono" !important;
-  --inline-title-font: "BigBlueTermPlus Nerd Font Mono" !important;
-
-  font-family: "Atkinson Hyperlegible Next", sans-serif !important;
-
-  /* Wide writeups for screenshots, tables, and terminal output. */
-  --file-line-width: min(1100px, calc(100vw - 2rem)) !important;
-  --line-width: min(1100px, calc(100vw - 2rem)) !important;
-  --line-width-adaptive: min(1100px, calc(100vw - 2rem)) !important;
+:root {
+  --bg: #d0b36f;
+  --panel: #faf4e6;
+  --ink: #1b1712;
+  --soft: #6b6052;
+  --rule: #1b1712;
+  --accent: #d12a1e;
+  --code-bg: #211c15;
+  --code-ink: #f0e7d4;
+  --display: "Archivo Black", "Arial Black", sans-serif;
+  --type: "Special Elite", "Courier New", monospace;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --home-width: 62rem;
+  --page-width: 72rem;
+  --body-size: 1.05rem;
+  --tk-comment: #8a8273;
+  --tk-func: #ff9d6b;
+  --tk-string: #a9d89a;
+  --tk-number: #f0c674;
 }
 
-/* Body / UI text */
-body.publish .markdown-preview-view,
-body.publish .markdown-rendered,
-body.publish .markdown-preview-sizer,
-body.publish p,
-body.publish li,
-body.publish table,
-body.publish .callout {
-  font-family: "Atkinson Hyperlegible Next", sans-serif !important;
+* { box-sizing: border-box; }
+
+/* ───────────── Landing page scaffold ───────────── */
+body.home { margin: 0 auto; padding: 3rem 1.5rem; max-width: var(--home-width); background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 1rem; line-height: 1.6; }
+.home h1 { margin: 0; font-family: var(--display); }
+.home h2 { margin: 0; font-family: var(--display); }
+.home section { margin-top: 3rem; }
+.home ul { list-style: none; margin: 0; padding: 0; }
+.home li { display: grid; grid-template-columns: 1fr auto; gap: 0.25rem 1.5rem; align-items: baseline; padding: 1rem 0; }
+.home li a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.home .muted { color: var(--soft); font-size: 0.92em; }
+.home .event-note { color: var(--soft); }
+.home .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
+.home .tag { font-family: var(--mono); font-size: 0.72rem; white-space: nowrap; }
+.home footer { margin-top: 4rem; color: var(--soft); font-size: 0.85rem; }
+.home footer a { color: var(--accent); }
+@media (max-width: 620px) {
+  body.home { padding: 1.5rem 1rem; }
+  .home li { grid-template-columns: 1fr; }
+  .home .tags { justify-content: flex-start; }
 }
 
-/* Display headings */
-body.publish .page-title,
-body.publish .inline-title,
-body.publish h1,
-body.publish h2,
-body.publish h3,
-body.publish .markdown-rendered h1,
-body.publish .markdown-rendered h2,
-body.publish .markdown-rendered h3,
-body.publish .markdown-preview-view h1,
-body.publish .markdown-preview-view h2,
-body.publish .markdown-preview-view h3 {
-  font-family: "BigBlueTermPlus Nerd Font Mono", monospace !important;
-  font-weight: 400 !important;
-  font-synthesis: none !important;
+/* ───────────── Obsidian Webpage Export presentation overrides ───────────── */
+html body.publish {
+  --background-primary: var(--bg) !important;
+  --background-secondary: var(--panel) !important;
+  --background-modifier-border: var(--rule) !important;
+  --text-normal: var(--ink) !important;
+  --text-muted: var(--soft) !important;
+  --text-accent: var(--accent) !important;
+  --link-color: var(--accent) !important;
+  --link-external-color: var(--accent) !important;
+  --code-background: var(--code-bg) !important;
+  --code-normal: var(--code-ink) !important;
+  --font-text: var(--body) !important;
+  --font-monospace: var(--mono) !important;
+  --file-line-width: min(var(--page-width), calc(100vw - 2rem)) !important;
+  --line-width: min(var(--page-width), calc(100vw - 2rem)) !important;
+  --line-width-adaptive: min(var(--page-width), calc(100vw - 2rem)) !important;
+  background: var(--bg) !important;
+  color: var(--ink) !important;
+  font-family: var(--body) !important;
+}
+body.publish .markdown-preview-view.is-readable-line-width .markdown-preview-sizer { max-width: min(var(--page-width), calc(100vw - 2rem)) !important; width: 100% !important; padding-top: 2.5rem !important; padding-bottom: 5rem !important; }
+body.publish .markdown-rendered, body.publish .markdown-rendered p, body.publish .markdown-rendered li { font-family: var(--body) !important; font-size: var(--body-size) !important; line-height: 1.7 !important; color: var(--ink) !important; }
+body.publish .markdown-rendered strong { color: var(--ink) !important; font-weight: 700 !important; }
+body.publish .markdown-rendered em { color: inherit !important; }
+body.publish .markdown-preview-sizer>.header { padding: 0 !important; margin-bottom: 1rem !important; }
+body.publish .markdown-preview-sizer>.header .data-bar { display: none !important; }
+body.publish .page-title, body.publish .markdown-rendered h1 { font-family: var(--display) !important; color: var(--ink) !important; margin: 0 !important; border: 0 !important; line-height: 1.05 !important; }
+body.publish .markdown-rendered h2 { font-family: var(--display) !important; color: var(--ink) !important; margin: 3rem 0 1rem !important; border: 0 !important; line-height: 1.15 !important; }
+body.publish .markdown-rendered h3 { font-family: var(--display) !important; color: var(--ink) !important; margin: 2rem 0 0.5rem !important; }
+body.publish .markdown-rendered h4 { font-family: var(--mono) !important; font-size: 0.85rem !important; text-transform: uppercase !important; letter-spacing: 0.1em !important; color: var(--soft) !important; }
+body.publish .heading-collapse-indicator { display: none !important; }
+body.publish .markdown-rendered a { color: var(--accent) !important; background-image: none !important; padding-right: 0 !important; text-underline-offset: 0.18em !important; }
+body.publish .markdown-rendered h2 a { color: inherit !important; text-decoration: none !important; }
+body.publish .markdown-preview-pusher + .el-p p, body.publish .markdown-preview-pusher + .el-p a { font-family: var(--mono) !important; font-size: 0.78rem !important; }
+body.publish .markdown-rendered hr { border: 0 !important; border-top: 1px solid var(--rule) !important; margin: 1.5rem 0 !important; }
+body.publish .markdown-rendered img { display: block; max-width: 100%; height: auto; margin: 1.25rem auto !important; }
+body.publish .callout { background: var(--panel) !important; border: 1px solid var(--rule) !important; border-radius: 0 !important; padding: 0.75rem 1rem !important; margin: 1.5rem 0 !important; mix-blend-mode: normal !important; }
+body.publish .callout-title { padding: 0 !important; gap: 0.5rem !important; color: var(--ink) !important; }
+body.publish .callout-icon { display: none !important; }
+body.publish .callout-title-inner { font-family: var(--mono) !important; font-size: 0.78rem !important; font-weight: 700 !important; letter-spacing: 0.12em !important; text-transform: uppercase !important; color: var(--ink) !important; }
+body.publish .callout-fold { color: var(--soft) !important; }
+body.publish .callout-content { padding: 0 !important; }
+body.publish .markdown-rendered pre { background: var(--code-bg) !important; border: 1px solid var(--rule) !important; border-radius: 0 !important; padding: 1rem 1.1rem !important; margin: 1.25rem 0 !important; }
+body.publish .markdown-rendered code, body.publish .markdown-rendered pre code { font-family: var(--mono) !important; font-size: 0.84rem !important; line-height: 1.6 !important; color: var(--code-ink) !important; }
+body.publish .markdown-rendered pre code { background: transparent !important; }
+body.publish .markdown-rendered :not(pre) > code { background: var(--code-bg) !important; border-radius: 2px !important; padding: 0.1em 0.35em !important; }
+body.publish .token.comment { color: var(--tk-comment) !important; font-style: italic; }
+body.publish .token.function, body.publish .token.keyword { color: var(--tk-func) !important; }
+body.publish .token.string { color: var(--tk-string) !important; }
+body.publish .token.number, body.publish .token.boolean { color: var(--tk-number) !important; }
+body.publish .token.operator, body.publish .token.punctuation { color: var(--code-ink) !important; }
+body.publish .markdown-rendered table { border-collapse: collapse !important; font-size: 0.82rem !important; }
+body.publish .markdown-rendered th, body.publish .markdown-rendered td { border: 1px solid var(--rule) !important; background: transparent !important; color: var(--ink) !important; font-family: var(--mono) !important; }
+body.publish a.tag { background: transparent !important; border: 1px solid var(--rule) !important; border-radius: 0 !important; color: var(--soft) !important; font-family: var(--mono) !important; font-size: 0.75rem !important; text-decoration: none !important; }
+
+/* ───────────── Standalone base (no exporter CSS is shipped) ───────────── */
+body.publish { margin: 0; }
+body.publish .markdown-preview-sizer { margin-left: auto !important; margin-right: auto !important; padding-left: 1rem; padding-right: 1rem; }
+body.publish .callout-title { display: flex; align-items: center; }
+body.publish .callout-fold { display: inline-flex; margin-left: auto; transition: transform 0.15s; }
+body.publish .callout-fold svg { width: 1em; height: 1em; }
+body.publish .callout-fold.is-collapsed { transform: rotate(-90deg); }
+body.publish .callout-content > :first-child { margin-top: 0.5rem !important; }
+body.publish .callout-content > :last-child { margin-bottom: 0 !important; }
+body.publish .el-table { overflow-x: auto; max-width: 100%; }
+body.publish .markdown-rendered th, body.publish .markdown-rendered td { padding: 0.3em 0.6em; text-align: left; white-space: nowrap; }
+body.publish .markdown-rendered pre { overflow-x: auto; }
+body.publish .markdown-rendered blockquote { margin: 1rem 0; padding-left: 1rem; border-left: 3px solid var(--rule); color: var(--soft); }
+body.publish .markdown-rendered ul, body.publish .markdown-rendered ol { padding-left: 1.5rem; }
+
+/* ───────────── casefile ───────────── */
+
+:root {
+  --edge: 3px solid var(--ink); --hair: #d8cdb6; --shadow: 4px 4px 0 var(--ink);
+  --yellow: #ffd23f; --green: #3ddc97; --pink: #ff6b93; --blue: #5aa9ff; --orange: #ffab45;
 }
 
-/* Keep the display headings clearly larger than the body copy. */
-body.publish .page-title,
-body.publish .inline-title,
-body.publish h1 {
-  font-size: 2.75rem !important;
-  line-height: 1.2 !important;
-}
+/* Yellow marker: a half-height highlight, not a full block — legible, less noisy. */
+.mark { background: linear-gradient(var(--yellow), var(--yellow)) 0 88% / 100% 0.5em no-repeat; }
 
-body.publish h2,
-body:not(.publish) h2 {
-  font-size: 2.25rem !important;
-  line-height: 1.25 !important;
-}
+/* ───────────── Landing ───────────── */
+.home .cover { position: relative; padding: 2rem; background: var(--panel); border: var(--edge); box-shadow: var(--shadow); }
+.home .kicker { margin: 0 0 1rem; font-family: var(--type); font-size: 0.82rem; letter-spacing: 0.04em; color: var(--accent); }
+.home h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 9vw, 5rem); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; }
+.home .intro { margin: 1rem 0 0; max-width: 34rem; color: var(--soft); font-size: 1.1rem; }
+.stamp { position: absolute; right: 1.75rem; top: 1.5rem; padding: 0.3rem 0.9rem; background: var(--accent); color: #fff; border: var(--edge); font-family: var(--type); font-size: 1.05rem; letter-spacing: 0.04em; transform: rotate(-4deg); box-shadow: 3px 3px 0 var(--ink); }
 
-body.publish h3 {
-  font-size: 1.875rem !important;
-  line-height: 1.3 !important;
-}
+.home section { margin-top: 2.75rem; }
+/* Consistent folder tab for every section. */
+.home h2 { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 0.5rem; margin: 0 0 -3px 1rem; padding: 0.4rem 1.1rem; background: var(--panel); border: var(--edge); font-family: var(--display); font-weight: 400; font-size: 1.05rem; text-transform: uppercase; letter-spacing: -0.01em; }
+.home h2::before { content: ""; width: 0.6rem; height: 0.6rem; background: var(--accent); }
+.home .event-note { margin: 0; padding: 0.85rem 1.25rem 0; background: var(--panel); border: var(--edge); border-bottom: 0; color: var(--soft); box-shadow: var(--shadow); }
+.home ul { background: var(--panel); border: var(--edge); box-shadow: var(--shadow); }
+.home .event-note + ul { border-top: 0; }
+.home li { grid-template-columns: 2.75rem 1fr auto; align-items: baseline; padding: 1.1rem 1.25rem; border-bottom: 1px solid var(--hair); }
+.home li:last-child { border-bottom: 0; }
+.home li::before { content: counter(item, decimal-leading-zero); counter-increment: item; font-family: var(--mono); font-size: 0.8rem; color: var(--accent); }
+.home main { counter-reset: item; }
+.home li a { font-family: var(--display); font-weight: 400; font-size: 1.3rem; line-height: 1.05; text-transform: uppercase; }
+.home li a:hover { background: var(--yellow); }
+.home .muted { margin-top: 0.3rem; color: var(--soft); }
+.home .tag { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--soft); white-space: nowrap; }
+.home .tag + .tag::before { content: "·"; margin-right: 0.4rem; color: var(--hair); }
+.home footer { display: flex; justify-content: space-between; margin-top: 2.5rem; padding: 0.9rem 1.1rem; background: var(--ink); color: var(--panel); font-family: var(--type); }
+.home footer a { color: var(--yellow); text-decoration: none; }
 
-/* Code */
-body.publish code,
-body.publish pre,
-body.publish kbd,
-body.publish samp,
-body.publish pre code,
-body.publish code[class*="language-"],
-body.publish pre[class*="language-"] {
-  font-family: "BigBlueTermPlus Nerd Font Mono", monospace !important;
-  font-weight: 400 !important;
-}
+/* ───────────── Writeups ───────────── */
+body.publish .markdown-preview-view.is-readable-line-width .markdown-preview-sizer { margin-top: 2.5rem !important; margin-bottom: 4rem !important; padding: 2.5rem clamp(1.25rem, 5vw, 3.25rem) 3.5rem !important; background: var(--panel); border: var(--edge); box-shadow: 6px 6px 0 var(--ink); }
 
-body.publish pre *,
-body.publish code * {
-  font-family: inherit !important;
-}
+body.publish .markdown-preview-sizer>.header { position: relative; padding: 0 0 1.1rem !important; border-bottom: var(--edge); }
+body.publish .markdown-preview-sizer>.header::before { content: "Case file // subject"; display: block; margin-bottom: 0.8rem; font-family: var(--type); font-size: 0.82rem; letter-spacing: 0.04em; color: var(--accent); }
+/* SOLVED stamp only on pages with an answer (TLDR / danger callout). */
+body.publish .markdown-preview-sizer:has(.callout[data-callout="danger"])>.header::after { content: "SOLVED"; position: absolute; right: 0; top: -0.2rem; padding: 0.3rem 0.9rem; background: var(--accent); color: #fff; border: var(--edge); font-family: var(--type); font-size: 1rem; letter-spacing: 0.04em; transform: rotate(-4deg); box-shadow: 3px 3px 0 var(--ink); }
 
-/* Obsidian Webpage Export presentation overrides */
-body.publish .markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
-  max-width: min(1100px, calc(100vw - 2rem)) !important;
-  width: 100% !important;
-}
+body.publish .page-title, body.publish .markdown-rendered h1 { font-family: var(--display) !important; font-weight: 400 !important; font-size: clamp(2.2rem, 7vw, 3.8rem) !important; line-height: 0.95 !important; letter-spacing: -0.02em !important; text-transform: uppercase !important; }
+/* Consistent heading system: Archivo Black throughout, size + colour tick set the level. */
+body.publish .markdown-rendered h2 { display: inline-block !important; font-family: var(--display) !important; font-weight: 400 !important; font-size: 1.55rem !important; text-transform: uppercase !important; letter-spacing: -0.01em !important; color: var(--panel) !important; background: var(--ink) !important; padding: 0.3rem 0.8rem !important; margin: 3rem 0 1.1rem !important; box-shadow: 3px 3px 0 rgba(27,23,18,0.25); }
+body.publish .markdown-rendered h2 a { color: var(--panel) !important; background: none !important; }
+body.publish .markdown-rendered h3 { font-family: var(--display) !important; font-weight: 400 !important; font-size: 1.2rem !important; text-transform: uppercase !important; letter-spacing: -0.01em !important; display: inline-block !important; padding-bottom: 0.15rem !important; border-bottom: 4px solid var(--accent) !important; margin-top: 2.25rem !important; }
 
-/* Center images without stretching them past their source size. */
-body.publish .markdown-rendered img,
-body.publish .markdown-preview-view img,
-body.publish .markdown-preview-sizer img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
+body.publish .markdown-rendered a { color: var(--ink) !important; font-weight: 600 !important; text-decoration: none !important; background: linear-gradient(var(--yellow), var(--yellow)) 0 88% / 100% 0.5em no-repeat !important; }
+body.publish .markdown-rendered a:hover { background-size: 100% 100% !important; }
+body.publish .markdown-rendered h2 a:hover { background: none !important; }
+/* Breadcrumb: plain typewriter links, not boxed buttons. */
+body.publish .markdown-preview-pusher + .el-p p, body.publish .markdown-preview-pusher + .el-p a { font-family: var(--type) !important; font-size: 0.85rem !important; background: none !important; }
+body.publish .markdown-preview-pusher + .el-p a { color: var(--ink) !important; text-decoration: underline !important; text-decoration-color: var(--accent) !important; }
+
+body.publish .markdown-rendered hr { border: 0 !important; border-top: var(--edge) !important; margin: 2rem 0 !important; }
+
+/* Images: photo border, small shadow, subtle varied tilt (not uniform). */
+body.publish .markdown-rendered img { border: var(--edge); padding: 6px; background: #fff; box-shadow: var(--shadow); }
+body.publish .markdown-rendered .el-p:nth-of-type(odd) img { transform: rotate(-0.6deg); }
+body.publish .markdown-rendered .el-p:nth-of-type(even) img { transform: rotate(0.5deg); }
+
+/* Callouts: colour = meaning (kept). Title bar carries the hue; no shadow. */
+body.publish .callout { --bar: #e8d8ac; background: #fffdf4 !important; border: var(--edge) !important; border-radius: 0 !important; padding: 0 !important; overflow: hidden; }
+body.publish .callout[data-callout="tip"] { --bar: var(--green); }
+body.publish .callout[data-callout="danger"] { --bar: var(--pink); }
+body.publish .callout[data-callout="warning"], body.publish .callout[data-callout="important"] { --bar: var(--orange); }
+body.publish .callout[data-callout="example"] { --bar: var(--blue); }
+body.publish .callout[data-callout="note"] { --bar: var(--yellow); }
+body.publish .callout[data-callout="quote"] { --bar: #ddd2bb; }
+body.publish .callout-title { padding: 0.45rem 0.9rem !important; background: var(--bar) !important; }
+body.publish .callout:not(.is-collapsed) .callout-title { border-bottom: var(--edge); }
+body.publish .callout-title-inner { font-family: var(--mono) !important; font-weight: 600 !important; font-size: 0.78rem !important; letter-spacing: 0.08em !important; text-transform: uppercase !important; color: var(--ink) !important; }
+body.publish .callout-fold { margin-left: auto; color: var(--ink) !important; }
+body.publish .callout-content { padding: 0.65rem 0.9rem !important; }
+
+/* Code: solid dark, legible mono, left accent — no stripes, no thin typewriter. */
+body.publish .markdown-rendered pre { background: var(--code-bg) !important; border: 0 !important; border-left: 4px solid var(--accent) !important; border-radius: 0 !important; padding: 1rem 1.1rem !important; box-shadow: var(--shadow); }
+body.publish .markdown-rendered pre code { font-family: var(--mono) !important; font-size: 0.86rem !important; line-height: 1.6 !important; color: var(--code-ink) !important; }
+body.publish .markdown-rendered :not(pre) > code { font-family: var(--mono) !important; font-size: 0.86em !important; font-weight: 600 !important; color: var(--ink) !important; background: linear-gradient(var(--yellow), var(--yellow)) 0 88% / 100% 0.72em no-repeat !important; border-radius: 0 !important; padding: 0 0.15em !important; }
+
+body.publish .markdown-rendered table { font-size: 0.82rem !important; }
+body.publish .markdown-rendered th { background: var(--ink) !important; color: var(--panel) !important; font-family: var(--mono) !important; text-transform: uppercase; }
+body.publish .markdown-rendered th, body.publish .markdown-rendered td { border: 0 !important; border-bottom: 1px solid var(--hair) !important; }
+body.publish .markdown-rendered strong { font-weight: 700 !important; }
+
+/* Comfortable column: media uses the full width, running text stays readable. */
+body.publish .markdown-rendered :is(p, ul, ol, blockquote) { max-width: 62rem; }
+body.publish .markdown-rendered p:has(.image-embed),
+body.publish .markdown-rendered p:has(img) { max-width: none; }

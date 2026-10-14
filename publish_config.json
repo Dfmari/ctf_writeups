@@ -1,59 +1,66 @@
 {
   "events": {
     "belkactf-№7": {
-      "name": "BelkaCTF №7",
-      "note": "DFIR series revisiting the live CTF with freely available tools.",
       "default_tags": [
         "DFIR"
-      ]
+      ],
+      "name": "BelkaCTF №7",
+      "note": "DFIR series revisiting the live CTF with freely available tools."
     },
     "srdnlenctf": {
+      "default_tags": [],
       "name": "SrdnlenCTF",
-      "note": "",
-      "default_tags": []
+      "note": ""
     }
   },
   "landing_overrides": {
-    "tool-setup.html": {
-      "title": "Tool Setup",
-      "description": "Analysis environment, installation notes, and setup guides for tools used across the writeups.",
-      "tags": [
-        "Setup",
-        "Tools"
-      ]
-    },
-    "belkactf-№7/main.html": {
-      "title": "Series index",
-      "description": "Challenge list, and series notes.",
-      "tags": [
-        "DFIR",
-        "Windows"
-      ]
-    },
-    "belkactf-№7/whoami/whoami-baby.html": {
-      "title": "Whoami",
-      "description": "Recovering the interactive username and hostname from a RAM dump with MemProcFS.",
-      "tags": [
-        "Memory",
-        "MemProcFS"
-      ]
-    },
     "belkactf-№7/locker/locker-warmup.html": {
-      "title": "Locker",
       "description": "Finding and validating a rogue executable in memory using MemProcFS.",
       "tags": [
         "Malware",
         "MemProcFS"
-      ]
+      ],
+      "title": "Locker"
+    },
+    "belkactf-№7/main.html": {
+      "description": "Challenge list, and series notes.",
+      "tags": [
+        "DFIR",
+        "Windows"
+      ],
+      "title": "Series index"
+    },
+    "belkactf-№7/whoami/whoami-baby.html": {
+      "description": "Recovering the interactive username and hostname from a RAM dump with MemProcFS.",
+      "tags": [
+        "Memory",
+        "MemProcFS"
+      ],
+      "title": "Whoami"
     },
     "srdnlenctf/msnrevive/msnrevive.html": {
-      "title": "MSN Revive",
       "description": "Missing authorization combined with a path canonicalization/parser differential.",
       "tags": [
         "Web",
         "API",
         "Burp Suite"
-      ]
+      ],
+      "title": "MSN Revive"
+    },
+    "tool-setup.html": {
+      "description": "Analysis environment, installation notes, and setup guides for tools used across the writeups.",
+      "tags": [
+        "Setup",
+        "Tools"
+      ],
+      "title": "Tool Setup"
+    },
+    "belkactf-№7/sample/sample-tricky.html": {
+      "description": "BelkaCTF №7 writeup.",
+      "tags": [
+        "Placeholder"
+      ],
+      "title": "Sample"
     }
   }
 }

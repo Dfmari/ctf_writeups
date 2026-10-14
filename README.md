@@ -41,7 +41,33 @@ The publish script rebuilds each exported page as plain HTML: the Obsidian CSS/J
 
 ## Refresh the published site
 
-Export the notes with Obsidian Webpage HTML Export into `Writeups/Export`, then run from this repository:
+The easiest way is the local web GUI. Install Flask once, then start it:
+
+```bash
+py -3 -m pip install flask
+py -3 prepare_publish.py --gui
+```
+
+The dashboard opens in your browser and lets you:
+
+- point at an Obsidian export (folder or `.zip`) and verify it was detected,
+- edit landing-page titles, descriptions, and tags without touching Python,
+- **Check** (validate only), **Preview** (browse the candidate site before it goes live),
+  and **Publish** into the working tree,
+- see validation errors with direct links into the preview,
+- commit and push in one step (pushing to `main` deploys to the VPS via GitHub Actions).
+
+The GUI reads and writes `publish_config.json` in the repository root; the CLI reads the
+same file, so both paths stay in sync. The GUI is meant for local use only and is never
+deployed to the server (it binds all interfaces and prints the right URL to open — the
+WSL IP under WSL2, otherwise `127.0.0.1`). Every GUI session is recorded in `.publish-gui.log` in the
+repository root (`--log-file` to move it, `--verbose` for request-level detail) — useful
+when a button seems unresponsive: if the log shows no `ping` after the page loaded, the
+browser never ran the dashboard's JavaScript.
+
+The same operations are available from the command line, which needs no third-party
+packages. Export the notes with Obsidian Webpage HTML Export into `Writeups/Export`, then
+run from this repository:
 
 ```bash
 python prepare_publish.py --check

@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+publish_config.json.tmp
+.publish-gui.log*

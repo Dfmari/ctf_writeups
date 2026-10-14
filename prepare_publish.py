@@ -10,6 +10,7 @@ Run from the repository root:
     python prepare_publish.py ../../Export
     python prepare_publish.py ~/Downloads/Export.zip
     python prepare_publish.py --check
+    python prepare_publish.py --gui        # local web UI (needs: pip install flask)
 
 With no argument, it defaults to ../../Export, which matches:
 
@@ -27,12 +28,19 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import logging
+import logging.handlers
 import posixpath
 import re
 import shutil
+import subprocess
 import tempfile
+import threading
+import time
 import urllib.parse
 import zipfile
+from copy import deepcopy
+from dataclasses import dataclass, field
 from pathlib import Path
 
 
@@ -46,6 +54,7 @@ PERSISTENT_TOP_LEVEL = {
     "site.css",
     "fonts",
     "prepare_publish.py",
+    "publish_config.json",
     "tests",
 }
 
@@ -60,7 +69,10 @@ def is_persistent(name: str) -> bool:
     return name.casefold() in _PERSISTENT_FOLDED
 
 
-EVENT_INFO = {
+CONFIG_FILE = "publish_config.json"
+LOG_FILE = ".publish-gui.log"
+
+DEFAULT_EVENT_INFO = {
     "belkactf-№7": {
         "name": "BelkaCTF №7",
         "note": "DFIR series revisiting the live CTF with freely available tools.",
@@ -73,7 +85,7 @@ EVENT_INFO = {
     },
 }
 
-LANDING_OVERRIDES = {
+DEFAULT_LANDING_OVERRIDES = {
     "tool-setup.html": {
         "title": "Tool Setup",
         "description": "Analysis environment, installation notes, and setup guides for tools used across the writeups.",
@@ -102,8 +114,88 @@ LANDING_OVERRIDES = {
 }
 
 
+def default_config() -> dict:
+    return {
+        "events": deepcopy(DEFAULT_EVENT_INFO),
+        "landing_overrides": deepcopy(DEFAULT_LANDING_OVERRIDES),
+    }
+
+
+def _validate_entry(kind: str, key: str, entry: object, fields: dict) -> None:
+    if not isinstance(entry, dict):
+        die(f"{CONFIG_FILE}: {kind} {key!r} must be an object.")
+    for name, expected in fields.items():
+        value = entry.get(name)
+        if expected is list:
+            if not isinstance(value, list) or not all(isinstance(v, str) for v in value):
+                die(f"{CONFIG_FILE}: {kind} {key!r} field {name!r} must be a list of strings.")
+        elif not isinstance(value, expected):
+            die(f"{CONFIG_FILE}: {kind} {key!r} field {name!r} must be a {expected.__name__}.")
+
+
+def validate_config(config: dict) -> None:
+    if not isinstance(config, dict):
+        die("Config must be a JSON object.")
+    for section in ("events", "landing_overrides"):
+        if not isinstance(config.get(section), dict):
+            die(f"Config: missing or invalid {section!r} object.")
+    for key, entry in config["events"].items():
+        _validate_entry("event", key, entry, {"name": str, "note": str, "default_tags": list})
+    for key, entry in config["landing_overrides"].items():
+        _validate_entry("override", key, entry, {"title": str, "description": str, "tags": list})
+
+
+def load_config(repo: Path) -> dict:
+    """
+    Read publish_config.json from the repository root.
+
+    The file is optional: without it the embedded defaults above are used, so
+    the repository keeps working before the first GUI/CLI run writes it out.
+    """
+    path = repo / CONFIG_FILE
+    if not path.exists():
+        return default_config()
+
+    try:
+        config = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        die(f"{path} is not valid JSON: {error}")
+
+    validate_config(config)
+    return config
+
+
+def save_config(repo: Path, config: dict) -> Path:
+    """Persist the configuration; writes are atomic so a crash cannot corrupt it."""
+    path = repo / CONFIG_FILE
+    text = json.dumps(config, indent=2, ensure_ascii=False) + "\n"
+    temp = path.with_suffix(".json.tmp")
+    temp.write_text(text, encoding="utf-8")
+    temp.replace(path)
+    return path
+
+
 def die(message: str) -> None:
     raise SystemExit(f"[!] {message}")
+
+
+def setup_logging(log_file: Path | None, verbose: bool = False) -> logging.Logger:
+    """
+    Configure the GUI's file log.
+
+    The log records every API request, the build lifecycle, and browser
+    beacons, so a silent UI can be diagnosed after the fact.
+    """
+    logger = logging.getLogger("prepare_publish.gui")
+    logger.setLevel(logging.DEBUG)
+    if not logger.handlers and log_file is not None:
+        handler = logging.handlers.RotatingFileHandler(
+            log_file, maxBytes=1_000_000, backupCount=2, encoding="utf-8"
+        )
+        handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)-7s %(message)s"))
+        handler.setLevel(logging.DEBUG if verbose else logging.INFO)
+        logger.addHandler(handler)
+    return logger
 
 
 def find_export_root(path: Path, temp_dir: Path) -> Path:
@@ -612,20 +704,22 @@ def fallback_description(rec: dict, event_name: str) -> str:
     return f"{event_name} writeup."
 
 
-def build_landing_main(metadata: dict) -> str:
+def build_landing_main(metadata: dict, config: dict) -> str:
     records = webpage_records(metadata)
     by_path = {rec["exportPath"]: rec for rec in records if rec.get("exportPath")}
+    landing_overrides = config["landing_overrides"]
+    event_info = config["events"]
 
     sections = []
 
     # Resources
     if "tool-setup.html" in by_path:
-        ov = LANDING_OVERRIDES["tool-setup.html"]
+        ov = landing_overrides.get("tool-setup.html", {})
         sections.append(f"""    <section>
       <h2>&gt; ./resources/</h2>
 
       <ul>
-{card(ov["title"], "tool-setup.html", ov["description"], ov["tags"])}
+{card(ov.get("title") or "Tool Setup", "tool-setup.html", ov.get("description", ""), list(ov.get("tags", [])))}
       </ul>
     </section>""")
 
@@ -642,7 +736,7 @@ def build_landing_main(metadata: dict) -> str:
         grouped.setdefault(top, []).append(rec)
 
     for top, recs in grouped.items():
-        info = EVENT_INFO.get(top, {})
+        info = event_info.get(top, {})
         event_name = info.get("name") or top.replace("-", " ").title()
         event_note = info.get("note", "")
         default_tags = info.get("default_tags", [])
@@ -665,7 +759,7 @@ def build_landing_main(metadata: dict) -> str:
             if "/media/" in path:
                 continue
 
-            override = LANDING_OVERRIDES.get(path)
+            override = landing_overrides.get(path)
             if override:
                 title = override["title"]
                 description = override["description"]
@@ -695,7 +789,7 @@ def build_landing_main(metadata: dict) -> str:
     return "  <main>\n" + "\n\n".join(sections) + "\n  </main>"
 
 
-def update_index(repo: Path, metadata: dict) -> None:
+def update_index(repo: Path, metadata: dict, config: dict) -> None:
     index = repo / "index.html"
     if not index.exists():
         die("index.html is missing from the repo.")
@@ -713,7 +807,7 @@ def update_index(repo: Path, metadata: dict) -> None:
         )
 
     # The replacement starts at <main>; its existing leading indentation stays.
-    new_main = build_landing_main(metadata).lstrip()
+    new_main = build_landing_main(metadata, config).lstrip()
 
     if not re.search(r"<main\b[^>]*>.*?</main>", text, flags=re.DOTALL | re.IGNORECASE):
         die("Could not find <main>...</main> in index.html.")
@@ -881,38 +975,126 @@ def validate_site(repo: Path) -> list[str]:
     return errors
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "export",
-        nargs="?",
-        type=Path,
-        default=None,
-        help=f"export directory or .zip (default: {DEFAULT_EXPORT} relative to the repo)",
-    )
-    parser.add_argument(
-        "--repo",
-        type=Path,
-        default=Path(__file__).resolve().parent,
-        help="repo root to update (default: this script's directory)",
-    )
-    parser.add_argument("--check", action="store_true", help="validate the merged export without changing repository files")
-    args = parser.parse_args()
+@dataclass
+class BuildResult:
+    """Everything a caller (CLI or GUI) needs to know about one build."""
 
-    repo = args.repo.expanduser().resolve()
-    export_arg = (args.export.expanduser() if args.export else repo / DEFAULT_EXPORT).resolve()
+    pages: list[str] = field(default_factory=list)
+    preserved_archives: int = 0
+    restored_archives: int = 0
+    errors: list[str] = field(default_factory=list)
+    staged_site: Path | None = None
+    changed_files: list[str] = field(default_factory=list)
+    export_root: Path | None = None
+    keep_staging: bool = False
+
+
+def git_available(repo: Path) -> bool:
+    return (
+        (repo / ".git").exists()
+        and shutil.which("git") is not None
+        and subprocess.run(
+            ["git", "-C", str(repo), "rev-parse", "--is-inside-work-tree"],
+            capture_output=True,
+        ).returncode
+        == 0
+    )
+
+
+def git_status_lines(repo: Path) -> list[str]:
+    """Porcelain status lines (empty when the tree is clean)."""
+    proc = subprocess.run(
+        ["git", "-C", str(repo), "status", "--porcelain"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if proc.returncode != 0:
+        return []
+    return [line for line in proc.stdout.splitlines() if line.strip()]
+
+
+def git_head(repo: Path) -> str:
+    proc = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "--abbrev-ref", "HEAD"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    return proc.stdout.strip() if proc.returncode == 0 else ""
+
+
+def git_commit_and_push(repo: Path, message: str) -> tuple[bool, str]:
+    """
+    Stage everything, commit with `message`, and push the current branch.
+
+    Returns (ok, output); output is the combined git output for the GUI log.
+    """
+    if not git_available(repo):
+        return False, "Not a git repository, or git is not installed."
+    if not message.strip():
+        return False, "Commit message is empty."
+
+    transcript: list[str] = []
+    for command in (
+        ["git", "-C", str(repo), "add", "-A"],
+        ["git", "-C", str(repo), "commit", "-m", message],
+        ["git", "-C", str(repo), "push"],
+    ):
+        proc = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        transcript.append(f"$ {' '.join(command[3:]) or 'git'}")
+        transcript.append((proc.stdout + proc.stderr).strip())
+        if proc.returncode != 0:
+            return False, "\n".join(line for line in transcript if line)
+    return True, "\n".join(line for line in transcript if line)
+
+
+def build_site(
+    repo: Path,
+    export: Path,
+    *,
+    check: bool = False,
+    keep_staging: bool = False,
+    config: dict | None = None,
+    log=print,
+) -> BuildResult:
+    """
+    Merge an Obsidian export into the repository and validate the result.
+
+    The whole site is assembled in a staging copy first; the live repository
+    files are only replaced after validation passes. With check=True nothing
+    in the repository is written. With keep_staging=True the repository is
+    also left untouched and the staging tree stays on disk for previewing;
+    the caller owns its cleanup.
+    """
+    repo = repo.resolve()
+    export = export.resolve()
 
     if not (repo / "index.html").exists():
         die(f"{repo} is not the repo root: index.html is missing.")
     if not (repo / "site.css").exists():
         die(f"{repo}/site.css is missing.")
 
-    with tempfile.TemporaryDirectory(prefix="ctf-export-") as temp:
-        temp_root = Path(temp)
-        export_root = find_export_root(export_arg, temp_root / "export")
+    if config is None:
+        config = load_config(repo)
+
+    result = BuildResult(keep_staging=keep_staging)
+
+    if keep_staging:
+        temp_root = Path(tempfile.mkdtemp(prefix="ctf-export-"))
+        temp_ctx = None
+    else:
+        temp_ctx = tempfile.TemporaryDirectory(prefix="ctf-export-")
+        temp_root = Path(temp_ctx.name)
+
+    try:
+        export_root = find_export_root(export, temp_root / "export")
         if export_root.is_relative_to(repo) or repo.is_relative_to(export_root):
             die("Export and repository directories must be separate and must not contain one another.")
-        print(f"[*] Export root: {export_root}")
+        result.export_root = export_root
+        log(f"[*] Export root: {export_root}")
 
         metadata = read_metadata(export_root)
         roots = generated_roots(repo, export_root)
@@ -944,23 +1126,28 @@ def main() -> None:
         clean_exported_html(staged)
 
         metadata = read_metadata(staged)
-        update_index(staged, metadata)
+        update_index(staged, metadata, config)
         ensure_wide_writeups(staged)
 
         verify_fonts(staged)
 
-        errors = validate_site(staged)
-        if errors:
-            print("[!] Validation failed; repository files were not changed:")
-            for error in errors[:50]:
-                print(f"    {error}")
-            if len(errors) > 50:
-                print(f"    ... and {len(errors) - 50} more")
-            raise SystemExit(1)
+        result.errors = validate_site(staged)
+        if result.errors:
+            return result
 
-        if args.check:
-            print("[+] Check passed; repository files were not changed.")
-            return
+        result.pages = [
+            rec["exportPath"]
+            for rec in webpage_records(metadata)
+            if rec.get("exportPath") and "/media/" not in rec["exportPath"]
+        ]
+        result.preserved_archives = len(preserved_archives)
+        result.restored_archives = restored_archives
+
+        if check or keep_staging:
+            # Preview/check modes never touch the repository; keep the staged
+            # tree around only when the caller asked to serve it.
+            result.staged_site = staged if keep_staging else None
+            return result
 
         # Only generated output and the refreshed landing page/style get written.
         clear_generated_export(repo, export_root)
@@ -970,31 +1157,909 @@ def main() -> None:
                 shutil.copytree(source, dest)
             elif source.is_file():
                 shutil.copy2(source, dest)
+            result.changed_files.append(name)
         for name in ("index.html", "site.css"):
             if (repo / name).read_bytes() != (staged / name).read_bytes():
                 shutil.copy2(staged / name, repo / name)
+                result.changed_files.append(name)
 
-    discovered = [
-        rec["exportPath"]
-        for rec in webpage_records(metadata)
-        if rec.get("exportPath") and "/media/" not in rec["exportPath"]
-    ]
+        result.staged_site = staged
+        return result
+    finally:
+        if temp_ctx is not None:
+            temp_ctx.cleanup()
 
-    print(f"[+] Export merged: {len(discovered)} markdown pages discovered.")
-    print("[+] Landing page regenerated from export metadata.")
-    print("[+] Pages rebuilt as plain HTML; Obsidian CSS/JS shell removed.")
-    print("[+] site.css is the only stylesheet on every page.")
-    print("[+] Homepage styling, self-hosted fonts, and custom favicon preserved.")
-    print("[+] Wide writeup layout + centered images: OK")
-    if preserved_archives:
-        print(
-            f"[+] Archive attachments preserved: {len(preserved_archives)} "
-            f"checked, {restored_archives} restored."
+
+def print_summary_via(write, result: BuildResult) -> None:
+    write(f"[+] Export merged: {len(result.pages)} markdown pages discovered.")
+    write("[+] Landing page regenerated from export metadata.")
+    write("[+] Pages rebuilt as plain HTML; Obsidian CSS/JS shell removed.")
+    write("[+] site.css is the only stylesheet on every page.")
+    write("[+] Homepage styling, self-hosted fonts, and custom favicon preserved.")
+    write("[+] Wide writeup layout + centered images: OK")
+    if result.preserved_archives:
+        write(
+            f"[+] Archive attachments preserved: {result.preserved_archives} "
+            f"checked, {result.restored_archives} restored."
         )
-    print("[+] Home links normalized to publish-root index.html: OK")
-    print("[+] Archive download links bypass Obsidian routing: OK")
-    print("[+] Local href/src validation: OK")
-    print("[+] No git commit or push was performed.")
+    write("[+] Home links normalized to publish-root index.html: OK")
+    write("[+] Archive download links bypass Obsidian routing: OK")
+    write("[+] Local href/src validation: OK")
+    write("[+] No git commit or push was performed.")
+
+
+def print_summary(result: BuildResult) -> None:
+    print_summary_via(print, result)
+
+
+def print_errors(errors: list[str]) -> None:
+    print("[!] Validation failed; repository files were not changed:")
+    for error in errors[:50]:
+        print(f"    {error}")
+    if len(errors) > 50:
+        print(f"    ... and {len(errors) - 50} more")
+
+
+def page_entries(export_root: Path, config: dict) -> list[dict]:
+    """Per-page data for the GUI: the values in effect, plus the defaults they can revert to."""
+    records = webpage_records(read_metadata(export_root))
+    entries = []
+    for rec in records:
+        path = rec.get("exportPath", "")
+        if not path or "/media/" in path:
+            continue
+
+        top = path.split("/", 1)[0] if "/" in path else ""
+        event = config["events"].get(top, {})
+        event_name = event.get("name") or (top.replace("-", " ").title() if top else "Site")
+
+        fallback = {
+            "title": fallback_title(rec),
+            "description": fallback_description(rec, event_name),
+            "tags": list(event.get("default_tags", [])),
+        }
+        override = config["landing_overrides"].get(path)
+        entries.append({
+            "path": path,
+            "event": top,
+            "fallback": fallback,
+            "override": deepcopy(override) if override else None,
+        })
+    return entries
+
+
+GUI_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publish Control Panel</title>
+<style>
+  :root {
+    --bg: #d0b36f; --panel: #faf4e6; --ink: #1b1712; --soft: #6b6052;
+    --accent: #d12a1e; --ok: #3f7d3a; --code-bg: #211c15; --code-ink: #f0e7d4;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --body: "IBM Plex Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 var(--body);
+  }
+  header {
+    padding: 1.2rem 1.5rem; border-bottom: 3px solid var(--ink);
+    background: repeating-linear-gradient(45deg, transparent 0 14px, rgba(27,23,18,.04) 14px 15px);
+  }
+  header h1 { margin: 0; font: 1.4rem var(--mono); letter-spacing: .02em; }
+  header h1 .caret { color: var(--accent); }
+  header p { margin: .3rem 0 0; color: var(--soft); font-size: .85rem; }
+  main { max-width: 76rem; margin: 0 auto; padding: 1.2rem 1.5rem 4rem; }
+  section {
+    background: var(--panel); border: 2px solid var(--ink);
+    box-shadow: 5px 5px 0 rgba(27,23,18,.35);
+    margin-bottom: 1.4rem; padding: 1rem 1.2rem;
+  }
+  section h2 {
+    margin: 0 0 .8rem; font: 1rem var(--mono);
+    border-bottom: 1px dashed var(--soft); padding-bottom: .4rem;
+  }
+  section h2::before { content: "> "; color: var(--accent); }
+  .row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+  input[type=text] {
+    font: .9rem var(--mono); padding: .4rem .55rem;
+    border: 1px solid var(--ink); background: #fff; color: var(--ink);
+  }
+  input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button {
+    font: .85rem var(--mono); padding: .45rem .9rem; cursor: pointer;
+    border: 2px solid var(--ink); background: var(--panel); color: var(--ink);
+    box-shadow: 3px 3px 0 rgba(27,23,18,.45); transition: transform .05s;
+  }
+  button:hover:not(:disabled) { background: var(--bg); }
+  button:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(27,23,18,.45); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--ink); }
+  button.primary:hover:not(:disabled) { background: #b0231a; }
+  .muted { color: var(--soft); font-size: .85rem; }
+  .error { color: var(--accent); font-size: .85rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+  th, td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid rgba(27,23,18,.2); vertical-align: top; }
+  th { font: .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--soft); }
+  td.path { font: .8rem var(--mono); white-space: nowrap; }
+  td input { width: 100%; }
+  .tag-note { font-size: .72rem; color: var(--soft); }
+  .badge {
+    display: inline-block; font: .7rem var(--mono); padding: .1rem .4rem;
+    border: 1px solid var(--accent); color: var(--accent); border-radius: 2px;
+  }
+  a.preview-link { color: var(--accent); font: .85rem var(--mono); }
+  pre#log {
+    background: var(--code-bg); color: var(--code-ink); font: .8rem/1.45 var(--mono);
+    padding: .8rem 1rem; margin: 0; max-height: 20rem; overflow: auto;
+    white-space: pre-wrap; word-break: break-word; min-height: 3.2rem;
+  }
+  ul#errors { margin: .5rem 0 0; padding-left: 1.2rem; }
+  ul#errors li { color: var(--accent); font: .82rem var(--mono); margin: .15rem 0; }
+  .status-pill {
+    font: .75rem var(--mono); padding: .15rem .55rem; border: 1px solid var(--ink);
+    background: #fff; margin-left: .6rem;
+  }
+  .status-pill.running { background: #f0c674; }
+  .status-pill.done { background: #a9d89a; }
+  .status-pill.failed { background: var(--accent); color: #fff; }
+  .event-block { margin-bottom: 1rem; }
+  .event-block h3 { margin: .6rem 0 .3rem; font: .9rem var(--mono); }
+  .event-block h3::before { content: "./"; color: var(--accent); }
+  #js-watchdog, #js-noscript, #js-neterr {
+    display: none; background: #d12a1e; color: #fff; border: 2px solid var(--ink);
+    padding: .8rem 1rem; margin-bottom: 1.2rem; font: .9rem/1.5 var(--mono);
+    box-shadow: 5px 5px 0 rgba(27,23,18,.35);
+  }
+  #js-noscript { display: block; }
+  #js-watchdog b, #js-noscript b { color: #ffe08a; }
+</style>
+</head>
+<body>
+<noscript>
+  <div style="display:block; background:#d12a1e; color:#fff; border:2px solid #1b1712; padding:.8rem 1rem; margin:1rem auto; max-width:72rem; font-family:monospace;">
+    JavaScript is disabled or blocked. This dashboard needs it to work.
+  </div>
+</noscript>
+<script>
+/* Watchdog (ES5-only, independent of the main script). It reports the exact
+   reason the dashboard is dead, so no DevTools are needed:
+     - fewer than 2 <script> blocks  -> the HTML was truncated in transit
+     - a captured JS error           -> the script ran but threw
+     - otherwise                     -> the script block is present but blocked */
+window.appReady = false;
+window.__jsErrors = [];
+window.addEventListener("error", function (ev) {
+  window.__jsErrors.push(String(ev.message || (ev.error && ev.error.message) || "unknown error") +
+    (ev.lineno ? (" (line " + ev.lineno + ")") : ""));
+});
+window.addEventListener("load", function () {
+  setTimeout(function () {
+    if (window.appReady) return;
+    var banner = document.getElementById("js-watchdog");
+    if (!banner) return;
+    var blocks = document.querySelectorAll("script").length;
+    var msg;
+    if (blocks < 2) {
+      msg = "HTML TRUNCATED IN TRANSIT: only " + blocks + " script block(s) arrived, the " +
+            "dashboard script at the end of the page was cut off. Reload the page; if it " +
+            "persists, try http://127.0.0.1:" + location.port + "/ instead.";
+    } else if (window.__jsErrors.length) {
+      msg = "SCRIPT ERROR: " + window.__jsErrors.join(" | ");
+    } else {
+      msg = "The dashboard script block arrived but did not run and raised no error — " +
+            "it is being blocked (browser setting, private mode, or an extension).";
+    }
+    banner.textContent = "⚠ " + msg;
+    banner.style.display = "block";
+  }, 500);
+});
+</script>
+<header>
+  <div id="js-watchdog">
+    &#9888; The dashboard's JavaScript did not run &#8212; the buttons above are dead.
+    Either this browser blocked the script (try another browser or disable
+    extensions / private-mode protection), or it is too old to understand it.
+    Details are in the server console and in <code>.publish-gui.log</code>.
+  </div>
+  <div id="js-neterr">
+    &#9888; The page loaded but cannot reach the local server &#8212; every button will
+    appear dead. This is a WSL/networking issue, not a scripting one. Use the URL
+    printed in the terminal (the <code>http://&lt;ip&gt;:&lt;port&gt;/</code> one), not
+    <code>127.0.0.1</code>. See <code>.publish-gui.log</code>.
+  </div>
+  <h1><span class="caret">&gt;</span> publish control panel</h1>
+  <p>prepare_publish.py --gui &mdash; local only, nothing is published until you push.</p>
+</header>
+<main>
+
+<section>
+  <h2>export source</h2>
+  <div class="row">
+    <input type="text" id="export-path" style="flex:1; min-width:20rem" spellcheck="false">
+    <button id="btn-test" onclick="testExport()">Test export</button>
+    <span id="export-status" class="muted"></span>
+  </div>
+</section>
+
+<section>
+  <h2>actions</h2>
+  <div class="row">
+    <button id="btn-check" onclick="build('check')">Check</button>
+    <button id="btn-preview" onclick="build('preview')">Preview</button>
+    <button id="btn-publish" class="primary" onclick="build('publish')">Publish</button>
+    <a id="preview-link" class="preview-link" href="/preview/" target="_blank" hidden>&#x2197; open preview</a>
+    <span id="job-pill" class="status-pill">idle</span>
+  </div>
+  <p class="muted" style="margin:.6rem 0 0">
+    Check validates without touching the repo. Preview builds the candidate site and serves it
+    locally. Publish writes the result into the working tree (still no git commit).
+  </p>
+</section>
+
+<section>
+  <h2>writeups <span class="muted" style="text-transform:none">(edits are saved to publish_config.json)</span></h2>
+  <div id="pages">Loading&hellip;</div>
+  <div class="row" style="margin-top:.7rem">
+    <button class="primary" onclick="saveConfig()">Save changes</button>
+    <span id="config-status" class="muted"></span>
+  </div>
+</section>
+
+<section>
+  <h2>events</h2>
+  <div id="events"></div>
+</section>
+
+<section>
+  <h2>git</h2>
+  <div id="git-info" class="muted"></div>
+  <div class="row" style="margin-top:.5rem">
+    <input type="text" id="commit-msg" style="flex:1; min-width:20rem" spellcheck="false">
+    <button id="btn-commit" onclick="commitPush()">Commit &amp; push</button>
+  </div>
+  <p class="muted" style="margin:.6rem 0 0">
+    Pushing to main triggers the GitHub Actions workflow that deploys to the VPS.
+  </p>
+</section>
+
+<section>
+  <h2>output</h2>
+  <pre id="log">Ready.</pre>
+  <ul id="errors"></ul>
+</section>
+
+</main>
+<script>
+window.appReady = true;   // proves this script block executed (watchdog checks it)
+fetch('/api/ping').catch(function () {
+  var b = document.getElementById('js-neterr');
+  if (b) { b.style.display = 'block'; }
+});
+
+let S = null;          // last /api/state payload
+let edits = {};        // path -> override object, or null to reset to defaults
+let shownLog = 0;      // log lines already rendered
+let polling = null;
+
+const $ = id => document.getElementById(id);
+const api = async (path, opts) => {
+  const r = await fetch(path, opts);
+  const data = await r.json().catch(() => ({}));
+  return { ok: r.ok, data };
+};
+const post = (path, body) => api(path, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(body || {}),
+});
+const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+async function loadState() {
+  const { data } = await api('/api/state');
+  S = data;
+  render();
+}
+
+function render() {
+  $('export-path').value = S.export;
+  const es = $('export-status');
+  if (S.export_error) { es.textContent = S.export_error; es.className = 'error'; }
+  else { es.textContent = S.pages.length + ' page(s) found'; es.className = 'muted'; }
+
+  renderPages();
+  renderEvents();
+  renderGit();
+  renderJob(S.job);
+  $('preview-link').hidden = !S.preview_ready;
+}
+
+function effective(page) {
+  return (page.path in edits) ? edits[page.path] : page.override;
+}
+
+function renderPages() {
+  const groups = {};
+  for (const page of S.pages) {
+    const key = page.event || '';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(page);
+  }
+
+  let html = '';
+  for (const [event, pages] of Object.entries(groups)) {
+    html += '<div class="event-block">';
+    if (event) html += '<h3>' + esc(event) + '</h3>';
+    html += '<table><tr><th>page</th><th>title</th><th>description</th><th>tags</th><th></th></tr>';
+    for (const page of pages) {
+      const ov = effective(page);
+      const base = ov || page.fallback;
+      html += '<tr>'
+        + '<td class="path">' + esc(page.path) + (ov ? ' <span class="badge">override</span>' : '') + '</td>'
+        + '<td><input type="text" value="' + esc(base.title) + '" data-path="' + esc(page.path) + '" data-field="title"></td>'
+        + '<td><input type="text" value="' + esc(base.description) + '" data-path="' + esc(page.path) + '" data-field="description"></td>'
+        + '<td><input type="text" value="' + esc((base.tags || []).join(', ')) + '" data-path="' + esc(page.path) + '" data-field="tags">'
+        + '<div class="tag-note">comma separated</div></td>'
+        + '<td>' + (ov ? '<button title="reset to defaults" onclick="resetOverride(&apos;' + esc(page.path) + '&apos;)">&#x21ba;</button>' : '') + '</td>'
+        + '</tr>';
+    }
+    html += '</table></div>';
+  }
+  $('pages').innerHTML = html || '<p class="muted">No pages discovered yet.</p>';
+
+  $('pages').querySelectorAll('input[data-path]').forEach(input => {
+    input.addEventListener('input', () => {
+      const path = input.dataset.path;
+      const page = S.pages.find(p => p.path === path);
+      const current = { ...(effective(page) || page.fallback) };
+      if (input.dataset.field === 'tags')
+        current.tags = input.value.split(',').map(t => t.trim()).filter(Boolean);
+      else
+        current[input.dataset.field] = input.value;
+      edits[path] = current;
+    });
+  });
+}
+
+function resetOverride(path) { delete edits[path]; renderPages(); }
+
+function renderEvents() {
+  const events = S.config.events || {};
+  let html = '<table><tr><th>folder</th><th>display name</th><th>note</th><th>default tags</th></tr>';
+  for (const [key, ev] of Object.entries(events)) {
+    html += '<tr>'
+      + '<td class="path">' + esc(key) + '</td>'
+      + '<td><input type="text" value="' + esc(ev.name) + '" data-event="' + esc(key) + '" data-field="name"></td>'
+      + '<td><input type="text" value="' + esc(ev.note) + '" data-event="' + esc(key) + '" data-field="note"></td>'
+      + '<td><input type="text" value="' + esc((ev.default_tags || []).join(', ')) + '" data-event="' + esc(key) + '" data-field="default_tags"></td>'
+      + '</tr>';
+  }
+  html += '</table>';
+  $('events').innerHTML = html;
+
+  $('events').querySelectorAll('input[data-event]').forEach(input => {
+    input.addEventListener('input', () => {
+      const ev = S.config.events[input.dataset.event];
+      if (input.dataset.field === 'default_tags')
+        ev.default_tags = input.value.split(',').map(t => t.trim()).filter(Boolean);
+      else
+        ev[input.dataset.field] = input.value;
+    });
+  });
+}
+
+function renderGit() {
+  const g = S.git;
+  const el = $('git-info');
+  if (!g.available) { el.textContent = 'Git is not available in this repository.'; $('btn-commit').disabled = true; return; }
+  el.innerHTML = 'branch <b>' + esc(g.branch) + '</b> &mdash; '
+    + (g.dirty.length
+        ? '<span class="error">' + g.dirty.length + ' uncommitted change(s)</span><br>' + g.dirty.map(esc).join('<br>')
+        : 'working tree clean');
+  $('btn-commit').disabled = g.dirty.length === 0;
+}
+
+function renderJob(job) {
+  const pill = $('job-pill');
+  pill.textContent = job.state + (job.mode && job.state === 'running' ? ' (' + job.mode + ')' : '');
+  pill.className = 'status-pill ' + job.state;
+
+  const busy = job.state === 'running';
+  for (const id of ['btn-check', 'btn-preview', 'btn-publish', 'btn-test']) $(id).disabled = busy;
+
+  if (job.log.length !== shownLog) {
+    const extra = job.log.slice(shownLog).join('\\n');
+    $('log').textContent += ($('log').textContent === 'Ready.' ? '' : '\\n') + extra;
+    shownLog = job.log.length;
+    $('log').scrollTop = $('log').scrollHeight;
+  }
+
+  const list = $('errors');
+  list.innerHTML = job.errors.map(e => {
+    const page = e.split(':')[0];
+    const link = page.endsWith('.html') ? ' <a href="/preview/' + encodeURIComponent(page) + '" target="_blank">open</a>' : '';
+    return '<li>' + esc(e) + link + '</li>';
+  }).join('');
+}
+
+function startPolling() {
+  if (polling) return;
+  polling = setInterval(async () => {
+    const { data } = await api('/api/status');
+    const wasRunning = polling !== null;
+    renderJob(data);
+    if (data.state !== 'running') {
+      clearInterval(polling); polling = null;
+      loadState();
+    }
+  }, 600);
+}
+
+async function testExport() {
+  const status = $('export-status');
+  status.textContent = 'Testing&hellip;'; status.className = 'muted';
+  const { ok, data } = await post('/api/export', { path: $('export-path').value });
+  if (ok) { status.textContent = 'Looks good: ' + data.root; status.className = 'muted'; loadState(); }
+  else { status.textContent = data.error || 'Failed.'; status.className = 'error'; }
+}
+
+async function build(mode) {
+  if (mode === 'publish' && !confirm('Publish into the working tree? Nothing is committed until you use Commit & push.'))
+    return;
+  $('log').textContent = '';
+  shownLog = 0;
+  $('errors').innerHTML = '';
+  const { ok, data } = await post('/api/build', { mode });
+  if (!ok) { $('log').textContent = data.error || 'Failed to start.'; return; }
+  renderJob({ state: 'running', mode, log: [], errors: [] });
+  startPolling();
+  if (mode === 'preview') setTimeout(() => window.open('/preview/', '_blank'), 800);
+}
+
+async function saveConfig() {
+  const status = $('config-status');
+  const config = JSON.parse(JSON.stringify(S.config));
+  for (const page of S.pages) {
+    if (!(page.path in edits)) continue;
+    if (edits[page.path] === null) delete config.landing_overrides[page.path];
+    else config.landing_overrides[page.path] = edits[page.path];
+  }
+  const { ok, data } = await post('/api/config', config);
+  if (ok) {
+    edits = {};
+    status.textContent = 'Saved to ' + data.path;
+    status.className = 'muted';
+    loadState();
+  } else {
+    status.textContent = data.error || 'Save failed.';
+    status.className = 'error';
+  }
+}
+
+async function commitPush() {
+  const btn = $('btn-commit');
+  btn.disabled = true;
+  $('log').textContent = '$ git add -A && git commit && git push\\n';
+  shownLog = 0;
+  const { ok, data } = await post('/api/git', { message: $('commit-msg').value });
+  $('log').textContent += (data.output || (data.error || 'Failed.')) + (ok ? '\\n[+] Pushed.' : '');
+  loadState();
+}
+
+window.addEventListener('load', async () => {
+  await loadState();
+  $('commit-msg').value = 'Publish site update ' + new Date().toISOString().slice(0, 16).replace('T', ' ');
+  if (S.job.state === 'running') startPolling();
+});
+</script>
+</body>
+</html>
+"""
+
+
+class BuildJob:
+    """One background build at a time, with a log the GUI can poll."""
+
+    def __init__(self, repo: Path, logger: logging.Logger | None = None) -> None:
+        self.repo = repo
+        self.logger = logger
+        self.lock = threading.Lock()
+        self.state = "idle"      # idle | running | done | failed
+        self.mode = ""
+        self.log: list[str] = []
+        self.errors: list[str] = []
+        self.summary: dict = {}
+        self.thread: threading.Thread | None = None
+
+    def is_running(self) -> bool:
+        return self.state == "running"
+
+    def snapshot(self) -> dict:
+        with self.lock:
+            return {
+                "state": self.state,
+                "mode": self.mode,
+                "log": list(self.log),
+                "errors": list(self.errors),
+                "summary": dict(self.summary),
+            }
+
+    def _write(self, text: str) -> None:
+        with self.lock:
+            self.log.extend(text.splitlines() or [text])
+
+    def start(self, mode: str, work) -> bool:
+        with self.lock:
+            if self.state == "running":
+                if self.logger:
+                    self.logger.info("build %r rejected: another build is still running", mode)
+                return False
+            self.state = "running"
+            self.mode = mode
+            self.log = []
+            self.errors = []
+            self.summary = {}
+
+        started = time.monotonic()
+        if self.logger:
+            self.logger.info("build %r started", mode)
+
+        def runner() -> None:
+            try:
+                work(self._write)
+            except SystemExit as error:
+                with self.lock:
+                    self.state = "failed"
+                    self.errors = [str(error).lstrip("[!] ")]
+                if self.logger:
+                    self.logger.info(
+                        "build %r aborted after %.1fs: %s",
+                        mode, time.monotonic() - started, self.errors[0],
+                    )
+            except Exception as error:  # surface anything else instead of dying silently
+                with self.lock:
+                    self.state = "failed"
+                    self.errors = [f"{type(error).__name__}: {error}"]
+                if self.logger:
+                    self.logger.exception("build %r crashed after %.1fs", mode, time.monotonic() - started)
+            else:
+                with self.lock:
+                    if self.state == "running":
+                        self.state = "done"
+                if self.logger:
+                    self.logger.info(
+                        "build %r finished as %s after %.1fs (%d error(s))",
+                        mode, self.state, time.monotonic() - started, len(self.errors),
+                    )
+
+        self.thread = threading.Thread(target=runner, daemon=True)
+        self.thread.start()
+        return True
+
+
+def _detect_wsl_ip() -> str | None:
+    """
+    Best-effort local (WSL/host) IP for the browser to use.
+
+    A connected UDP socket triggers the routing table to pick an outbound
+    interface address without sending any packets. Loopback is skipped.
+    """
+    import socket as _socket
+
+    for probe_host in ("1.1.1.1", "8.8.8.8"):
+        try:
+            with _socket.socket(_socket.AF_INET, _socket.SOCK_DGRAM) as sock:
+                sock.connect((probe_host, 80))
+                ip = sock.getsockname()[0]
+            if ip and not ip.startswith("127."):
+                return ip
+        except OSError:
+            continue
+    return None
+
+
+def run_gui(
+    repo: Path,
+    log_file: Path | None = None,
+    verbose: bool = False,
+) -> None:
+    """Local web UI: pick an export, edit titles/tags, preview, publish, commit."""
+    try:
+        from flask import Flask, Response, jsonify, request, send_from_directory
+    except ImportError:
+        die(
+            "Flask is required for --gui. Install it with:\n"
+            "    py -3 -m pip install flask\n"
+            "The CLI (without --gui) works without Flask."
+        )
+
+    import socket
+    import webbrowser
+
+    repo = repo.resolve()
+    if not (repo / "index.html").exists() or not (repo / "site.css").exists():
+        die(f"{repo} is not the repo root: index.html/site.css is missing.")
+
+    app = Flask(__name__)
+
+    import importlib.metadata
+    import sys
+
+    log_file = log_file or (repo / LOG_FILE)
+    logger = setup_logging(log_file, verbose=verbose)
+    logger.info("=" * 60)
+    logger.info(
+        "GUI session start | python %s | flask %s | repo %s",
+        sys.version.split()[0],
+        importlib.metadata.version("flask"),
+        repo,
+    )
+    job = BuildJob(repo, logger)
+    state: dict = {"export": str((repo / DEFAULT_EXPORT).resolve())}
+    preview: dict = {"root": None}   # directory currently served at /preview/
+
+    @app.before_request
+    def log_request():
+        # Every browser request lands here; a silent UI shows up as a gap.
+        if request.path.startswith("/preview/"):
+            logger.debug("GET %s", request.path)   # preview asset spam stays at DEBUG
+        else:
+            logger.info("%s %s", request.method, request.path)
+
+    def dispose_preview() -> None:
+        root = preview.get("root")
+        preview["root"] = None
+        # The preview root is either the repository itself or a temp staging
+        # tree; only the staging tree is ours to delete.
+        if root is not None and root != repo:
+            logger.debug("removing staging tree %s", root)
+            shutil.rmtree(root, ignore_errors=True)
+
+    def probe_export(raw: str) -> Path:
+        path = Path(raw).expanduser()
+        if not path.is_absolute():
+            path = repo / path
+        with tempfile.TemporaryDirectory(prefix="ctf-probe-") as temp:
+            return find_export_root(path, Path(temp))
+
+    @app.get("/")
+    def index_page() -> Response:
+        return Response(GUI_HTML, mimetype="text/html")
+
+    @app.get("/api/ping")
+    def api_ping() -> Response:
+        # Sent by the dashboard script the moment it starts executing; if this
+        # never shows up in the log, the browser never ran the JavaScript.
+        logger.info("browser JS is alive (ping received)")
+        return jsonify({"ok": True, "pong": True})
+
+    @app.get("/api/state")
+    def api_state() -> Response:
+        config = load_config(repo)
+        export = Path(state["export"])
+        pages: list[dict] = []
+        export_error = None
+        try:
+            export_root = probe_export(str(export))
+            pages = page_entries(export_root, config)
+        except SystemExit as error:
+            export_error = str(error).lstrip("[!] ")
+
+        return jsonify({
+            "export": str(export),
+            "export_error": export_error,
+            "pages": pages,
+            "config": config,
+            "job": job.snapshot(),
+            "preview_ready": preview.get("root") is not None,
+            "git": {
+                "available": git_available(repo),
+                "branch": git_head(repo),
+                "dirty": git_status_lines(repo),
+            },
+        })
+
+    @app.post("/api/export")
+    def api_export() -> Response:
+        raw = (request.get_json(silent=True) or {}).get("path", "").strip()
+        if not raw:
+            return jsonify({"ok": False, "error": "No path given."})
+        try:
+            export_root = probe_export(raw)
+        except SystemExit as error:
+            logger.warning("export probe FAILED for %r: %s", raw, error)
+            return jsonify({"ok": False, "error": str(error).lstrip("[!] ")})
+        logger.info("export probe ok: %r -> %s", raw, export_root)
+        state["export"] = raw
+        return jsonify({"ok": True, "root": str(export_root)})
+
+    @app.post("/api/config")
+    def api_config() -> Response:
+        config = request.get_json(silent=True)
+        try:
+            validate_config(config)
+        except SystemExit as error:
+            logger.warning("config save rejected: %s", error)
+            return jsonify({"ok": False, "error": str(error).lstrip("[!] ")})
+        save_config(repo, config)
+        logger.info(
+            "config saved: %d event(s), %d override(s)",
+            len(config["events"]), len(config["landing_overrides"]),
+        )
+        return jsonify({"ok": True, "path": CONFIG_FILE})
+
+    @app.post("/api/build")
+    def api_build() -> Response:
+        mode = (request.get_json(silent=True) or {}).get("mode", "check")
+        if mode not in {"check", "preview", "publish"}:
+            return jsonify({"ok": False, "error": f"Unknown mode {mode!r}."}), 400
+
+        export = Path(state["export"]).expanduser()
+        if not export.is_absolute():
+            export = repo / export
+        keep_staging = mode in {"check", "preview"}
+        logger.info("build %r requested | export=%s | keep_staging=%s", mode, export, keep_staging)
+
+        def work(write) -> None:
+            if keep_staging:
+                dispose_preview()
+            result = build_site(
+                repo,
+                export,
+                keep_staging=keep_staging,
+                log=write,
+            )
+            if result.errors:
+                print_errors_via(write, result.errors)
+                logger.warning("validation failed with %d error(s): %s", len(result.errors), result.errors[0])
+                with job.lock:
+                    job.errors = list(result.errors)
+                    job.state = "failed"
+                return
+
+            logger.info(
+                "build result: %d page(s), changed=%s",
+                len(result.pages), result.changed_files or "nothing",
+            )
+
+            if mode == "check":
+                write("[+] Check passed; repository files were not changed.")
+            else:
+                print_summary_via(write, result)
+
+            if keep_staging:
+                preview["root"] = result.staged_site
+            else:
+                dispose_preview()
+                preview["root"] = repo
+
+            with job.lock:
+                job.summary = {
+                    "pages": len(result.pages),
+                    "changed": list(result.changed_files),
+                    "mode": mode,
+                }
+
+        if not job.start(mode, work):
+            return jsonify({"ok": False, "error": "A build is already running."}), 409
+        return jsonify({"ok": True})
+
+    @app.get("/api/status")
+    def api_status() -> Response:
+        return jsonify(job.snapshot())
+
+    @app.get("/preview/")
+    @app.get("/preview/<path:page>")
+    def preview_route(page: str = "index.html") -> Response:
+        root = preview.get("root")
+        if root is None:
+            return Response("No preview built yet. Press Preview first.", mimetype="text/plain", status=404)
+        # Never serve repository internals (.git etc.).
+        if any(part.startswith(".") for part in Path(page).parts):
+            return Response("Not found.", mimetype="text/plain", status=404)
+        target = root / page
+        if target.is_dir():
+            target = target / "index.html"
+        if not target.is_file():
+            return Response("Not found.", mimetype="text/plain", status=404)
+        return send_from_directory(root, page if not (root / page).is_dir() else f"{page}/index.html")
+
+    @app.post("/api/git")
+    def api_git() -> Response:
+        message = (request.get_json(silent=True) or {}).get("message", "")
+        if job.is_running():
+            logger.info("git commit rejected: a build is still running")
+            return jsonify({"ok": False, "error": "A build is running; wait for it to finish."}), 409
+        logger.info("git commit+push requested with message %r", message)
+        ok, output = git_commit_and_push(repo, message)
+        logger.info("git commit+push %s", "succeeded" if ok else "FAILED")
+        return jsonify({"ok": ok, "output": output})
+
+    def shutdown(*_) -> None:
+        dispose_preview()
+        raise SystemExit(0)
+
+    # WSL2's localhost forwarding (127.0.0.1) is unreliable for the browser's
+    # pooled fetch() connections: the page loads, then every API call silently
+    # dies. Binding all interfaces lets Windows reach us either via the WSL IP
+    # (reliable) or localhost, so open the WSL IP when we can detect it.
+    host_ip = _detect_wsl_ip()
+
+    with socket.socket() as probe:
+        probe.bind(("0.0.0.0", 0))
+        port = probe.getsockname()[1]
+    url = f"http://{host_ip or '127.0.0.1'}:{port}/"
+    print(f"[*] Publish GUI on {url}  (Ctrl+C to stop)")
+    print(f"[*] (also reachable at http://127.0.0.1:{port}/ )")
+    print(f"[*] Session log: {log_file}")
+    logger.info("listening on %s (bound 0.0.0.0:%d, wsl_ip=%s)", url, port, host_ip)
+    threading.Timer(0.4, lambda: webbrowser.open(url)).start()
+    try:
+        app.run(host="0.0.0.0", port=port, debug=False, threaded=True, use_reloader=False)
+    except KeyboardInterrupt:
+        print("\n[*] Stopped.")
+    finally:
+        logger.info("GUI session end")
+        dispose_preview()
+        for handler in logger.handlers[:]:
+            handler.close()
+            logger.removeHandler(handler)
+
+
+def print_errors_via(write, errors: list[str]) -> None:
+    write("[!] Validation failed; repository files were not changed:")
+    for error in errors[:50]:
+        write(f"    {error}")
+    if len(errors) > 50:
+        write(f"    ... and {len(errors) - 50} more")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "export",
+        nargs="?",
+        type=Path,
+        default=None,
+        help=f"export directory or .zip (default: {DEFAULT_EXPORT} relative to the repo)",
+    )
+    parser.add_argument(
+        "--repo",
+        type=Path,
+        default=Path(__file__).resolve().parent,
+        help="repo root to update (default: this script's directory)",
+    )
+    parser.add_argument("--check", action="store_true", help="validate the merged export without changing repository files")
+    parser.add_argument("--gui", action="store_true", help="start the local web UI (requires Flask)")
+    parser.add_argument(
+        "--log-file",
+        type=Path,
+        default=None,
+        help=f"GUI session log location (default: {LOG_FILE} in the repo root)",
+    )
+    parser.add_argument("--verbose", action="store_true", help="log DEBUG details (including preview requests)")
+    args = parser.parse_args()
+
+    repo = args.repo.expanduser().resolve()
+
+    if args.gui:
+        run_gui(repo, log_file=args.log_file, verbose=args.verbose)
+        return
+
+    export_arg = (args.export.expanduser() if args.export else repo / DEFAULT_EXPORT).resolve()
+
+    result = build_site(repo, export_arg, check=args.check)
+    if result.errors:
+        print_errors(result.errors)
+        raise SystemExit(1)
+    if args.check:
+        print("[+] Check passed; repository files were not changed.")
+        return
+    print_summary(result)
 
 
 if __name__ == "__main__":

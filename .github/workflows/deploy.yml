@@ -10,7 +10,7 @@ jobs:
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avzr --delete --exclude='.git' --exclude='tests' --exclude='prepare_publish.py'
+          switches: -avzr --delete --exclude='.git' --exclude='tests' --exclude='prepare_publish.py' --exclude='publish_config.json' --exclude='.publish-gui.log*'
           path: ./
           remote_path: /var/www/ctf_writeups/
           remote_host: ${{ vars.VPS_HOST }}

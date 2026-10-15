@@ -1971,7 +1971,7 @@ The program attached is <strong>EPXLORER</strong> (Emergency Program for Xtingui
 </ol>
 <p dir="auto">Should you encounter any difficulties or require further clarification, please do not hesitate to immediately contact the IT Support Desk by replying to this email.</p>
 <p dir="auto">We greatly appreciate your immediate cooperation and attention to this critical matter. Your diligence will play an integral role in maintaining the operational efficiency and resilience of our organization during this challenging situation.</p>
-</div></div></div><div class="el-p"><p dir="auto">If we check the web history through MemProcFS, we can see that this is exactly how the binary was downloaded.</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/web/web.txt <span class="token operator">|</span> <span class="token function">grep</span> epxlorer.exe
+</div></div></div><div class="el-p"><p dir="auto">If we check the web history through MemProcFS, we can see that the user did follow the link to limewire.</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/web/web.txt <span class="token operator">|</span> <span class="token function">grep</span> epxlorer.exe
 </code></pre></div><div class="el-p"><p dir="auto"><strong>Output:</strong></p></div><div class="el-table" dir="ltr" style="overflow-x: auto;"><table>
 <thead>
 <tr>
@@ -2022,7 +2022,59 @@ The program attached is <strong>EPXLORER</strong> (Emergency Program for Xtingui
 <td dir="ltr">Download epxlorer.exe | LimeWire</td>
 </tr>
 </tbody>
-</table></div><div class="el-h3"><h3 data-heading="Conclusion" dir="auto" class="heading" id="Conclusion_0">Conclusion</h3></div><div class="el-p"><p dir="auto">We found the malware and even found out how it got onto the system. We could find out a lot more about it, but I find this proof sufficient, and so does the CTF.</p></div>
+</table></div><div class="el-p"><p dir="auto">You might notice there are only <code>VISIT</code> entries and no <code>DOWNLOAD</code>. LimeWire decrypts files in the browser and saves them from a blob: URL, and MemProcFS can only rebuild the parts of the browser's History database that were in memory, so the download record is most likely missing for one of these reasons. Instead we can confirm the download from the file system:</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/ntfs/ntfs_files.txt <span class="token operator">|</span> <span class="token function">grep</span> epxlorer
+</code></pre></div><div class="el-p"><p dir="auto"><strong>Output:</strong></p></div><div class="el-table" dir="auto" style="overflow-x: auto;"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="ltr">363f</td>
+<td dir="ltr">a659a800</td>
+<td dir="ltr">1b3a2</td>
+<td dir="ltr">1b153</td>
+<td dir="ltr">2025-07-22 18:52:06 UTC</td>
+<td dir="ltr">2025-07-22 18:53:10 UTC</td>
+<td dir="ltr">10f600</td>
+<td dir="ltr">A</td>
+<td dir="ltr"><code>\1\Users\award\Downloads\epxlorer.exe</code></td>
+</tr>
+<tr>
+<td dir="auto">3640</td>
+<td dir="ltr">a659a800</td>
+<td dir="ltr">1b3a2</td>
+<td dir="ltr">1b153</td>
+<td dir="ltr">2025-07-22 18:52:06 UTC</td>
+<td dir="ltr">2025-07-22 18:53:10 UTC</td>
+<td dir="auto">7</td>
+<td dir="ltr">ARS</td>
+<td dir="ltr"><code>\1\Users\award\Downloads\epxlorer.exe:SmartScreen</code></td>
+</tr>
+</tbody>
+</table></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/ntfs/1/Users/award/Downloads/epxlorer.exe_SmartScreen
+
+Anaheim
+</code></pre></div><div class="el-ul"><ul class="has-list-bullet">
+<li data-line="0" dir="auto">
+<p>The file is in \Users\award\Downloads\ and was created at 18:52:06, three seconds after the last visit to the LimeWire page.</p>
+</li>
+<li data-line="2" dir="auto">
+<p>Its size is 0x10f600 = 1,111,552 bytes, exactly what the phishing email told the user to check.</p>
+</li>
+<li data-line="4" dir="auto">
+<p>It has a 7-byte :SmartScreen alternate data stream (MemProcFS shows it as epxlorer.exe_SmartScreen). It contains Anaheim, Edge's internal codename. Edge writes this after checking a download with SmartScreen, so it tells us the file came through Edge.</p>
+</li>
+</ul></div><div class="el-h3"><h3 data-heading="Conclusion" dir="auto" class="heading" id="Conclusion_0">Conclusion</h3></div><div class="el-p"><p dir="auto">We found the malware and even found out how it got onto the system. We could find out a lot more about it, but I find this proof sufficient, and so does the CTF.</p></div>
 </div>
 </main>
 <script>

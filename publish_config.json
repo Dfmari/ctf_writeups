@@ -17,7 +17,7 @@
     "belkactf-№7/locker/locker-warmup.html": {
       "description": "Finding and validating a rogue executable in memory using MemProcFS.",
       "tags": [
-        "Malware",
+        "Social Engineering",
         "MemProcFS"
       ],
       "title": "Locker"
@@ -29,6 +29,13 @@
         "Windows"
       ],
       "title": "Series index"
+    },
+    "belkactf-№7/sample/sample-tricky.html": {
+      "description": "BelkaCTF №7 writeup.",
+      "tags": [
+        "Placeholder"
+      ],
+      "title": "Sample"
     },
     "belkactf-№7/whoami/whoami-baby.html": {
       "description": "Recovering the interactive username and hostname from a RAM dump with MemProcFS.",
@@ -54,13 +61,6 @@
         "Tools"
       ],
       "title": "Tool Setup"
-    },
-    "belkactf-№7/sample/sample-tricky.html": {
-      "description": "BelkaCTF №7 writeup.",
-      "tags": [
-        "Placeholder"
-      ],
-      "title": "Sample"
     }
   }
 }

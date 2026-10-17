@@ -1026,7 +1026,7 @@ def git_head(repo: Path) -> str:
     return proc.stdout.strip() if proc.returncode == 0 else ""
 
 
-def git_commit_and_push(repo: Path, message: str) -> tuple[bool, str]:
+def git_commit_and_push(repo: Path, message: str, *, target_branch: str | None = None) -> tuple[bool, str]:
     """
     Stage everything, commit with `message`, and push the current branch.
 
@@ -1036,12 +1036,20 @@ def git_commit_and_push(repo: Path, message: str) -> tuple[bool, str]:
         return False, "Not a git repository, or git is not installed."
     if not message.strip():
         return False, "Commit message is empty."
+    if target_branch not in {None, "dev"}:
+        return False, "Unsupported push target."
+    if target_branch == "dev" and git_head(repo) != "dev":
+        return False, "Switch to the local dev branch before publishing to dev. No files were staged or committed."
+
+    push_command = ["git", "-C", str(repo), "push"]
+    if target_branch == "dev":
+        push_command += ["origin", "HEAD:refs/heads/dev"]
 
     transcript: list[str] = []
     for command in (
         ["git", "-C", str(repo), "add", "-A"],
         ["git", "-C", str(repo), "commit", "-m", message],
-        ["git", "-C", str(repo), "push"],
+        push_command,
     ):
         proc = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace")
         transcript.append(f"$ {' '.join(command[3:]) or 'git'}")
@@ -1049,6 +1057,11 @@ def git_commit_and_push(repo: Path, message: str) -> tuple[bool, str]:
         if proc.returncode != 0:
             return False, "\n".join(line for line in transcript if line)
     return True, "\n".join(line for line in transcript if line)
+
+
+def git_commit_and_push_dev(repo: Path, message: str) -> tuple[bool, str]:
+    """Commit on local dev and push explicitly to origin/dev without touching main."""
+    return git_commit_and_push(repo, message, target_branch="dev")
 
 
 def build_site(
@@ -1421,9 +1434,11 @@ window.addEventListener("load", function () {
   <div class="row" style="margin-top:.5rem">
     <input type="text" id="commit-msg" style="flex:1; min-width:20rem" spellcheck="false">
     <button id="btn-commit" onclick="commitPush()">Commit &amp; push</button>
+    <button id="btn-commit-dev" onclick="commitPush('dev')">Commit &amp; push to dev</button>
   </div>
   <p class="muted" style="margin:.6rem 0 0">
     Pushing to main triggers the GitHub Actions workflow that deploys to the VPS.
+    The dev button requires the local dev branch and pushes only to origin/dev; it does not deploy a dev website.
   </p>
 </section>
 
@@ -1555,12 +1570,13 @@ function renderEvents() {
 function renderGit() {
   const g = S.git;
   const el = $('git-info');
-  if (!g.available) { el.textContent = 'Git is not available in this repository.'; $('btn-commit').disabled = true; return; }
+  if (!g.available) { el.textContent = 'Git is not available in this repository.'; $('btn-commit').disabled = true; $('btn-commit-dev').disabled = true; return; }
   el.innerHTML = 'branch <b>' + esc(g.branch) + '</b> &mdash; '
     + (g.dirty.length
         ? '<span class="error">' + g.dirty.length + ' uncommitted change(s)</span><br>' + g.dirty.map(esc).join('<br>')
         : 'working tree clean');
   $('btn-commit').disabled = g.dirty.length === 0;
+  $('btn-commit-dev').disabled = g.dirty.length === 0 || g.branch !== 'dev';
 }
 
 function renderJob(job) {
@@ -1640,13 +1656,15 @@ async function saveConfig() {
   }
 }
 
-async function commitPush() {
+async function commitPush(target = 'current') {
+  if (target === 'dev' && !confirm('Stage all changes, commit on dev, and push to origin/dev? This does not deploy the live site.')) return;
   const btn = $('btn-commit');
   btn.disabled = true;
+  $('btn-commit-dev').disabled = true;
   $('log').textContent = '$ git add -A && git commit && git push\\n';
   shownLog = 0;
-  const { ok, data } = await post('/api/git', { message: $('commit-msg').value });
-  $('log').textContent += (data.output || (data.error || 'Failed.')) + (ok ? '\\n[+] Pushed.' : '');
+  const { ok, data } = await post('/api/git', { message: $('commit-msg').value, target });
+  $('log').textContent += (data.output || (data.error || 'Failed.')) + (ok && data.ok ? '\\n[+] Pushed.' : '\\n[!] Not pushed.');
   loadState();
 }
 
@@ -1970,12 +1988,17 @@ def run_gui(
 
     @app.post("/api/git")
     def api_git() -> Response:
-        message = (request.get_json(silent=True) or {}).get("message", "")
+        payload = request.get_json(silent=True) or {}
+        message = payload.get("message", "")
+        target = payload.get("target", "current")
+        if target not in ("current", "dev") or not isinstance(message, str):
+            return jsonify({"ok": False, "error": "Invalid Git target or commit message."}), 400
         if job.is_running():
             logger.info("git commit rejected: a build is still running")
             return jsonify({"ok": False, "error": "A build is running; wait for it to finish."}), 409
-        logger.info("git commit+push requested with message %r", message)
-        ok, output = git_commit_and_push(repo, message)
+        logger.info("git commit+push requested for %s with message %r", target, message)
+        action = git_commit_and_push_dev if target == "dev" else git_commit_and_push
+        ok, output = action(repo, message)
         logger.info("git commit+push %s", "succeeded" if ok else "FAILED")
         return jsonify({"ok": ok, "output": output})
 

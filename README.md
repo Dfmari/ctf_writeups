@@ -57,6 +57,18 @@ The dashboard opens in your browser and lets you:
 - see validation errors with direct links into the preview,
 - commit and push in one step (pushing to `main` deploys to the VPS via GitHub Actions).
 
+For a development update, work on the local `dev` branch, use **Check/Preview** and
+then **Publish** to prepare the working tree, and choose **Commit & push to dev**.
+This stages all changes and commits on `dev`, then explicitly pushes `HEAD` to
+`origin/dev`, regardless of the configured upstream. The button is disabled on other
+branches, and the server also checks the branch before staging. It never switches
+branches, merges, or force-pushes. The original **Commit & push** retains its existing
+current-branch behavior. Neither button builds the export automatically.
+
+The existing deployment workflow listens only to `main`, so a dev push does not
+update the live site or create a separate hosted dev site. A broken export still
+needs to be corrected before Check/Preview/Publish can succeed.
+
 The GUI reads and writes `publish_config.json` in the repository root; the CLI reads the
 same file, so both paths stay in sync. The GUI is meant for local use only and is never
 deployed to the server (it binds all interfaces and prints the right URL to open — the

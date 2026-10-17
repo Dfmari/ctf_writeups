@@ -17,7 +17,7 @@
     "belkactf-№7/locker/locker-warmup.html": {
       "description": "Finding and validating a rogue executable in memory using MemProcFS.",
       "tags": [
-        "Social Engineering",
+        "Malware",
         "MemProcFS"
       ],
       "title": "Locker"

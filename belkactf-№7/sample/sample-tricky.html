@@ -13,8 +13,198 @@
 <main class="markdown-preview-view markdown-rendered is-readable-line-width">
 <div class="markdown-preview-sizer">
 <div class="header"><h1 class="page-title heading inline-title" id="Sample_-_Tricky_0">Sample - Tricky</h1></div><div class="markdown-preview-pusher" style="width: 1px; height: 0.1px; margin-bottom: 0px;"></div><div class="el-p"><p dir="auto"><a href="index.html" target="_self" rel="noopener nofollow">Home</a><br>
-WIP</p></div>
+<a class="internal-link" data-href="Locker - Warmup" href="belkactf-№7/locker/locker-warmup.html" target="_self" rel="noopener nofollow">← Previous</a> <a class="internal-link" data-href="Main" href="belkactf-№7/main.html" target="_self" rel="noopener nofollow">| BelkaCTF #7 |</a></p></div><div class="el-p"><p dir="auto"><a data-tooltip-position="top" aria-label="https://belkasoft.com/belkactf7/chall/sample" rel="noopener nofollow" class="external-link is-unresolved" href="https://belkasoft.com/belkactf7/chall/sample" target="_self">Challenge</a></p></div><div class="el-hr"><hr></div><div class="el-p"><p dir="auto"><span alt="Git/ctf_writeups/belkactf-№7/media/sample.png" src="git/ctf_writeups/belkactf-№7/media/sample.png" class="internal-embed media-embed image-embed is-loaded" target="_self"><img alt="Git/ctf_writeups/belkactf-№7/media/sample.png" src="git/ctf_writeups/belkactf-№7/media/sample.png" target="_self"></span></p></div><div class="el-hr"><hr></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="quote" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">Story</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
+<p dir="auto">Despite the weird feeling churning inside me, I resisted the urge to barge back into the Chief’s office. It was obvious—where there’s a running process, there’s a file.</p>
+</div></div></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="" data-callout="quote" class="callout"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">Task</div></div><div class="callout-content">
+<p dir="auto">What is the MD5 hash of the malware running on the machine?</p>
+</div></div></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="" data-callout="tip" class="callout"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-flame"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg></div><div class="callout-title-inner">Tools</div></div><div class="callout-content">
+<ul class="has-list-bullet">
+<li data-line="1" dir="auto"><a class="internal-link" data-href="Tool Setup#MemProcFS" href="tool-setup.html#MemProcFS" target="_self" rel="noopener nofollow">MemProcFS</a></li>
+</ul>
+</div></div></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="danger" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg></div><div class="callout-title-inner">TLDR</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
+<p dir="auto"><strong>Answer:</strong></p>
+<pre><code data-line="3"></code></pre>
+</div></div></div><div class="el-h2"><h2 data-heading="Solution" dir="auto" class="heading" id="Solution_0">Solution</h2></div><div class="el-p"><p dir="auto">Well this task sounds quite simple but it has the Tricky marker so we should look out for tricks</p></div><div class="el-h3"><h3 data-heading="Mail" dir="auto" class="heading" id="Mail_0">Mail</h3></div><div class="el-p"><p dir="auto">As a basic first step we can look through the dump with strings and grep.</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded">strings BelkaCTF_7_CASE250722_KTSOAERO.mem <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">'epxlorer.exe'</span>
+</code></pre></div><div class="el-p"><p dir="auto">Obviously, this has a huge output, and sorting through all of it is not feasible. However, even with a quick glance, we can find out a few things. We can notice an often-recurring block of text:</p></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="quote" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">grep output</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
+<pre class="language-php-template"><code data-line="1" class="language-php-template is-loaded">s Windows-based computer systems across various industries and locations worldwide. Specifically, Windows machines are experiencing critical instability, resulting in frequent occurrences of the Blue Screen of Death (BSOD), an error state rendering affected systems temporarily unusable, with potential risks including significant operational downtime and data loss.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;In response to this critical situation, our Information Technology Department has conducted a thorough assessment and has urgently identified and prepared an internal software update designed explicitly to mitigate this vulnerability. This software update is essential in safeguarding your workstation and ensuring the continued stability, security, and integrity of our organizational systems.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Mandatory Action Required:&lt;/div&gt;&lt;div&gt;It is imperative that you install the provided software update at your earliest convenience&amp;mdash;ideally immediately upon receipt of this notification. Prompt compliance will significantly reduce the likelihood of your workstation being compromised by the current global BSOD event.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Software Update Installation Procedure:&lt;/div&gt;&lt;div&gt;1. Download the necessary update using this one-time link: &lt;a href="https://limewire.com/d/Za2X3#vmzvnIVA3y" target="_blank" rel="noreferrer"&gt;https://limewire.com/d/Za2X3#vmzvnIVA3y&lt;/a&gt;&lt;/div&gt;&lt;div&gt;The program attached is EPXLORER (Emergency Program for Xtinguishing Local Operating-system Related Error Reactions).&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;2. Save epxlorer.exe to any folder on your computer. Verify that the executable is 1 111 552 bytes in size.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;3. Immediately run epxlorer.exe.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Should you encounter any difficulties or require further clarification, please do not hesitate to immediately contact the IT Support Desk by replying to this email.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;We greatly appreciate your immediate cooperation and attention to this critical matter. Your diligence will play an integral role in maintaining the operational efficiency and resilience of our organization during this challenging situation.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Respectfully,&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Bob Bobbins&lt;/div&gt;&lt;div&gt;Information Technology Department&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+</div></div></div><div class="el-p"><p dir="auto">After a bit more grepping, we can find the full version.</p></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="-" data-callout="quote" class="callout is-collapsible is-collapsed"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-quote"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path></svg></div><div class="callout-title-inner">grep output</div><div class="callout-fold is-collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-chevron-down"><path d="m6 9 6 6 6-6"></path></svg></div></div><div class="callout-content" style="display: none;">
+<pre class="language-yaml"><code data-line="1" class="language-yaml is-loaded"><span class="token key atrule">Subject</span><span class="token punctuation">:</span> <span class="token key atrule">URGENT</span><span class="token punctuation">:</span> Corporate software update
+<span class="token key atrule">Content-Type</span><span class="token punctuation">:</span> multipart/alternative;
+ boundary=2a45ab14d3394b078a88d4f70efafd7a
+<span class="token punctuation">-</span><span class="token punctuation">-</span>2a45ab14d3394b078a88d4f70efafd7a
+<span class="token key atrule">Content-Type</span><span class="token punctuation">:</span> text/plain; charset=utf<span class="token punctuation">-</span><span class="token number">8</span>
+<span class="token key atrule">Content-Transfer-Encoding</span><span class="token punctuation">:</span> quoted<span class="token punctuation">-</span>printable
+REQUIRES IMMEDIATE ATTENTION AND ACTION
+We wish to draw your immediate attention to an emerging global incident =
+currently affecting numerous Windows<span class="token punctuation">-</span>based computer systems across vario=
+us industries and locations worldwide. Specifically<span class="token punctuation">,</span> Windows machines ar=
+e experiencing critical instability<span class="token punctuation">,</span> resulting in frequent occurrences o=
+f the Blue Screen of Death (BSOD)<span class="token punctuation">,</span> an error state rendering affected sys=
+tems temporarily unusable<span class="token punctuation">,</span> with potential risks including significant op=
+erational downtime and data loss.
+In response to this critical situation<span class="token punctuation">,</span> our Information Technology Depar=
+tment has conducted a thorough assessment and has urgently identified an=
+d prepared an internal software update designed explicitly to mitigate t=
+his vulnerability. This software update is essential in safeguarding you=
+r workstation and ensuring the continued stability<span class="token punctuation">,</span> security<span class="token punctuation">,</span> and integr=
+ity of our organizational systems.
+<span class="token key atrule">Mandatory Action Required</span><span class="token punctuation">:</span>
+It is imperative that you install the provided software update at your e=
+arliest convenience=E2=80=94ideally immediately upon receipt of this not=
+ification. Prompt compliance will significantly reduce the likelihood of=
+ your workstation being compromised by the current global BSOD event.
+<span class="token key atrule">Software Update Installation Procedure</span><span class="token punctuation">:</span>
+<span class="token key atrule">1. Download the necessary update using this one-time link</span><span class="token punctuation">:</span> https<span class="token punctuation">:</span>//limew=
+ire.com/d/Za2X3<span class="token comment">#vmzvnIVA3y</span>
+The program attached is EPXLORER (Emergency Program for Xtinguishing Loc=
+al Operating<span class="token punctuation">-</span>system Related Error Reactions).
+2. Save epxlorer.exe to any folder on your computer. Verify that the exe=
+cutable is 1 111 552 bytes in size.
+3. Immediately run epxlorer.exe.
+Should you encounter any difficulties or require further clarification<span class="token punctuation">,</span> =
+please do not hesitate to immediately contact the IT Support Desk by rep=
+lying to this email.
+We greatly appreciate your immediate cooperation and attention to this c=
+ritical matter. Your diligence will play an integral role in maintaining=
+ the operational efficiency and resilience of our organization during th=
+is challenging situation.
+Respectfully<span class="token punctuation">,</span>
+Bob Bobbins
+Information Technology Department
+</code></pre>
+</div></div></div><div class="el-p"><p dir="auto">If we clean it up, we get this:</p></div><div class="el-div"><div data-callout-metadata="" data-callout-fold="" data-callout="note" class="callout"><div class="callout-title" dir="auto"><div class="callout-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></div><div class="callout-title-inner">Note</div></div><div class="callout-content">
+<p dir="auto"> <strong>REQUIRES IMMEDIATE ATTENTION AND ACTION</strong><br>
+We wish to draw your immediate attention to an emerging global incident currently affecting numerous Windows-based computer systems across various industries and locations worldwide. Specifically, Windows machines are experiencing critical instability, resulting in frequent occurrences of the Blue Screen of Death (BSOD), an error state rendering affected systems temporarily unusable, with potential risks including significant operational downtime and data loss.</p>
+<p dir="auto">In response to this critical situation, our Information Technology Department has conducted a thorough assessment and has urgently identified and prepared an internal software update designed explicitly to mitigate this vulnerability. This software update is essential in safeguarding your workstation and ensuring the continued stability, security, and integrity of our organizational systems.</p>
+<p dir="auto"><strong>Mandatory Action Required</strong></p>
+<p dir="auto">It is imperative that you install the provided software update at your earliest convenience—ideally immediately upon receipt of this notification. Prompt compliance will significantly reduce the likelihood of your workstation being compromised by the current global BSOD event.</p>
+<p dir="auto"><strong>Software Update Installation Procedure</strong></p>
+<ol start="4">
+<li data-line="12" dir="auto">Download the necessary update using this one-time link: <code>https://limewire[.]com/d/Za2X3#vmzvnIVA3y</code><br>
+The program attached is <strong>EPXLORER</strong> (Emergency Program for Xtinguishing Local Operating-system Related Error Reactions).</li>
+<li data-line="14" dir="auto">Save <code>epxlorer.exe</code> to any folder on your computer. Verify that the executable is <strong>1,111,552 bytes</strong> in size.</li>
+<li data-line="15" dir="auto">Immediately run <code>epxlorer.exe</code>.</li>
+</ol>
+<p dir="auto">Should you encounter any difficulties or require further clarification, please do not hesitate to immediately contact the IT Support Desk by replying to this email.</p>
+<p dir="auto">We greatly appreciate your immediate cooperation and attention to this critical matter. Your diligence will play an integral role in maintaining the operational efficiency and resilience of our organization during this challenging situation.</p>
+</div></div></div><div class="el-p"><p dir="auto">If we check the web history through MemProcFS, we can see that the user did follow the link to limewire.</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/web/web.txt <span class="token operator">|</span> <span class="token function">grep</span> epxlorer.exe
+</code></pre></div><div class="el-p"><p dir="auto"><strong>Output:</strong></p></div><div class="el-table" dir="ltr" style="overflow-x: auto;"><table>
+<thead>
+<tr>
+<th dir="ltr">ID</th>
+<th dir="ltr">PID</th>
+<th dir="ltr">Timestamp (UTC)</th>
+<th dir="ltr">Browser</th>
+<th dir="ltr">Activity</th>
+<th dir="ltr">URL</th>
+<th dir="ltr">Page title</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="ltr">c</td>
+<td dir="auto">7984</td>
+<td dir="auto">2025-07-22 18:52:03</td>
+<td dir="ltr">EDGE</td>
+<td dir="ltr">VISIT</td>
+<td dir="ltr"><a rel="noopener nofollow" class="external-link is-unresolved" href="https://limewire.com/d/Za2X3#vmzvnIVA3y" target="_self">https://limewire.com/d/Za2X3#vmzvnIVA3y</a></td>
+<td dir="ltr">Download epxlorer.exe | LimeWire</td>
+</tr>
+<tr>
+<td dir="ltr">d</td>
+<td dir="auto">7984</td>
+<td dir="auto">2025-07-22 18:51:57</td>
+<td dir="ltr">EDGE</td>
+<td dir="ltr">VISIT</td>
+<td dir="ltr"><a rel="noopener nofollow" class="external-link is-unresolved" href="https://limewire.com/d/Za2X3#vmzvnIVA3y" target="_self">https://limewire.com/d/Za2X3#vmzvnIVA3y</a></td>
+<td dir="ltr">Download epxlorer.exe | LimeWire</td>
+</tr>
+<tr>
+<td dir="ltr">e</td>
+<td dir="auto">7984</td>
+<td dir="auto">2025-07-22 18:51:57</td>
+<td dir="ltr">EDGE</td>
+<td dir="ltr">VISIT</td>
+<td dir="ltr"><a rel="noopener nofollow" class="external-link is-unresolved" href="https://limewire.com/d/Za2X3#vmzvnIVA3y" target="_self">https://limewire.com/d/Za2X3#vmzvnIVA3y</a></td>
+<td dir="ltr">Download epxlorer.exe | LimeWire</td>
+</tr>
+<tr>
+<td dir="ltr">f</td>
+<td dir="auto">7984</td>
+<td dir="auto">2025-07-22 18:51:57</td>
+<td dir="ltr">EDGE</td>
+<td dir="ltr">VISIT</td>
+<td dir="ltr"><a rel="noopener nofollow" class="external-link is-unresolved" href="https://limewire.com/d/Za2X3?lmwr-ftv=1#vmzvnIVA3y" target="_self">https://limewire.com/d/Za2X3?lmwr-ftv=1#vmzvnIVA3y</a></td>
+<td dir="ltr">Download epxlorer.exe | LimeWire</td>
+</tr>
+</tbody>
+</table></div><div class="el-p"><p dir="auto">You might notice there are only <code>VISIT</code> entries and no <code>DOWNLOAD</code>. LimeWire decrypts files in the browser and saves them from a blob: URL, and MemProcFS can only rebuild the parts of the browser's History database that were in memory, so the download record is most likely missing for one of these reasons. Instead we can confirm the download from the file system:</p></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/ntfs/ntfs_files.txt <span class="token operator">|</span> <span class="token function">grep</span> epxlorer
+</code></pre></div><div class="el-p"><p dir="auto"><strong>Output:</strong></p></div><div class="el-table" dir="auto" style="overflow-x: auto;"><table>
+<thead>
+<tr>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+<th dir="auto"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="ltr">363f</td>
+<td dir="ltr">a659a800</td>
+<td dir="ltr">1b3a2</td>
+<td dir="ltr">1b153</td>
+<td dir="ltr">2025-07-22 18:52:06 UTC</td>
+<td dir="ltr">2025-07-22 18:53:10 UTC</td>
+<td dir="ltr">10f600</td>
+<td dir="ltr">A</td>
+<td dir="ltr"><code>\1\Users\award\Downloads\epxlorer.exe</code></td>
+</tr>
+<tr>
+<td dir="auto">3640</td>
+<td dir="ltr">a659a800</td>
+<td dir="ltr">1b3a2</td>
+<td dir="ltr">1b153</td>
+<td dir="ltr">2025-07-22 18:52:06 UTC</td>
+<td dir="ltr">2025-07-22 18:53:10 UTC</td>
+<td dir="auto">7</td>
+<td dir="ltr">ARS</td>
+<td dir="ltr"><code>\1\Users\award\Downloads\epxlorer.exe:SmartScreen</code></td>
+</tr>
+</tbody>
+</table></div><div class="el-pre"><pre class="language-shell"><code data-line="0" class="language-shell is-loaded"><span class="token function">cat</span> forensic/ntfs/1/Users/award/Downloads/epxlorer.exe_SmartScreen
+
+Anaheim
+</code></pre></div><div class="el-ul"><ul class="has-list-bullet">
+<li data-line="0" dir="auto">
+<p>The file is in \Users\award\Downloads\ and was created at 18:52:06, three seconds after the last visit to the LimeWire page.</p>
+</li>
+<li data-line="2" dir="auto">
+<p>Its size is 0x10f600 = 1,111,552 bytes, exactly what the phishing email told the user to check.</p>
+</li>
+<li data-line="4" dir="auto">
+<p>It has a 7-byte :SmartScreen alternate data stream (MemProcFS shows it as epxlorer.exe_SmartScreen). It contains Anaheim, Edge's internal codename. Edge writes this after checking a download with SmartScreen, so it tells us the file came through Edge.</p>
+</li>
+</ul></div>
 </div>
 </main>
+<script>
+for (const title of document.querySelectorAll(".callout.is-collapsible > .callout-title")) {
+  title.addEventListener("click", () => {
+    const callout = title.parentElement;
+    const collapsed = callout.classList.toggle("is-collapsed");
+    const body = callout.querySelector(":scope > .callout-content");
+    if (body) body.style.display = collapsed ? "none" : "";
+    const fold = title.querySelector(".callout-fold");
+    if (fold) fold.classList.toggle("is-collapsed", collapsed);
+  });
+}
+</script>
 </body>
 </html>

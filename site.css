@@ -217,3 +217,29 @@ body.publish .markdown-rendered strong { font-weight: 700 !important; }
 body.publish .markdown-rendered :is(p, ul, ol, blockquote) { max-width: 62rem; }
 body.publish .markdown-rendered p:has(.image-embed),
 body.publish .markdown-rendered p:has(img) { max-width: none; }
+
+/* ───────────── Mermaid: ledger sheet ─────────────
+ * Diagrams arrive pre-rendered as SVG with box sizes fixed at export time, so only
+ * paint is restyled; text keeps mermaid's 24px line box (and shrinks slightly) so it fits.
+ * classDef fills/strokes are inline !important and win, which keeps their colour coding.
+ * Legibility first: no shadows or tilt, a faint grid, readable edge labels. */
+body.publish .mermaid { margin: 1.5rem 0; padding: 1.5rem 1.25rem; overflow-x: auto; border: var(--edge); background: linear-gradient(rgba(216,205,182,.45) 1px, transparent 1px) 0 0 / 100% 24px, linear-gradient(90deg, rgba(216,205,182,.45) 1px, transparent 1px) 0 0 / 24px 100%, #fffdf4; }
+/* Shrink to fit the sheet, but never below 720px: narrow screens scroll instead of shrinking text away. */
+body.publish .mermaid svg { display: block; margin: 0 auto; max-width: max(100%, 720px); height: auto; overflow: visible; }
+body.publish .mermaid .node :is(.label-container, rect, polygon, circle, ellipse, path) { fill: var(--panel) !important; stroke: var(--ink) !important; stroke-width: 1.5px !important; }
+body.publish .mermaid .node .label { color: var(--ink); }
+body.publish .mermaid :is(.node, .edgeLabel, .cluster-label) foreignObject { overflow: visible; }
+body.publish .mermaid .node foreignObject > div { display: block !important; width: 100% !important; }
+body.publish .markdown-rendered .mermaid p { margin: 0 !important; font: 14px/24px var(--body) !important; color: inherit !important; max-width: none; }
+/* Edges: ink lines, red arrowheads; thick/dotted variants keep their own weight and dash. */
+body.publish .mermaid .flowchart-link { stroke: var(--ink) !important; }
+body.publish .mermaid .flowchart-link.edge-thickness-normal { stroke-width: 1.5px !important; }
+body.publish .mermaid .flowchart-link.edge-thickness-thick { stroke-width: 3px !important; }
+body.publish .mermaid :is(.marker, .arrowMarkerPath) { fill: var(--accent) !important; stroke: var(--accent) !important; }
+/* Edge labels: upright red tags on cream so lines never run through the text. */
+body.publish .mermaid :is(.labelBkg, .edgeLabel, .edgeLabel p) { background: transparent !important; }
+body.publish .mermaid .labelBkg:has(p) { padding: 0 0.35em; background: #fffdf4 !important; border: 1px solid var(--accent); }
+body.publish .markdown-rendered .mermaid .edgeLabel p { font: 12px/20px var(--mono) !important; color: var(--accent) !important; }
+/* Subgraphs: dashed outline, label in small mono caps. */
+body.publish .mermaid .cluster rect { fill: rgba(250,244,230,.7) !important; stroke: var(--soft) !important; stroke-width: 1.5px !important; stroke-dasharray: 6 4; }
+body.publish .markdown-rendered .mermaid .cluster-label p { font: 600 11px/24px var(--mono) !important; letter-spacing: 0.08em; text-transform: uppercase; color: var(--soft) !important; }
